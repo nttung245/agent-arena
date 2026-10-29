@@ -82,6 +82,7 @@ describe("blankMap / cloneMap", () => {
     const cloned = cloneMap(map);
     expect(cloned.placeables[0]?.placeableId).toBe("space_boulder");
     expect(migratePlaceableId("lounge_chair")).toBe("furniture__lounge_chair_pimrvmqw1o");
+    expect(migratePlaceableId("camping__fire")).toBe("fire");
     expect(migratePlaceableId("desk")).toBe("desk");
   });
 });
