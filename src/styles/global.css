@@ -1781,6 +1781,12 @@ body.is-chat-panel-dragging .chat-popup__resize {
   border-color: var(--sage-dark);
 }
 
+/* Embedded worlds are small; keep names readable without covering the scene. */
+.app--embed .agent-label {
+  padding: 0.12rem 0.45rem;
+  font-size: 11px;
+}
+
 .agent-speech {
   position: relative;
   display: inline-block;

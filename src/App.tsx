@@ -93,7 +93,7 @@ export default function App() {
 
   if (embed) {
     return (
-      <div className="app" data-day-night={dayNight}>
+      <div className="app app--embed" data-day-night={dayNight}>
         <div className="arena-layer">
           <ArenaScene embedded />
         </div>
