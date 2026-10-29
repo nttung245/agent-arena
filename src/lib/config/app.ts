@@ -152,6 +152,11 @@ export interface AppConfig {
     };
   };
   providers: Record<AiProviderKind, ProviderDefaults>;
+  embed: {
+    visitorName: string;
+    cycleSeconds: number;
+    crew: Array<{ roleId: string; characterId: string }>;
+  };
   dev: {
     port: number;
     ollamaProxy: string;

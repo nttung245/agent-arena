@@ -248,6 +248,22 @@ See [`SECURITY.md`](./SECURITY.md) for how to report a vulnerability.
 - **Claude from the browser** uses Anthropic’s `anthropic-dangerous-direct-browser-access` header; treat that key as **origin-exposed** (not a server secret).
 - Browser **CORS** applies. Some self-hosted gateways need CORS headers; `npm run dev` proxies help for Ollama.
 
+### Embed a world
+
+Add `?embed` to show one world without any UI, for example in an iframe on another site. Nothing is read from or saved to the visitor's storage.
+
+| Parameter | Values |
+|-----------|--------|
+| `map` | A builtin id (`office`, `nature`, `space`, `halloween`, `red_planet`) |
+| `time` | `day` (default), `night`, or `cycle` to alternate every `embed.cycleSeconds` |
+
+The wandering crew and the cycle length come from `embed` in `agent-arena.yaml`. The camera still rotates, and you can click an agent and right-click the floor to send it walking, but zoom and pan are off so the host page keeps its scroll. Once every model has loaded, the page posts `{ type: "agent-arena:ready" }` to its parent.
+
+```html
+<iframe src="https://<user>.github.io/agent-arena/?embed&map=halloween&time=cycle"
+        title="Agent Arena: Halloween" style="width: 100%; aspect-ratio: 8 / 5; border: 0"></iframe>
+```
+
 ---
 
 ## How it works

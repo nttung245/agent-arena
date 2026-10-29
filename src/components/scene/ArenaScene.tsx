@@ -163,7 +163,7 @@ function FloorCommandClick({
   return null;
 }
 
-function ArenaWorld({ dormant }: { dormant: boolean }) {
+function ArenaWorld({ dormant, embedded }: { dormant: boolean; embedded: boolean }) {
   const floorSize = useArenaStore((s) => s.floorSize);
   const placeables = useArenaStore((s) => s.placeables);
   const agents = useArenaStore((s) => s.runtimeAgents);
@@ -348,7 +348,9 @@ function ArenaWorld({ dormant }: { dormant: boolean }) {
       <OrbitControls
         makeDefault
         target={camTarget}
-        enablePan={!selectedAgentId}
+        // Inside an iframe the wheel and pan gestures belong to the host page's scroll.
+        enableZoom={!embedded}
+        enablePan={!embedded && !selectedAgentId}
         enableDamping
         dampingFactor={0.18}
         rotateSpeed={0.72}
@@ -371,7 +373,14 @@ function ArenaWorld({ dormant }: { dormant: boolean }) {
   );
 }
 
-export function ArenaScene({ dormant = false }: { dormant?: boolean }) {
+export function ArenaScene({
+  dormant = false,
+  embedded = false,
+}: {
+  dormant?: boolean;
+  /** Rendered alone inside an iframe (see `src/lib/embed.ts`). */
+  embedded?: boolean;
+}) {
   const graphics = useArenaStore((s) => s.graphics);
 
   return (
@@ -394,7 +403,7 @@ export function ArenaScene({ dormant = false }: { dormant?: boolean }) {
           useArenaStore.getState().selectAgent(null);
         }}
       >
-        <ArenaWorld dormant={dormant} />
+        <ArenaWorld dormant={dormant} embedded={embedded} />
       </Canvas>
     </div>
   );

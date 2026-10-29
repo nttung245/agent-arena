@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { useProgress } from "@react-three/drei";
 import { NameGate } from "@/components/NameGate";
 import { Hud } from "@/components/Hud";
 import { ArenaSidePanels } from "@/components/ArenaSidePanels";
@@ -10,6 +11,38 @@ import { MapEditor } from "@/components/MapEditor";
 import { ArenaScene } from "@/components/scene/ArenaScene";
 import { useArenaStore } from "@/store/arenaStore";
 import { appConfig } from "@/lib/config";
+import { embed, worldModelUrls } from "@/lib/embed";
+
+/** Tells the embedding page once the world's models have loaded, so it can show the world. */
+function EmbedReadySignal() {
+  const { active, loaded, total } = useProgress();
+  const activeMap = useArenaStore((s) => s.activeMap);
+  const agents = useArenaStore((s) => s.agents);
+  // Every character look is preloaded at startup, so loading can go idle before the map's
+  // models start: wait until at least this world's files have been counted, then settle.
+  const expected = useMemo(
+    () =>
+      activeMap
+        ? worldModelUrls(
+            activeMap.placeables.map((p) => p.placeableId),
+            agents.map((a) => a.characterId),
+          ).size
+        : 0,
+    [activeMap, agents],
+  );
+  const sent = useRef(false);
+
+  useEffect(() => {
+    if (sent.current || expected === 0 || active || total < expected || loaded < total) return;
+    const timer = window.setTimeout(() => {
+      sent.current = true;
+      window.parent.postMessage({ type: "agent-arena:ready" }, "*");
+    }, 500);
+    return () => window.clearTimeout(timer);
+  }, [active, loaded, total, expected]);
+
+  return null;
+}
 
 export default function App() {
   const hydrate = useArenaStore((s) => s.hydrate);
@@ -47,6 +80,27 @@ export default function App() {
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
   }, []);
+
+  // ?embed&time=cycle alternates day and night on a timer.
+  useEffect(() => {
+    if (embed?.time !== "cycle") return;
+    const id = window.setInterval(
+      () => useArenaStore.getState().toggleDayNight(),
+      appConfig.embed.cycleSeconds * 1000,
+    );
+    return () => window.clearInterval(id);
+  }, []);
+
+  if (embed) {
+    return (
+      <div className="app" data-day-night={dayNight}>
+        <div className="arena-layer">
+          <ArenaScene embedded />
+        </div>
+        <EmbedReadySignal />
+      </div>
+    );
+  }
 
   if (!userName) {
     return <NameGate />;

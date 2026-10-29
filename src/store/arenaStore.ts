@@ -27,6 +27,7 @@ import { DEFAULT_CHARACTER_ID, getCharacter } from "@/lib/assets/characters";
 import { appConfig, DEFAULT_GRAPHICS } from "@/lib/config";
 import { placeableCanWander } from "@/lib/assets/catalog";
 import { formatSpeechBubble } from "@/lib/speechBubble";
+import { embed, embedPersisted } from "@/lib/embed";
 import i18n from "@/i18n";
 import { applyDocumentLang } from "@/i18n/languages";
 
@@ -126,6 +127,11 @@ function persistSlice(s: ArenaState): AppPersisted {
   };
 }
 
+/** Embedded worlds start from their own in-memory state instead of the visitor's storage. */
+function readPersisted(): AppPersisted {
+  return embed ? embedPersisted(embed) : loadPersisted();
+}
+
 let arenaChatPersistTimer = 0;
 
 function scheduleArenaChatPersist(persist: () => void): void {
@@ -151,7 +157,7 @@ function applyMapSlice(
 }
 
 export const useArenaStore = create<ArenaState>((set, get) => {
-  const initial = loadPersisted();
+  const initial = readPersisted();
   return {
   ...initial,
   floorSize: 18,
@@ -174,7 +180,7 @@ export const useArenaStore = create<ArenaState>((set, get) => {
   favoriteAssets: initial.favoriteAssets ?? [],
 
   hydrate: () => {
-    const data = loadPersisted();
+    const data = readPersisted();
     const layout = applyMapSlice(
       { ...data, runtimeAgents: [] },
       true,
@@ -192,6 +198,7 @@ export const useArenaStore = create<ArenaState>((set, get) => {
   },
 
   persist: () => {
+    if (embed) return;
     savePersisted(persistSlice(get()));
   },
 

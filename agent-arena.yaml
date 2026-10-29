@@ -180,6 +180,20 @@ providers:
     baseUrl: http://localhost:8080/v1
     modelId: default
 
+# Iframe showcase (?embed&map=<id>&time=day|night|cycle): one world, no UI, nothing saved.
+embed:
+  visitorName: Visitor
+  # time=cycle switches between day and night this often.
+  cycleSeconds: 14
+  # Model-less agents that wander the world (they cannot chat without a model).
+  crew:
+    - roleId: explorer
+      characterId: generic-male
+    - roleId: scholar
+      characterId: generic-female
+    - roleId: scout
+      characterId: citizen-1
+
 dev:
   port: 5174
   ollamaProxy: http://127.0.0.1:11434
