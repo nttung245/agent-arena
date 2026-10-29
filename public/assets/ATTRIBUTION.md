@@ -18,6 +18,12 @@ Kenney kits: CC0 1.0. Attribution is optional; do not use the Kenney logo. poly.
 | `packs/trees/` | Nature-style tree kit (Kenney naming) | Kenney | CC0 1.0 |
 | `packs/camping/` | Camping kit (Kenney naming) | Kenney | CC0 1.0 |
 | `packs/cars/` | Car kit (Kenney naming) | Kenney | CC0 1.0 |
+| `packs/graveyard/` | Graveyard Kit 5.0 (the 43 models used by the `halloween` builtin) | [kenney.nl/assets/graveyard-kit](https://kenney.nl/assets/graveyard-kit) | CC0 1.0 |
+| `packs/outpost/` | Space Kit 2.0 (the 28 models used by the `red_planet` builtin) | [kenney.nl/assets/space-kit](https://kenney.nl/assets/space-kit) | CC0 1.0 |
+
+`packs/graveyard/` changes from the kit: files renamed to Title Case (`pumpkin-carved.glb` → `Pumpkin Carved.glb`, `character-ghost.glb` → `Ghost.glb`, `character-keeper.glb` → `Gravekeeper.glb`, `lightpost-single.glb` → `Lightpost.glb`, `urn-round.glb` → `Urn.glb`); the shared `Textures/colormap.png` is embedded in every GLB; carved pumpkins, the lightpost, and the ghost gained an emissive map cut from that colormap so they glow at night.
+
+`packs/outpost/` changes from the kit: files renamed to Title Case or by role (`hangar_roundA.glb` → `Hab Dome.glb`, `hangar_roundGlass.glb` → `Greenhouse Dome.glb`, `rocket_topA.glb` → `Rocket Nose.glb`, `platform_large.glb` → `Landing Pad.glb`, `meteor_detailed.glb` → `Meteorite.glb`, …); every material set to non-metallic (the kit leaves `metallicFactor` at the glTF default of 1, which renders near-black without an environment map); rock materials recolored to Martian rust and basalt; the hab skylight and greenhouse glass gained an emissive color.
 
 ## Named poly.pizza props (used in builtin maps)
 

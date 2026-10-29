@@ -249,6 +249,8 @@ const SPACE = {
   stripe: "#D4783A",
   glow: "#66BBFF",
   dish: "#9AA3AC",
+  panel: "#22396B",
+  panelGrid: "#5C7FB8",
 };
 
 function RockMesh({
@@ -350,6 +352,27 @@ export function PropAntenna() {
   );
 }
 
+/** Tilted photovoltaic panel on a post — outpost power arrays. */
+export function PropSolarPanel() {
+  return (
+    <group>
+      <Cylinder args={[0.18, 0.22, 0.08, 8]} position={[0, 0.04, 0]} color={SPACE.metalDark} />
+      <Cylinder args={[0.05, 0.06, 0.9, 6]} position={[0, 0.5, 0]} color={SPACE.metal} />
+      <group position={[0, 1.0, 0]} rotation={[0.55, 0, 0]}>
+        <Box args={[1.9, 0.05, 1.1]} position={[0, 0, 0]} color={SPACE.metalDark} />
+        <mesh position={[0, 0.03, 0]} castShadow receiveShadow>
+          <boxGeometry args={[1.8, 0.02, 1.0]} />
+          <meshStandardMaterial color={SPACE.panel} roughness={0.32} metalness={0.45} />
+        </mesh>
+        {[-0.45, 0, 0.45].map((x) => (
+          <Box key={x} args={[0.02, 0.025, 1.0]} position={[x, 0.04, 0]} color={SPACE.panelGrid} />
+        ))}
+        <Box args={[1.8, 0.025, 0.02]} position={[0, 0.04, 0]} color={SPACE.panelGrid} />
+      </group>
+    </group>
+  );
+}
+
 /** Solid office wall segment (~2 m wide) — matches Kenney wall module span. */
 export function PropWallSolid() {
   const w = 2.0;
@@ -414,6 +437,8 @@ export function PolyProp({ id }: { id: PlaceableId }) {
       return <PropBeacon />;
     case "antenna":
       return <PropAntenna />;
+    case "solar_panel":
+      return <PropSolarPanel />;
     case "wall_solid":
       return <PropWallSolid />;
     default:

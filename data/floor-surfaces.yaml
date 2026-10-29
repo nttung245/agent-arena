@@ -46,3 +46,21 @@ surfaces:
     roughness: 0.75
     metalness: 0.18
     style: surface
+  graveyard:
+    color: "#4B5236"
+    alt: "#54463A"
+    border: "#2B2721"
+    pattern: patches
+    tileMeters: 1
+    roughness: 1
+    metalness: 0
+    style: surface
+  regolith:
+    color: "#B4552F"
+    alt: "#9C4628"
+    border: "#5E2A1A"
+    pattern: patches
+    tileMeters: 1
+    roughness: 1
+    metalness: 0
+    style: surface

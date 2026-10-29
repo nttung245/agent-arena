@@ -286,6 +286,14 @@
     "space": {
       "name": "Uzay",
       "description": "Şeftali tonlu pus altında tozlu kırmızımsı-turuncu gezegen üssü. Gri habitat kubbesi ve küçük kapsüller, istiflenmiş ikmal sandıkları, çanak antenler ve mavi parlayan işaret lambaları arasında. Uzaylı bitkiler ve kıvrık koyu ağaçlar kaya sırtları ile kayalar arasında büyüyor; altı tekerlekli bir gezgin ve büyük dairesel bir üs halkası avluyu belirliyor."
+    },
+    "halloween": {
+      "name": "Cadılar Bayramı",
+      "description": "Kasvetli mor bir gökyüzünün altında yosunlu bir çukur. Demir çitli bir mezarlıkta lavanta rengi mezar taşları ve iki yanında ateş sepetleri olan bir anıt mezar var; çatısında bir akbaba tünemiş, mezarların arasında bir hayalet süzülüyor. Çitle çevrili balkabağı tarlasında oyma balkabağı fenerleri dev bir balkabağının çevresinde parlıyor; taş bir sunağın yanında, mumlarla çevrili bir kamp ateşinin üstünde bir kazan kaynıyor. Bir mezarcı, bir iskelet ve bir zombi taze bir mezarın başında dolaşıyor, kazanın yakınında bir vampir pusuda bekliyor ve eğri çamların arasındaki fener meydanını sokak lambaları çevreliyor."
+    },
+    "red_planet": {
+      "name": "Mars",
+      "description": "Tozlu, karamel renkli bir gökyüzünün altında pas kırmızısı bir Mars ovası. Beyaz bir yaşam kubbesi, pembe yetiştirme ışıklarıyla parlayan bir sera kubbesine koridorla bağlanıyor; yanında bir hangar ve ikmal sandıkları var. Mavi işaret ışıklarıyla çevrili iniş pistinde, servis kulesinin yanında uzun bir roket duruyor; yakınında yakıt tankları ve bir kargo iniş aracı bulunuyor. Güneş panelleri ve uydu antenleri üssü ayakta tutuyor. Astronotlar kayalar ve çarpma kraterleri arasında çalışıyor; en büyük kraterde bir göktaşı yatıyor ve orada küçük, yeşil bir şey pusuda bekliyor."
     }
   },
   "mapEditor": {
@@ -313,7 +321,8 @@
       "ground": "Zemin",
       "vehicles": "Araçlar",
       "animals": "Hayvanlar",
-      "food": "Yiyecek"
+      "food": "Yiyecek",
+      "spooky": "Ürkütücü"
     },
     "libraryHint": "Kategori seç, bir nesneye tıkla, sonra zemine tıklayarak yerleştir. Yerleştirilmiş bir nesneye tıklayınca seçilir — Özellikler’den döndür, boyutlandır veya sil.",
     "inspector": "Özellikler",
@@ -339,7 +348,9 @@
       "grass": "Çim",
       "dirt": "Toprak",
       "concrete": "Beton",
-      "factory": "Koyu fabrika"
+      "factory": "Koyu fabrika",
+      "graveyard": "Mezarlık yosunu",
+      "regolith": "Mars regoliti"
     },
     "bgColor": "Gökyüzü / sis",
     "rotation": "Döndürme",
@@ -404,7 +415,9 @@
       "cars": "Araçlar",
       "animals": "Hayvanlar",
       "food": "Yiyecek",
-      "space": "Uzay"
+      "space": "Uzay",
+      "graveyard": "Mezarlık",
+      "outpost": "Üs"
     }
   }
 }

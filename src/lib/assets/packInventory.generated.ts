@@ -610,6 +610,178 @@ export const PACK_GLB_INVENTORY: readonly PackGlbEntry[] = [
     "file": "Washer.glb"
   },
   {
+    "pack": "graveyard",
+    "file": "Altar Stone.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Bench Damaged.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Candle.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Coffin.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Crypt Large Roof.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Crypt Large.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Fence Damaged.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Fence Gate.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Fence.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Fire Basket.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Ghost.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Grave Border.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Grave.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Gravekeeper.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Gravestone Bevel.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Gravestone Broken.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Gravestone Cross Large.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Gravestone Cross.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Gravestone Decorative.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Gravestone Roof.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Gravestone Round.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Gravestone Wide.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Iron Fence Border Column.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Iron Fence Border Gate.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Iron Fence Border.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Lantern Candle.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Lightpost.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Pine Crooked.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Pine Fall Crooked.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Pine Fall.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Pumpkin Carved.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Pumpkin Tall Carved.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Pumpkin Tall.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Pumpkin.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Rocks Tall.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Rocks.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Shovel Dirt.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Skeleton.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Trunk Long.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Trunk.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Urn.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Vampire.glb"
+  },
+  {
+    "pack": "graveyard",
+    "file": "Zombie.glb"
+  },
+  {
     "pack": "nature",
     "file": "Grass Blades.glb"
   },
@@ -620,6 +792,118 @@ export const PACK_GLB_INVENTORY: readonly PackGlbEntry[] = [
   {
     "pack": "nature",
     "file": "Grass Green.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Alien.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Barrels.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Cargo Lander.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Comms Relay.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Corridor.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Crater Large.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Crater.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Fuel Tank.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Gantry.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Generator.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Greenhouse Dome.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Hab Dome.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Hangar.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Landing Pad.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Meteorite Half.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Meteorite.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Pipe.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Rock Large A.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Rock Large B.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Rocket Base.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Rocket Body.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Rocket Fins.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Rocket Fuel Section.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Rocket Nose.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Rocks Small A.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Rocks Small B.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Satellite Dish Large.glb"
+  },
+  {
+    "pack": "outpost",
+    "file": "Satellite Dish.glb"
   },
   {
     "pack": "space",

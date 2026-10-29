@@ -12,6 +12,31 @@ wander:
   space/Astronaut.glb:
     walk: [Walk]
     idle: [Idle]
+  graveyard/Ghost.glb:
+    walk: [walk]
+    idle: [idle]
+  graveyard/Skeleton.glb:
+    walk: [walk]
+    idle: [idle]
+  graveyard/Zombie.glb:
+    walk: [walk]
+    idle: [idle]
+  graveyard/Vampire.glb:
+    walk: [walk]
+    idle: [idle]
+  graveyard/Gravekeeper.glb:
+    walk: [walk]
+    idle: [idle]
+  # No clips — wanders with the procedural step bounce.
+  outpost/Alien.glb:
+    walk: [Walk]
+    idle: [Idle]
+
+# Packs modeled at one shared scale (meters per model unit). Their files skip
+# per-file auto-fit so relative sizes survive (a pumpkin stays smaller than a crypt).
+packScale:
+  graveyard: 2
+  outpost: 2
 
 curated:
   desk:
@@ -280,6 +305,12 @@ curated:
     category: decor
     pack: procedural
     footprint: [0.55, 0.55]
+    scale: 1
+  solar_panel:
+    label: Solar panel
+    category: space
+    pack: procedural
+    footprint: [1.9, 1.1]
     scale: 1
   wall_solid:
     label: Wall

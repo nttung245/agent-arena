@@ -1,0 +1,1721 @@
+{
+  "version": 1,
+  "id": "halloween",
+  "name": "Halloween",
+  "description": "Mossy hollow under a dusky purple sky. An iron-fenced graveyard holds lavender gravestones and a mausoleum flanked by fire baskets, with a vulture on the roof and a ghost drifting between graves. Jack-o'-lanterns glow in a fenced pumpkin patch around a prize pumpkin; a cauldron simmers on a campfire ringed by candles beside a stone altar. A gravekeeper, skeleton, and zombie haunt a fresh grave, a vampire lurks by the cauldron, and lightposts ring the lantern square among crooked pines.",
+  "builtin": true,
+  "floor": {
+    "size": 26,
+    "style": "surface",
+    "cells": 26,
+    "color": "#4B5236",
+    "surface": "graveyard"
+  },
+  "theme": {
+    "floor": "#4B5236",
+    "accent": "#E8742A",
+    "background": "#57476A",
+    "fog": "#665777",
+    "ambient": "#CDB9E6",
+    "hemiSky": "#9C88C4",
+    "hemiGround": "#4A3B2C",
+    "sun": "#FFB27A"
+  },
+  "roomLights": false,
+  "spawnPoints": [
+    {
+      "id": "spawn_0",
+      "position": [
+        -1.3,
+        0,
+        0.4
+      ],
+      "rotationY": 3.1416
+    },
+    {
+      "id": "spawn_1",
+      "position": [
+        2.1,
+        0,
+        1.1
+      ],
+      "rotationY": 3.1416
+    },
+    {
+      "id": "spawn_2",
+      "position": [
+        -0.4,
+        0,
+        3.6
+      ],
+      "rotationY": 3.1416
+    },
+    {
+      "id": "spawn_3",
+      "position": [
+        2.3,
+        0,
+        4.6
+      ],
+      "rotationY": 3.1416
+    },
+    {
+      "id": "spawn_4",
+      "position": [
+        -2.5,
+        0,
+        2.6
+      ],
+      "rotationY": 3.1416
+    },
+    {
+      "id": "spawn_5",
+      "position": [
+        0.6,
+        0,
+        6.4
+      ],
+      "rotationY": 3.1416
+    }
+  ],
+  "lights": [
+    {
+      "id": "light_cauldron",
+      "position": [
+        6.6,
+        1.1,
+        -8
+      ],
+      "color": "#6CFF5A",
+      "intensity": 2.4,
+      "distance": 6
+    },
+    {
+      "id": "light_graveyard",
+      "position": [
+        -7,
+        4.2,
+        -5.6
+      ],
+      "color": "#8E7BFF",
+      "intensity": 0.8,
+      "distance": 11
+    },
+    {
+      "id": "light_patch",
+      "position": [
+        8.1,
+        2.4,
+        7.4
+      ],
+      "color": "#FF8A3A",
+      "intensity": 0.55,
+      "distance": 8
+    }
+  ],
+  "zones": [
+    {
+      "id": "zone_graveyard",
+      "name": "Old Graveyard",
+      "kind": "yard",
+      "center": [
+        -7,
+        0,
+        -7.4
+      ],
+      "radius": 5
+    },
+    {
+      "id": "zone_cauldron",
+      "name": "Witch's Cauldron",
+      "kind": "camp",
+      "center": [
+        6.6,
+        0,
+        -8.4
+      ],
+      "radius": 2.8
+    },
+    {
+      "id": "zone_pumpkin_patch",
+      "name": "Pumpkin Patch",
+      "kind": "yard",
+      "center": [
+        8.1,
+        0,
+        7.6
+      ],
+      "radius": 4
+    },
+    {
+      "id": "zone_grave_plot",
+      "name": "Gravedigger's Plot",
+      "kind": "custom",
+      "center": [
+        -7.6,
+        0,
+        6.2
+      ],
+      "radius": 2.8
+    },
+    {
+      "id": "zone_lantern_square",
+      "name": "Lantern Square",
+      "kind": "path",
+      "center": [
+        0.6,
+        0,
+        2.6
+      ],
+      "radius": 3.4
+    }
+  ],
+  "placeables": [
+    {
+      "id": "hw_001",
+      "placeableId": "graveyard__iron_fence_border_column",
+      "position": [
+        -11,
+        0,
+        -2.5
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_002",
+      "placeableId": "graveyard__iron_fence_border",
+      "position": [
+        -9,
+        0,
+        -2.5
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_003",
+      "placeableId": "graveyard__iron_fence_border_gate",
+      "position": [
+        -7,
+        0,
+        -2.5
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_004",
+      "placeableId": "graveyard__iron_fence_border",
+      "position": [
+        -5,
+        0,
+        -2.5
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_005",
+      "placeableId": "graveyard__iron_fence_border_column",
+      "position": [
+        -3,
+        0,
+        -2.5
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_006",
+      "placeableId": "graveyard__iron_fence_border_column",
+      "position": [
+        -2,
+        0,
+        -3.5
+      ],
+      "rotationY": 1.571,
+      "scale": 1
+    },
+    {
+      "id": "hw_007",
+      "placeableId": "graveyard__iron_fence_border",
+      "position": [
+        -2,
+        0,
+        -5.5
+      ],
+      "rotationY": 1.571,
+      "scale": 1
+    },
+    {
+      "id": "hw_008",
+      "placeableId": "graveyard__iron_fence_border",
+      "position": [
+        -2,
+        0,
+        -7.5
+      ],
+      "rotationY": 1.571,
+      "scale": 1
+    },
+    {
+      "id": "hw_009",
+      "placeableId": "graveyard__iron_fence_border",
+      "position": [
+        -2,
+        0,
+        -9.5
+      ],
+      "rotationY": 1.571,
+      "scale": 1
+    },
+    {
+      "id": "hw_010",
+      "placeableId": "graveyard__iron_fence_border_column",
+      "position": [
+        -2,
+        0,
+        -11.5
+      ],
+      "rotationY": 1.571,
+      "scale": 1
+    },
+    {
+      "id": "hw_011",
+      "placeableId": "graveyard__crypt_large",
+      "position": [
+        -7,
+        0,
+        -9.4
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_012",
+      "placeableId": "graveyard__crypt_large_roof",
+      "position": [
+        -7,
+        2,
+        -9.4
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_013",
+      "placeableId": "animals__turkey_vulture",
+      "position": [
+        -7,
+        3.5,
+        -8.6
+      ],
+      "rotationY": 0.6,
+      "scale": 0.45
+    },
+    {
+      "id": "hw_014",
+      "placeableId": "graveyard__fire_basket",
+      "position": [
+        -9.5,
+        0,
+        -6.2
+      ],
+      "rotationY": 0,
+      "scale": 0.8
+    },
+    {
+      "id": "hw_015",
+      "placeableId": "graveyard__fire_basket",
+      "position": [
+        -4.5,
+        0,
+        -6.2
+      ],
+      "rotationY": 0,
+      "scale": 0.8
+    },
+    {
+      "id": "hw_016",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -7.7,
+        0,
+        -6.5
+      ],
+      "rotationY": -1,
+      "scale": 0.773
+    },
+    {
+      "id": "hw_017",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -6.3,
+        0,
+        -6.5
+      ],
+      "rotationY": -0.152,
+      "scale": 0.815
+    },
+    {
+      "id": "hw_018",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -7.25,
+        0,
+        -6.15
+      ],
+      "rotationY": 0.032,
+      "scale": 0.986
+    },
+    {
+      "id": "hw_019",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -6.75,
+        0,
+        -6.15
+      ],
+      "rotationY": -0.083,
+      "scale": 0.763
+    },
+    {
+      "id": "hw_020",
+      "placeableId": "graveyard__gravestone_round",
+      "position": [
+        -11.433,
+        0,
+        -4.057
+      ],
+      "rotationY": 0.14,
+      "scale": 0.925
+    },
+    {
+      "id": "hw_021",
+      "placeableId": "graveyard__gravestone_cross",
+      "position": [
+        -9.822,
+        0,
+        -4.428
+      ],
+      "rotationY": 0.057,
+      "scale": 1.005
+    },
+    {
+      "id": "hw_022",
+      "placeableId": "graveyard__gravestone_bevel",
+      "position": [
+        -11.308,
+        0,
+        -6.078
+      ],
+      "rotationY": 0.139,
+      "scale": 0.918
+    },
+    {
+      "id": "hw_023",
+      "placeableId": "graveyard__gravestone_roof",
+      "position": [
+        -11.067,
+        0,
+        -7.963
+      ],
+      "rotationY": -0.087,
+      "scale": 1.111
+    },
+    {
+      "id": "hw_024",
+      "placeableId": "graveyard__gravestone_decorative",
+      "position": [
+        -10.081,
+        0,
+        -8.65
+      ],
+      "rotationY": 0.126,
+      "scale": 0.968
+    },
+    {
+      "id": "hw_025",
+      "placeableId": "graveyard__gravestone_wide",
+      "position": [
+        -11.181,
+        0,
+        -9.929
+      ],
+      "rotationY": -0.101,
+      "scale": 1.057
+    },
+    {
+      "id": "hw_026",
+      "placeableId": "graveyard__gravestone_broken",
+      "position": [
+        -10.209,
+        0,
+        -11.409
+      ],
+      "rotationY": 0.115,
+      "scale": 0.944
+    },
+    {
+      "id": "hw_027",
+      "placeableId": "graveyard__gravestone_cross_large",
+      "position": [
+        -4.166,
+        0,
+        -4.315
+      ],
+      "rotationY": 0.08,
+      "scale": 0.981
+    },
+    {
+      "id": "hw_028",
+      "placeableId": "graveyard__gravestone_round",
+      "position": [
+        -2.853,
+        0,
+        -4.112
+      ],
+      "rotationY": -0.035,
+      "scale": 0.989
+    },
+    {
+      "id": "hw_029",
+      "placeableId": "graveyard__gravestone_cross",
+      "position": [
+        -3.291,
+        0,
+        -6.474
+      ],
+      "rotationY": 0.029,
+      "scale": 1.006
+    },
+    {
+      "id": "hw_030",
+      "placeableId": "graveyard__gravestone_bevel",
+      "position": [
+        -4.014,
+        0,
+        -8.291
+      ],
+      "rotationY": 0.094,
+      "scale": 1.102
+    },
+    {
+      "id": "hw_031",
+      "placeableId": "graveyard__gravestone_roof",
+      "position": [
+        -2.939,
+        0,
+        -9.593
+      ],
+      "rotationY": -0.131,
+      "scale": 0.94
+    },
+    {
+      "id": "hw_032",
+      "placeableId": "graveyard__gravestone_decorative",
+      "position": [
+        -4.225,
+        0,
+        -11.102
+      ],
+      "rotationY": -0.113,
+      "scale": 1.119
+    },
+    {
+      "id": "hw_033",
+      "placeableId": "graveyard__grave",
+      "position": [
+        -2.9,
+        0,
+        -7.9
+      ],
+      "rotationY": 0,
+      "scale": 0.75
+    },
+    {
+      "id": "hw_034",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -2.6,
+        0,
+        -5.6
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_035",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -11,
+        0,
+        -7
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_036",
+      "placeableId": "graveyard__lantern_candle",
+      "position": [
+        -8.4,
+        0,
+        -1.7
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_037",
+      "placeableId": "graveyard__lantern_candle",
+      "position": [
+        -5.6,
+        0,
+        -1.7
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_038",
+      "placeableId": "graveyard__ghost",
+      "position": [
+        -7,
+        0,
+        -4.6
+      ],
+      "rotationY": -2.864,
+      "scale": 1,
+      "behavior": "wander",
+      "homePosition": [
+        -7,
+        0,
+        -4.6
+      ],
+      "moveSpeed": 0.6,
+      "wanderRadius": 2.4,
+      "locomotion": "idle"
+    },
+    {
+      "id": "hw_039",
+      "placeableId": "campfire",
+      "position": [
+        6.6,
+        0,
+        -8
+      ],
+      "rotationY": 0,
+      "scale": 0.6
+    },
+    {
+      "id": "hw_040",
+      "placeableId": "food__cooking_pot",
+      "position": [
+        6.6,
+        0.22,
+        -8
+      ],
+      "rotationY": 0.4,
+      "scale": 3
+    },
+    {
+      "id": "hw_041",
+      "placeableId": "graveyard__candle",
+      "position": [
+        8.224,
+        0,
+        -7.498
+      ],
+      "rotationY": 0.28,
+      "scale": 0.852
+    },
+    {
+      "id": "hw_042",
+      "placeableId": "graveyard__candle",
+      "position": [
+        7.22,
+        0,
+        -6.417
+      ],
+      "rotationY": 0.78,
+      "scale": 1.026
+    },
+    {
+      "id": "hw_043",
+      "placeableId": "graveyard__candle",
+      "position": [
+        5.749,
+        0,
+        -6.528
+      ],
+      "rotationY": -0.373,
+      "scale": 0.925
+    },
+    {
+      "id": "hw_044",
+      "placeableId": "graveyard__candle",
+      "position": [
+        4.919,
+        0,
+        -7.748
+      ],
+      "rotationY": 0.625,
+      "scale": 0.964
+    },
+    {
+      "id": "hw_045",
+      "placeableId": "graveyard__candle",
+      "position": [
+        5.355,
+        0,
+        -9.157
+      ],
+      "rotationY": -0.428,
+      "scale": 1.007
+    },
+    {
+      "id": "hw_046",
+      "placeableId": "graveyard__candle",
+      "position": [
+        6.728,
+        0,
+        -9.695
+      ],
+      "rotationY": 0.817,
+      "scale": 1.027
+    },
+    {
+      "id": "hw_047",
+      "placeableId": "graveyard__candle",
+      "position": [
+        8.005,
+        0,
+        -8.957
+      ],
+      "rotationY": -0.343,
+      "scale": 0.977
+    },
+    {
+      "id": "hw_048",
+      "placeableId": "graveyard__altar_stone",
+      "position": [
+        6.6,
+        0,
+        -10.6
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_049",
+      "placeableId": "graveyard__candle",
+      "position": [
+        6.1,
+        0.98,
+        -10.6
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_050",
+      "placeableId": "graveyard__candle",
+      "position": [
+        7.1,
+        0.98,
+        -10.5
+      ],
+      "rotationY": 0,
+      "scale": 0.8
+    },
+    {
+      "id": "hw_051",
+      "placeableId": "graveyard__urn",
+      "position": [
+        4.3,
+        0,
+        -10.4
+      ],
+      "rotationY": 0,
+      "scale": 1.1
+    },
+    {
+      "id": "hw_052",
+      "placeableId": "graveyard__coffin",
+      "position": [
+        9.6,
+        0,
+        -9.9
+      ],
+      "rotationY": -0.5,
+      "scale": 1
+    },
+    {
+      "id": "hw_053",
+      "placeableId": "graveyard__rocks_tall",
+      "position": [
+        11.2,
+        0,
+        -6
+      ],
+      "rotationY": 0.8,
+      "scale": 1
+    },
+    {
+      "id": "hw_054",
+      "placeableId": "graveyard__vampire",
+      "position": [
+        8.8,
+        0,
+        -6.4
+      ],
+      "rotationY": -0.642,
+      "scale": 1,
+      "behavior": "wander",
+      "homePosition": [
+        8.8,
+        0,
+        -6.4
+      ],
+      "moveSpeed": 0.8,
+      "wanderRadius": 1.4,
+      "locomotion": "idle"
+    },
+    {
+      "id": "hw_055",
+      "placeableId": "graveyard__fence",
+      "position": [
+        4.75,
+        0,
+        3.2
+      ],
+      "rotationY": 0,
+      "scale": 0.85
+    },
+    {
+      "id": "hw_056",
+      "placeableId": "graveyard__fence_damaged",
+      "position": [
+        6.45,
+        0,
+        3.2
+      ],
+      "rotationY": 0,
+      "scale": 0.85
+    },
+    {
+      "id": "hw_057",
+      "placeableId": "graveyard__fence",
+      "position": [
+        8.15,
+        0,
+        3.2
+      ],
+      "rotationY": 0,
+      "scale": 0.85
+    },
+    {
+      "id": "hw_058",
+      "placeableId": "graveyard__fence",
+      "position": [
+        9.85,
+        0,
+        3.2
+      ],
+      "rotationY": 0,
+      "scale": 0.85
+    },
+    {
+      "id": "hw_059",
+      "placeableId": "graveyard__fence",
+      "position": [
+        11.55,
+        0,
+        3.2
+      ],
+      "rotationY": 0,
+      "scale": 0.85
+    },
+    {
+      "id": "hw_060",
+      "placeableId": "graveyard__fence",
+      "position": [
+        3.9,
+        0,
+        4.05
+      ],
+      "rotationY": 1.571,
+      "scale": 0.85
+    },
+    {
+      "id": "hw_061",
+      "placeableId": "graveyard__fence_gate",
+      "position": [
+        3.9,
+        0,
+        5.75
+      ],
+      "rotationY": 1.571,
+      "scale": 0.85
+    },
+    {
+      "id": "hw_062",
+      "placeableId": "graveyard__fence",
+      "position": [
+        3.9,
+        0,
+        7.45
+      ],
+      "rotationY": 1.571,
+      "scale": 0.85
+    },
+    {
+      "id": "hw_063",
+      "placeableId": "graveyard__fence",
+      "position": [
+        3.9,
+        0,
+        9.15
+      ],
+      "rotationY": 1.571,
+      "scale": 0.85
+    },
+    {
+      "id": "hw_064",
+      "placeableId": "graveyard__fence_damaged",
+      "position": [
+        3.9,
+        0,
+        10.85
+      ],
+      "rotationY": 1.571,
+      "scale": 0.85
+    },
+    {
+      "id": "hw_065",
+      "placeableId": "graveyard__pumpkin_tall_carved",
+      "position": [
+        4.901,
+        0,
+        4.716
+      ],
+      "rotationY": 0.628,
+      "scale": 1.1
+    },
+    {
+      "id": "hw_066",
+      "placeableId": "graveyard__pumpkin",
+      "position": [
+        5.232,
+        0,
+        6.095
+      ],
+      "rotationY": -0.992,
+      "scale": 1.208
+    },
+    {
+      "id": "hw_067",
+      "placeableId": "graveyard__pumpkin_tall",
+      "position": [
+        4.993,
+        0,
+        7.89
+      ],
+      "rotationY": 0.287,
+      "scale": 0.865
+    },
+    {
+      "id": "hw_068",
+      "placeableId": "graveyard__pumpkin_tall",
+      "position": [
+        5.247,
+        0,
+        8.895
+      ],
+      "rotationY": -1.725,
+      "scale": 1.137
+    },
+    {
+      "id": "hw_069",
+      "placeableId": "graveyard__pumpkin_tall",
+      "position": [
+        5.094,
+        0,
+        11.703
+      ],
+      "rotationY": 2.536,
+      "scale": 1.014
+    },
+    {
+      "id": "hw_070",
+      "placeableId": "graveyard__pumpkin_tall",
+      "position": [
+        6.825,
+        0,
+        4.415
+      ],
+      "rotationY": 0.427,
+      "scale": 0.976
+    },
+    {
+      "id": "hw_071",
+      "placeableId": "graveyard__pumpkin",
+      "position": [
+        6.415,
+        0,
+        6.168
+      ],
+      "rotationY": -0.815,
+      "scale": 0.802
+    },
+    {
+      "id": "hw_072",
+      "placeableId": "graveyard__pumpkin",
+      "position": [
+        6.394,
+        0,
+        7.326
+      ],
+      "rotationY": 2.015,
+      "scale": 1.006
+    },
+    {
+      "id": "hw_073",
+      "placeableId": "graveyard__pumpkin_tall_carved",
+      "position": [
+        6.478,
+        0,
+        9.103
+      ],
+      "rotationY": 0.718,
+      "scale": 1.1
+    },
+    {
+      "id": "hw_074",
+      "placeableId": "graveyard__pumpkin",
+      "position": [
+        8.306,
+        0,
+        4.698
+      ],
+      "rotationY": -1.798,
+      "scale": 1.08
+    },
+    {
+      "id": "hw_075",
+      "placeableId": "graveyard__pumpkin",
+      "position": [
+        8.095,
+        0,
+        9.044
+      ],
+      "rotationY": -1.867,
+      "scale": 0.856
+    },
+    {
+      "id": "hw_076",
+      "placeableId": "graveyard__pumpkin",
+      "position": [
+        8.156,
+        0,
+        11.689
+      ],
+      "rotationY": 1.079,
+      "scale": 0.948
+    },
+    {
+      "id": "hw_077",
+      "placeableId": "graveyard__pumpkin_tall",
+      "position": [
+        9.386,
+        0,
+        4.631
+      ],
+      "rotationY": 1.847,
+      "scale": 1.203
+    },
+    {
+      "id": "hw_078",
+      "placeableId": "graveyard__pumpkin_tall_carved",
+      "position": [
+        9.508,
+        0,
+        6.219
+      ],
+      "rotationY": 0.44,
+      "scale": 1.1
+    },
+    {
+      "id": "hw_079",
+      "placeableId": "graveyard__pumpkin",
+      "position": [
+        9.462,
+        0,
+        7.837
+      ],
+      "rotationY": 1.15,
+      "scale": 1.135
+    },
+    {
+      "id": "hw_080",
+      "placeableId": "graveyard__pumpkin_tall",
+      "position": [
+        9.871,
+        0,
+        10.333
+      ],
+      "rotationY": -0.612,
+      "scale": 0.936
+    },
+    {
+      "id": "hw_081",
+      "placeableId": "graveyard__pumpkin",
+      "position": [
+        9.573,
+        0,
+        11.914
+      ],
+      "rotationY": -2.965,
+      "scale": 0.851
+    },
+    {
+      "id": "hw_082",
+      "placeableId": "graveyard__pumpkin_tall",
+      "position": [
+        10.813,
+        0,
+        4.567
+      ],
+      "rotationY": -2.422,
+      "scale": 1.168
+    },
+    {
+      "id": "hw_083",
+      "placeableId": "graveyard__pumpkin",
+      "position": [
+        11.104,
+        0,
+        8.74
+      ],
+      "rotationY": -2.032,
+      "scale": 1.127
+    },
+    {
+      "id": "hw_084",
+      "placeableId": "graveyard__pumpkin_tall_carved",
+      "position": [
+        11.056,
+        0,
+        10.533
+      ],
+      "rotationY": 0.481,
+      "scale": 1.1
+    },
+    {
+      "id": "hw_085",
+      "placeableId": "graveyard__pumpkin",
+      "position": [
+        10.959,
+        0,
+        11.598
+      ],
+      "rotationY": -0.048,
+      "scale": 1.057
+    },
+    {
+      "id": "hw_086",
+      "placeableId": "graveyard__pumpkin",
+      "position": [
+        8.1,
+        0,
+        7.6
+      ],
+      "rotationY": 0.4,
+      "scale": 2.1
+    },
+    {
+      "id": "hw_087",
+      "placeableId": "graveyard__grave_border",
+      "position": [
+        -7.4,
+        0,
+        5.4
+      ],
+      "rotationY": 1.671,
+      "scale": 0.9
+    },
+    {
+      "id": "hw_088",
+      "placeableId": "graveyard__gravestone_cross_large",
+      "position": [
+        -9,
+        0,
+        5.3
+      ],
+      "rotationY": 1.571,
+      "scale": 1
+    },
+    {
+      "id": "hw_089",
+      "placeableId": "graveyard__shovel_dirt",
+      "position": [
+        -6.1,
+        0,
+        4
+      ],
+      "rotationY": 0.7,
+      "scale": 1
+    },
+    {
+      "id": "hw_090",
+      "placeableId": "graveyard__coffin",
+      "position": [
+        -5.9,
+        0,
+        6.9
+      ],
+      "rotationY": 0.25,
+      "scale": 1
+    },
+    {
+      "id": "hw_091",
+      "placeableId": "graveyard__lantern_candle",
+      "position": [
+        -8.8,
+        0,
+        3.6
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "hw_092",
+      "placeableId": "graveyard__bench_damaged",
+      "position": [
+        -11.6,
+        0,
+        4.4
+      ],
+      "rotationY": 1.571,
+      "scale": 1
+    },
+    {
+      "id": "hw_093",
+      "placeableId": "graveyard__gravekeeper",
+      "position": [
+        -9.6,
+        0,
+        7.2
+      ],
+      "rotationY": 0.749,
+      "scale": 1,
+      "behavior": "wander",
+      "homePosition": [
+        -9.6,
+        0,
+        7.2
+      ],
+      "moveSpeed": 0.5,
+      "wanderRadius": 1.2,
+      "locomotion": "idle"
+    },
+    {
+      "id": "hw_094",
+      "placeableId": "graveyard__skeleton",
+      "position": [
+        -6.6,
+        0,
+        8.6
+      ],
+      "rotationY": 0.412,
+      "scale": 1,
+      "behavior": "wander",
+      "homePosition": [
+        -6.6,
+        0,
+        8.6
+      ],
+      "moveSpeed": 0.8,
+      "wanderRadius": 1.6,
+      "locomotion": "idle"
+    },
+    {
+      "id": "hw_095",
+      "placeableId": "graveyard__zombie",
+      "position": [
+        -9.8,
+        0,
+        10.2
+      ],
+      "rotationY": -0.89,
+      "scale": 1,
+      "behavior": "wander",
+      "homePosition": [
+        -9.8,
+        0,
+        10.2
+      ],
+      "moveSpeed": 0.4,
+      "wanderRadius": 2,
+      "locomotion": "idle"
+    },
+    {
+      "id": "hw_096",
+      "placeableId": "graveyard__lightpost",
+      "position": [
+        -1.6,
+        0,
+        -1
+      ],
+      "rotationY": 0.549,
+      "scale": 1
+    },
+    {
+      "id": "hw_097",
+      "placeableId": "graveyard__lightpost",
+      "position": [
+        3,
+        0,
+        -1.6
+      ],
+      "rotationY": -0.519,
+      "scale": 1
+    },
+    {
+      "id": "hw_098",
+      "placeableId": "graveyard__lightpost",
+      "position": [
+        2.9,
+        0,
+        6.6
+      ],
+      "rotationY": -2.62,
+      "scale": 1
+    },
+    {
+      "id": "hw_099",
+      "placeableId": "graveyard__lightpost",
+      "position": [
+        -2.9,
+        0,
+        4.8
+      ],
+      "rotationY": 2.132,
+      "scale": 1
+    },
+    {
+      "id": "hw_100",
+      "placeableId": "graveyard__pumpkin_carved",
+      "position": [
+        -2.5,
+        0,
+        0.6
+      ],
+      "rotationY": 0.762,
+      "scale": 1
+    },
+    {
+      "id": "hw_101",
+      "placeableId": "graveyard__pumpkin_carved",
+      "position": [
+        2.2,
+        0,
+        8.4
+      ],
+      "rotationY": 0.872,
+      "scale": 1
+    },
+    {
+      "id": "hw_102",
+      "placeableId": "graveyard__pumpkin_tall",
+      "position": [
+        -3.6,
+        0,
+        2.2
+      ],
+      "rotationY": 0.638,
+      "scale": 0.7
+    },
+    {
+      "id": "hw_103",
+      "placeableId": "graveyard__pumpkin",
+      "position": [
+        3.9,
+        0,
+        1.6
+      ],
+      "rotationY": -0.695,
+      "scale": 0.8
+    },
+    {
+      "id": "hw_104",
+      "placeableId": "graveyard__pumpkin_tall",
+      "position": [
+        1.7,
+        0,
+        -2.6
+      ],
+      "rotationY": 1.007,
+      "scale": 0.7
+    },
+    {
+      "id": "hw_105",
+      "placeableId": "graveyard__pumpkin_tall",
+      "position": [
+        -2.2,
+        0,
+        6.9
+      ],
+      "rotationY": -1.844,
+      "scale": 0.8
+    },
+    {
+      "id": "hw_106",
+      "placeableId": "graveyard__pumpkin_tall",
+      "position": [
+        0.2,
+        0,
+        9.6
+      ],
+      "rotationY": 2.376,
+      "scale": 0.9
+    },
+    {
+      "id": "hw_107",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -3.05,
+        0,
+        0.05
+      ],
+      "rotationY": -0.653,
+      "scale": 1.092
+    },
+    {
+      "id": "hw_108",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -2.933,
+        0,
+        -0.667
+      ],
+      "rotationY": 0.244,
+      "scale": 1.184
+    },
+    {
+      "id": "hw_109",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -4.217,
+        0,
+        -0.383
+      ],
+      "rotationY": -0.63,
+      "scale": 1.147
+    },
+    {
+      "id": "hw_110",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -4.1,
+        0,
+        -1.1
+      ],
+      "rotationY": 0.805,
+      "scale": 1.198
+    },
+    {
+      "id": "hw_111",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -5.383,
+        0,
+        -0.817
+      ],
+      "rotationY": 0.184,
+      "scale": 1.04
+    },
+    {
+      "id": "hw_112",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -5.267,
+        0,
+        -1.533
+      ],
+      "rotationY": -0.451,
+      "scale": 1.009
+    },
+    {
+      "id": "hw_113",
+      "placeableId": "graveyard__candle",
+      "position": [
+        -6.55,
+        0,
+        -1.25
+      ],
+      "rotationY": -0.958,
+      "scale": 0.935
+    },
+    {
+      "id": "hw_114",
+      "placeableId": "graveyard__pine_crooked",
+      "position": [
+        -12.1,
+        0,
+        -12.1
+      ],
+      "rotationY": -2.154,
+      "scale": 1.2
+    },
+    {
+      "id": "hw_115",
+      "placeableId": "graveyard__pine_fall_crooked",
+      "position": [
+        -9.6,
+        0,
+        -12.4
+      ],
+      "rotationY": 1.244,
+      "scale": 1.05
+    },
+    {
+      "id": "hw_116",
+      "placeableId": "graveyard__pine_crooked",
+      "position": [
+        -4.3,
+        0,
+        -12.3
+      ],
+      "rotationY": -2.24,
+      "scale": 1.1
+    },
+    {
+      "id": "hw_117",
+      "placeableId": "graveyard__pine_fall",
+      "position": [
+        -0.6,
+        0,
+        -12
+      ],
+      "rotationY": -1.972,
+      "scale": 1.25
+    },
+    {
+      "id": "hw_118",
+      "placeableId": "graveyard__pine_crooked",
+      "position": [
+        2.6,
+        0,
+        -11.6
+      ],
+      "rotationY": -0.53,
+      "scale": 1
+    },
+    {
+      "id": "hw_119",
+      "placeableId": "graveyard__pine_fall_crooked",
+      "position": [
+        9.4,
+        0,
+        -12.2
+      ],
+      "rotationY": 2.151,
+      "scale": 1.15
+    },
+    {
+      "id": "hw_120",
+      "placeableId": "graveyard__pine_crooked",
+      "position": [
+        12.1,
+        0,
+        -11.4
+      ],
+      "rotationY": 0.569,
+      "scale": 1.25
+    },
+    {
+      "id": "hw_121",
+      "placeableId": "graveyard__pine_fall",
+      "position": [
+        12.2,
+        0,
+        -3
+      ],
+      "rotationY": 2.277,
+      "scale": 1
+    },
+    {
+      "id": "hw_122",
+      "placeableId": "graveyard__pine_fall_crooked",
+      "position": [
+        -12.2,
+        0,
+        -0.4
+      ],
+      "rotationY": -1.162,
+      "scale": 1.1
+    },
+    {
+      "id": "hw_123",
+      "placeableId": "graveyard__pine_crooked",
+      "position": [
+        -12.3,
+        0,
+        8
+      ],
+      "rotationY": 2.895,
+      "scale": 1
+    },
+    {
+      "id": "hw_124",
+      "placeableId": "graveyard__pine_fall",
+      "position": [
+        -11,
+        0,
+        12.1
+      ],
+      "rotationY": 1.07,
+      "scale": 1.15
+    },
+    {
+      "id": "hw_125",
+      "placeableId": "graveyard__pine_crooked",
+      "position": [
+        -4,
+        0,
+        12.3
+      ],
+      "rotationY": 1.14,
+      "scale": 0.9
+    },
+    {
+      "id": "hw_126",
+      "placeableId": "graveyard__pine_fall_crooked",
+      "position": [
+        1,
+        0,
+        -6
+      ],
+      "rotationY": 2.053,
+      "scale": 0.85
+    },
+    {
+      "id": "hw_127",
+      "placeableId": "graveyard__trunk",
+      "position": [
+        -12,
+        0,
+        5.6
+      ],
+      "rotationY": 0.4,
+      "scale": 1
+    },
+    {
+      "id": "hw_128",
+      "placeableId": "graveyard__trunk_long",
+      "position": [
+        -1.6,
+        0,
+        11.4
+      ],
+      "rotationY": 1.2,
+      "scale": 1
+    },
+    {
+      "id": "hw_129",
+      "placeableId": "graveyard__trunk",
+      "position": [
+        12.2,
+        0,
+        0.9
+      ],
+      "rotationY": 2.1,
+      "scale": 0.9
+    },
+    {
+      "id": "hw_130",
+      "placeableId": "animals__turkey_vulture",
+      "position": [
+        12.1,
+        0.88,
+        0.9
+      ],
+      "rotationY": -1.2,
+      "scale": 0.4
+    },
+    {
+      "id": "hw_131",
+      "placeableId": "graveyard__rocks",
+      "position": [
+        -11.8,
+        0,
+        10.4
+      ],
+      "rotationY": 0.5,
+      "scale": 1
+    },
+    {
+      "id": "hw_132",
+      "placeableId": "graveyard__rocks",
+      "position": [
+        1.6,
+        0,
+        -9.6
+      ],
+      "rotationY": 2,
+      "scale": 0.8
+    },
+    {
+      "id": "hw_133",
+      "placeableId": "graveyard__rocks_tall",
+      "position": [
+        -3,
+        0,
+        11.6
+      ],
+      "rotationY": 1.1,
+      "scale": 0.7
+    },
+    {
+      "id": "hw_134",
+      "placeableId": "animals__spider",
+      "position": [
+        -1,
+        0,
+        -6.8
+      ],
+      "rotationY": 0,
+      "scale": 0.25,
+      "behavior": "wander",
+      "homePosition": [
+        -1,
+        0,
+        -6.8
+      ],
+      "moveSpeed": 1.1,
+      "locomotion": "idle"
+    },
+    {
+      "id": "hw_135",
+      "placeableId": "animals__spider",
+      "position": [
+        -11.2,
+        0,
+        1.8
+      ],
+      "rotationY": 0,
+      "scale": 0.22,
+      "behavior": "wander",
+      "homePosition": [
+        -11.2,
+        0,
+        1.8
+      ],
+      "moveSpeed": 1.1,
+      "locomotion": "idle"
+    }
+  ]
+}

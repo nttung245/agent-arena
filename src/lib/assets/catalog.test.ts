@@ -99,6 +99,41 @@ describe("catalog helpers", () => {
     expect(listPlaceables("ground").length).toBeGreaterThan(0);
     expect(listPlaceables("nature").length).toBeGreaterThan(0);
   });
+
+  it("keeps the graveyard kit at one shared scale instead of auto-fitting", () => {
+    const pumpkin = PLACEABLE_SPECS.graveyard__pumpkin_carved;
+    const crypt = PLACEABLE_SPECS.graveyard__crypt_large;
+    const ghost = PLACEABLE_SPECS.graveyard__ghost;
+    for (const spec of [pumpkin, crypt, ghost]) {
+      expect(spec?.category).toBe("spooky");
+      expect(spec?.scale).toBe(2);
+      expect(spec?.autoFit).toBeUndefined();
+    }
+    expect(crypt!.footprint[0]).toBeGreaterThan(pumpkin!.footprint[0]);
+    expect(placeableCanWander("graveyard__ghost")).toBe(true);
+    expect(ghost?.walkClipHints).toEqual(["walk"]);
+    const spooky = listPlaceables("spooky");
+    expect(spooky.length).toBeGreaterThan(0);
+    expect(spooky.every((id) => PLACEABLE_SPECS[id].pack === "graveyard")).toBe(true);
+    expect(ASSET_PACKS).toContain("graveyard");
+    expect(ASSET_CATEGORIES).toContain("spooky");
+  });
+
+  it("files the outpost kit under Space at its shared scale", () => {
+    const dome = PLACEABLE_SPECS.outpost__hab_dome;
+    const nose = PLACEABLE_SPECS.outpost__rocket_nose;
+    for (const spec of [dome, nose]) {
+      expect(spec?.category).toBe("space");
+      expect(spec?.scale).toBe(2);
+      expect(spec?.autoFit).toBeUndefined();
+    }
+    expect(dome!.footprint[0]).toBeGreaterThan(nose!.footprint[0]);
+    expect(PLACEABLE_SPECS.outpost__crater_large?.footprint).toEqual([1.6, 1.8]);
+    expect(placeableCanWander("outpost__alien")).toBe(true);
+    expect(PLACEABLE_SPECS.solar_panel?.category).toBe("space");
+    expect(PLACEABLE_SPECS.solar_panel?.glb).toBeUndefined();
+    expect(ASSET_PACKS).toContain("outpost");
+  });
 });
 
 describe("characters", () => {

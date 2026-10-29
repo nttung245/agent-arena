@@ -286,6 +286,14 @@
     "space": {
       "name": "Space",
       "description": "Dusty reddish-orange planetary outpost under a peach haze. A grey habitat dome and smaller pod modules sit among stacked supply crates, dish antennas, and glowing blue beacon lamps. Alien plants and twisted dark trees grow between rock ridges and boulders; a six-wheeled rover and a large circular base ring mark the yard."
+    },
+    "halloween": {
+      "name": "Halloween",
+      "description": "Mossy hollow under a dusky purple sky. An iron-fenced graveyard holds lavender gravestones and a mausoleum flanked by fire baskets, with a vulture on the roof and a ghost drifting between graves. Jack-o'-lanterns glow in a fenced pumpkin patch around a prize pumpkin; a cauldron simmers on a campfire ringed by candles beside a stone altar. A gravekeeper, skeleton, and zombie haunt a fresh grave, a vampire lurks by the cauldron, and lightposts ring the lantern square among crooked pines."
+    },
+    "red_planet": {
+      "name": "Mars",
+      "description": "Rust-red Martian plain under a dusty butterscotch sky. A white hab dome connects by corridor to a greenhouse dome glowing with pink grow lights, beside a hangar and supply crates. A tall rocket stands on a landing pad by its gantry, ringed by blue beacons, near fuel tanks and a cargo lander. Solar panels and satellite dishes keep the base running. Astronauts work among boulders and impact craters; a meteorite rests in the largest crater, where something small and green lurks."
     }
   },
   "mapEditor": {
@@ -313,7 +321,8 @@
       "ground": "Ground",
       "vehicles": "Vehicles",
       "animals": "Animals",
-      "food": "Food"
+      "food": "Food",
+      "spooky": "Spooky"
     },
     "libraryHint": "Pick a category, click an object, then click the floor to place it. Click a placed object to select — rotate, scale, or delete in Properties.",
     "inspector": "Properties",
@@ -339,7 +348,9 @@
       "grass": "Grass",
       "dirt": "Dirt / soil",
       "concrete": "Concrete",
-      "factory": "Dark factory"
+      "factory": "Dark factory",
+      "graveyard": "Graveyard moss",
+      "regolith": "Martian regolith"
     },
     "bgColor": "Sky / fog",
     "rotation": "Rotation",
@@ -404,7 +415,9 @@
       "cars": "Cars",
       "animals": "Animals",
       "food": "Food",
-      "space": "Space"
+      "space": "Space",
+      "graveyard": "Graveyard",
+      "outpost": "Outpost"
     }
   }
 }

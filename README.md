@@ -60,7 +60,7 @@ Dev server: **http://localhost:5174/** (port from `agent-arena.yaml` → `dev.po
 3. **Settings → AI Models** → add a provider + API key (or Ollama at `/ollama` in dev — Ollama must already be running locally)
 4. **Settings → Agents** → add or edit an agent, pick a **character look** + **role**, and bind a model
 5. Click an agent to open private chat, or **right-click the floor** to walk them somewhere
-6. Switch maps in the left **Maps** panel (Office / Nature / Space), or open **Edit map**
+6. Switch maps in the left **Maps** panel (Office / Nature / Space / Halloween / Mars), or open **Edit map**
 
 | Capability | Live demo (GitHub Pages) | Local `npm run dev` |
 |------------|--------------------------|---------------------|
@@ -158,7 +158,7 @@ Use it to prototype agent personas, stage small multi-agent scenes, compare LLM 
 
 ### Maps & editor
 
-- **Builtin worlds:** Office, Nature, Space (`aamf` v1 JSON in `data/maps/`)
+- **Builtin worlds:** Office, Nature, Space, Halloween, Mars (`aamf` v1 JSON in `data/maps/`)
 - **Day/night** is a global lighting mode (not a separate map) — HUD toggle, name-gate choice, and editor preview
 - **Full-screen map editor:** place / move / rotate / scale assets, multi-select, snap grid, spawn tool, drag-drop from the library, favorites, floor size & surface, theme colors, prop wander / animated behavior, undo/redo, import / export (`.aamf.json`)
 - Saving a builtin creates a **custom copy** in `localStorage`
@@ -285,6 +285,8 @@ Versioned JSON (`ArenaMapDefinition`): floor, theme, spawn points, placeables, o
 | `office` | Indoor office | Zones, practical lights, wandering cat |
 | `nature` | Forest camp | Grass, tents, campfire |
 | `space` | Planetary outpost | Habitat dome, beacons, rover — shines at night |
+| `halloween` | Haunted graveyard | Jack-o'-lanterns, mausoleum, cauldron, wandering ghost and monsters — best at night |
+| `red_planet` | Mars base | Rust-red regolith, rocket and gantry, hab and greenhouse domes, solar field, impact craters |
 
 ### Assets
 

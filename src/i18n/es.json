@@ -286,6 +286,14 @@
     "space": {
       "name": "Espacio",
       "description": "Puesto planetario de tono naranja rojizo bajo una bruma melocotón. Una cúpula gris y módulos más pequeños entre cajas de suministros, antenas de plato y lámparas baliza azules. Plantas alienígenas y árboles oscuros retorcidos crecen entre crestas y rocas; un rover de seis ruedas y un anillo de base grande marcan el patio."
+    },
+    "halloween": {
+      "name": "Halloween",
+      "description": "Hondonada musgosa bajo un cielo púrpura crepuscular. Un cementerio con verja de hierro guarda lápidas lavanda y un mausoleo flanqueado por cestas de fuego, con un buitre en el tejado y un fantasma flotando entre las tumbas. Las calabazas talladas brillan en un huerto vallado alrededor de una calabaza gigante; un caldero hierve sobre una hoguera rodeada de velas junto a un altar de piedra. Un sepulturero, un esqueleto y un zombi rondan una tumba recién cavada, un vampiro acecha junto al caldero y unas farolas rodean la plaza de los faroles entre pinos retorcidos."
+    },
+    "red_planet": {
+      "name": "Marte",
+      "description": "Llanura marciana de rojo óxido bajo un cielo polvoriento color caramelo. Una cúpula habitable blanca se une por un pasillo a una cúpula invernadero que brilla con luces de cultivo rosas, junto a un hangar y cajas de suministros. Un cohete alto se alza en una plataforma de aterrizaje junto a su torre de servicio, rodeado de balizas azules, cerca de tanques de combustible y un módulo de carga. Paneles solares y antenas parabólicas mantienen la base en marcha. Los astronautas trabajan entre rocas y cráteres de impacto; un meteorito descansa en el cráter más grande, donde acecha algo pequeño y verde."
     }
   },
   "mapEditor": {
@@ -313,7 +321,8 @@
       "ground": "Suelo",
       "vehicles": "Vehículos",
       "animals": "Animales",
-      "food": "Comida"
+      "food": "Comida",
+      "spooky": "Terror"
     },
     "libraryHint": "Elige una categoría, haz clic en un objeto y luego en el suelo para colocarlo. Haz clic en un objeto colocado para seleccionarlo: rota, escala o elimínalo en Propiedades.",
     "inspector": "Propiedades",
@@ -339,7 +348,9 @@
       "grass": "Césped",
       "dirt": "Tierra",
       "concrete": "Hormigón",
-      "factory": "Fábrica oscura"
+      "factory": "Fábrica oscura",
+      "graveyard": "Musgo de cementerio",
+      "regolith": "Regolito marciano"
     },
     "bgColor": "Cielo / niebla",
     "rotation": "Rotación",
@@ -404,7 +415,9 @@
       "cars": "Coches",
       "animals": "Animales",
       "food": "Comida",
-      "space": "Espacio"
+      "space": "Espacio",
+      "graveyard": "Cementerio",
+      "outpost": "Puesto avanzado"
     }
   }
 }

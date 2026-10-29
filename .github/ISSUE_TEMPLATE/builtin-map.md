@@ -21,4 +21,4 @@ Indoor office / outdoor camp / other — lighting, mood, day vs night:
 - [ ] Uses only GLBs already in `public/assets/` (or a follow-up [assets issue](https://github.com/sametkabay/agent-arena/issues/new?template=assets.md) credits new files)
 - [ ] `public/assets/ATTRIBUTION.md` is unchanged **or** updated in the same PR
 
-Shipped builtins: `office`, `nature`, `space`.
+Shipped builtins: `office`, `nature`, `space`, `halloween`, `red_planet`.

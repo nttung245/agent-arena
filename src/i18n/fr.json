@@ -286,6 +286,14 @@
     "space": {
       "name": "Espace",
       "description": "Avant-poste planétaire rouge-orangé sous une brume pêche. Un dôme gris et de plus petits modules parmi des caisses de ravitaillement, des antennes paraboliques et des balises bleues. Des plantes alien et des arbres sombres tordus poussent entre crêtes et rochers ; un rover à six roues et un grand anneau de base marquent la cour."
+    },
+    "halloween": {
+      "name": "Halloween",
+      "description": "Combe moussue sous un ciel violet crépusculaire. Un cimetière clos d'une grille en fer abrite des pierres tombales lavande et un mausolée encadré de braseros, avec un vautour sur le toit et un fantôme qui flotte entre les tombes. Des citrouilles sculptées brillent dans un potager clôturé autour d'une citrouille géante ; un chaudron mijote sur un feu de camp entouré de bougies près d'un autel de pierre. Un fossoyeur, un squelette et un zombie hantent une tombe fraîchement creusée, un vampire rôde près du chaudron et des réverbères entourent la place aux lanternes parmi des pins tordus."
+    },
+    "red_planet": {
+      "name": "Mars",
+      "description": "Plaine martienne rouge rouille sous un ciel poussiéreux couleur caramel. Un dôme d'habitation blanc est relié par un couloir à une serre en dôme qui brille de lampes de culture roses, à côté d'un hangar et de caisses de ravitaillement. Une haute fusée se dresse sur une aire d'atterrissage près de sa tour de service, entourée de balises bleues, non loin de réservoirs de carburant et d'un atterrisseur cargo. Des panneaux solaires et des antennes paraboliques font tourner la base. Des astronautes travaillent parmi les rochers et les cratères d'impact ; une météorite repose dans le plus grand cratère, où rôde quelque chose de petit et vert."
     }
   },
   "mapEditor": {
@@ -313,7 +321,8 @@
       "ground": "Sol",
       "vehicles": "Véhicules",
       "animals": "Animaux",
-      "food": "Nourriture"
+      "food": "Nourriture",
+      "spooky": "Effrayant"
     },
     "libraryHint": "Choisis une catégorie, clique sur un objet, puis sur le sol pour le placer. Clique sur un objet placé pour le sélectionner — tourne, redimensionne ou supprime dans Propriétés.",
     "inspector": "Propriétés",
@@ -339,7 +348,9 @@
       "grass": "Herbe",
       "dirt": "Terre",
       "concrete": "Béton",
-      "factory": "Usine sombre"
+      "factory": "Usine sombre",
+      "graveyard": "Mousse de cimetière",
+      "regolith": "Régolithe martien"
     },
     "bgColor": "Ciel / brouillard",
     "rotation": "Rotation",
@@ -404,7 +415,9 @@
       "cars": "Voitures",
       "animals": "Animaux",
       "food": "Nourriture",
-      "space": "Espace"
+      "space": "Espace",
+      "graveyard": "Cimetière",
+      "outpost": "Avant-poste"
     }
   }
 }

@@ -1,0 +1,1058 @@
+{
+  "version": 1,
+  "id": "red_planet",
+  "name": "Mars",
+  "description": "Rust-red Martian plain under a dusty butterscotch sky. A white hab dome connects by corridor to a greenhouse dome glowing with pink grow lights, beside a hangar and supply crates. A tall rocket stands on a landing pad by its gantry, ringed by blue beacons, near fuel tanks and a cargo lander. Solar panels and satellite dishes keep the base running. Astronauts work among boulders and impact craters; a meteorite rests in the largest crater, where something small and green lurks.",
+  "builtin": true,
+  "floor": {
+    "size": 28,
+    "style": "surface",
+    "cells": 28,
+    "color": "#B4552F",
+    "surface": "regolith"
+  },
+  "theme": {
+    "floor": "#B4552F",
+    "accent": "#E2622E",
+    "background": "#D69878",
+    "fog": "#C9825F",
+    "ambient": "#FFCFB0",
+    "hemiSky": "#E8A985",
+    "hemiGround": "#6E2E1C",
+    "sun": "#FFE0BC"
+  },
+  "roomLights": false,
+  "spawnPoints": [
+    {
+      "id": "spawn_0",
+      "position": [
+        -1.5,
+        0,
+        1
+      ],
+      "rotationY": 3.1416
+    },
+    {
+      "id": "spawn_1",
+      "position": [
+        1.8,
+        0,
+        0.4
+      ],
+      "rotationY": 3.1416
+    },
+    {
+      "id": "spawn_2",
+      "position": [
+        -0.2,
+        0,
+        3.6
+      ],
+      "rotationY": 3.1416
+    },
+    {
+      "id": "spawn_3",
+      "position": [
+        2.6,
+        0,
+        3.4
+      ],
+      "rotationY": 3.1416
+    },
+    {
+      "id": "spawn_4",
+      "position": [
+        -2.4,
+        0,
+        4
+      ],
+      "rotationY": 3.1416
+    },
+    {
+      "id": "spawn_5",
+      "position": [
+        0.8,
+        0,
+        6
+      ],
+      "rotationY": 3.1416
+    }
+  ],
+  "lights": [
+    {
+      "id": "light_hab",
+      "position": [
+        -7.5,
+        1.6,
+        -4.6
+      ],
+      "color": "#FFC98A",
+      "intensity": 1,
+      "distance": 7
+    },
+    {
+      "id": "light_greenhouse",
+      "position": [
+        -6.3,
+        1.4,
+        2.6
+      ],
+      "color": "#FF4FD8",
+      "intensity": 1.4,
+      "distance": 7
+    },
+    {
+      "id": "light_pad",
+      "position": [
+        7.5,
+        6,
+        -4.5
+      ],
+      "color": "#DDE8FF",
+      "intensity": 1.1,
+      "distance": 12
+    }
+  ],
+  "zones": [
+    {
+      "id": "zone_hab",
+      "name": "Hab Dome",
+      "kind": "indoor",
+      "center": [
+        -7.5,
+        0,
+        -7.8
+      ],
+      "radius": 3.4
+    },
+    {
+      "id": "zone_greenhouse",
+      "name": "Greenhouse",
+      "kind": "indoor",
+      "center": [
+        -7.5,
+        0,
+        -0.6
+      ],
+      "radius": 3.4
+    },
+    {
+      "id": "zone_launch_pad",
+      "name": "Launch Pad",
+      "kind": "platform",
+      "center": [
+        7.5,
+        0,
+        -8
+      ],
+      "radius": 4
+    },
+    {
+      "id": "zone_solar_field",
+      "name": "Solar Field",
+      "kind": "yard",
+      "center": [
+        10.2,
+        0,
+        5
+      ],
+      "radius": 3.4
+    },
+    {
+      "id": "zone_meteor_crater",
+      "name": "Meteor Crater",
+      "kind": "custom",
+      "center": [
+        -6.6,
+        0,
+        8.6
+      ],
+      "radius": 4.2
+    }
+  ],
+  "placeables": [
+    {
+      "id": "mr_001",
+      "placeableId": "outpost__hab_dome",
+      "position": [
+        -7.5,
+        0,
+        -7.8
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_002",
+      "placeableId": "outpost__corridor",
+      "position": [
+        -7.5,
+        0,
+        -4.2
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_003",
+      "placeableId": "outpost__greenhouse_dome",
+      "position": [
+        -7.5,
+        0,
+        -0.6
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_004",
+      "placeableId": "outpost__generator",
+      "position": [
+        -12.2,
+        0,
+        -5
+      ],
+      "rotationY": 1.571,
+      "scale": 1
+    },
+    {
+      "id": "mr_005",
+      "placeableId": "outpost__barrels",
+      "position": [
+        -12.4,
+        0,
+        -2.4
+      ],
+      "rotationY": 0.4,
+      "scale": 1
+    },
+    {
+      "id": "mr_006",
+      "placeableId": "outpost__comms_relay",
+      "position": [
+        -12,
+        0,
+        -9.6
+      ],
+      "rotationY": 0.3,
+      "scale": 1
+    },
+    {
+      "id": "mr_007",
+      "placeableId": "outpost__satellite_dish_large",
+      "position": [
+        -12,
+        0,
+        -12.4
+      ],
+      "rotationY": 0.713,
+      "scale": 1.6
+    },
+    {
+      "id": "mr_008",
+      "placeableId": "outpost__satellite_dish",
+      "position": [
+        -3.8,
+        0,
+        -12.8
+      ],
+      "rotationY": 0.6,
+      "scale": 1.4
+    },
+    {
+      "id": "mr_009",
+      "placeableId": "outpost__hangar",
+      "position": [
+        -0.6,
+        0,
+        -10.4
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_010",
+      "placeableId": "supply_crate",
+      "position": [
+        2.2,
+        0,
+        -6.6
+      ],
+      "rotationY": 0.3,
+      "scale": 1
+    },
+    {
+      "id": "mr_011",
+      "placeableId": "supply_crate",
+      "position": [
+        2.9,
+        0,
+        -7.3
+      ],
+      "rotationY": -0.2,
+      "scale": 1
+    },
+    {
+      "id": "mr_012",
+      "placeableId": "supply_crate",
+      "position": [
+        2.5,
+        0.56,
+        -6.95
+      ],
+      "rotationY": 0.1,
+      "scale": 1
+    },
+    {
+      "id": "mr_013",
+      "placeableId": "outpost__landing_pad",
+      "position": [
+        7.5,
+        0,
+        -8
+      ],
+      "rotationY": 0,
+      "scale": 1.2
+    },
+    {
+      "id": "mr_014",
+      "placeableId": "outpost__rocket_base",
+      "position": [
+        7.5,
+        0.24,
+        -8
+      ],
+      "rotationY": 0,
+      "scale": 0.8
+    },
+    {
+      "id": "mr_015",
+      "placeableId": "outpost__rocket_fins",
+      "position": [
+        7.5,
+        2.8,
+        -8
+      ],
+      "rotationY": 0,
+      "scale": 0.8
+    },
+    {
+      "id": "mr_016",
+      "placeableId": "outpost__rocket_body",
+      "position": [
+        7.5,
+        3.92,
+        -8
+      ],
+      "rotationY": 0,
+      "scale": 0.8
+    },
+    {
+      "id": "mr_017",
+      "placeableId": "outpost__rocket_fuel_section",
+      "position": [
+        7.5,
+        5.52,
+        -8
+      ],
+      "rotationY": 0,
+      "scale": 0.8
+    },
+    {
+      "id": "mr_018",
+      "placeableId": "outpost__rocket_nose",
+      "position": [
+        7.5,
+        6.32,
+        -8
+      ],
+      "rotationY": 0,
+      "scale": 0.8
+    },
+    {
+      "id": "mr_019",
+      "placeableId": "outpost__gantry",
+      "position": [
+        9.89,
+        0,
+        -8
+      ],
+      "rotationY": 0,
+      "scale": 0.75
+    },
+    {
+      "id": "mr_020",
+      "placeableId": "outpost__gantry",
+      "position": [
+        9.89,
+        1.5,
+        -8
+      ],
+      "rotationY": 0,
+      "scale": 0.75
+    },
+    {
+      "id": "mr_021",
+      "placeableId": "outpost__gantry",
+      "position": [
+        9.89,
+        3,
+        -8
+      ],
+      "rotationY": 0,
+      "scale": 0.75
+    },
+    {
+      "id": "mr_022",
+      "placeableId": "outpost__gantry",
+      "position": [
+        9.89,
+        4.5,
+        -8
+      ],
+      "rotationY": 0,
+      "scale": 0.75
+    },
+    {
+      "id": "mr_023",
+      "placeableId": "beacon",
+      "position": [
+        4.6,
+        0,
+        -10.9
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_024",
+      "placeableId": "beacon",
+      "position": [
+        10.4,
+        0,
+        -10.9
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_025",
+      "placeableId": "beacon",
+      "position": [
+        4.6,
+        0,
+        -5.1
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_026",
+      "placeableId": "beacon",
+      "position": [
+        10.4,
+        0,
+        -5.1
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_027",
+      "placeableId": "outpost__fuel_tank",
+      "position": [
+        12.6,
+        0,
+        -11.9
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_028",
+      "placeableId": "outpost__fuel_tank",
+      "position": [
+        12.6,
+        0,
+        -10.1
+      ],
+      "rotationY": 0.5,
+      "scale": 1
+    },
+    {
+      "id": "mr_029",
+      "placeableId": "outpost__pipe",
+      "position": [
+        11,
+        0,
+        -12.4
+      ],
+      "rotationY": 1.571,
+      "scale": 1
+    },
+    {
+      "id": "mr_030",
+      "placeableId": "outpost__barrels",
+      "position": [
+        12.4,
+        0,
+        -5
+      ],
+      "rotationY": 1.2,
+      "scale": 1
+    },
+    {
+      "id": "mr_031",
+      "placeableId": "outpost__cargo_lander",
+      "position": [
+        11.4,
+        0,
+        -1.6
+      ],
+      "rotationY": -0.35,
+      "scale": 1
+    },
+    {
+      "id": "mr_032",
+      "placeableId": "solar_panel",
+      "position": [
+        8,
+        0,
+        3
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_033",
+      "placeableId": "solar_panel",
+      "position": [
+        8,
+        0,
+        5
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_034",
+      "placeableId": "solar_panel",
+      "position": [
+        8,
+        0,
+        7
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_035",
+      "placeableId": "solar_panel",
+      "position": [
+        10.2,
+        0,
+        3
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_036",
+      "placeableId": "solar_panel",
+      "position": [
+        10.2,
+        0,
+        5
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_037",
+      "placeableId": "solar_panel",
+      "position": [
+        10.2,
+        0,
+        7
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_038",
+      "placeableId": "solar_panel",
+      "position": [
+        12.4,
+        0,
+        3
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_039",
+      "placeableId": "solar_panel",
+      "position": [
+        12.4,
+        0,
+        5
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_040",
+      "placeableId": "solar_panel",
+      "position": [
+        12.4,
+        0,
+        7
+      ],
+      "rotationY": 0,
+      "scale": 1
+    },
+    {
+      "id": "mr_041",
+      "placeableId": "outpost__crater_large",
+      "position": [
+        -6.6,
+        0,
+        8.6
+      ],
+      "rotationY": 0.4,
+      "scale": 3.5
+    },
+    {
+      "id": "mr_042",
+      "placeableId": "outpost__meteorite",
+      "position": [
+        -6.4,
+        -0.25,
+        8.5
+      ],
+      "rotationY": 0.9,
+      "scale": 0.9
+    },
+    {
+      "id": "mr_043",
+      "placeableId": "outpost__crater",
+      "position": [
+        4.6,
+        0,
+        10.8
+      ],
+      "rotationY": 1.1,
+      "scale": 2.6
+    },
+    {
+      "id": "mr_044",
+      "placeableId": "outpost__crater",
+      "position": [
+        12,
+        0,
+        11.6
+      ],
+      "rotationY": 2.3,
+      "scale": 1.8
+    },
+    {
+      "id": "mr_045",
+      "placeableId": "outpost__crater",
+      "position": [
+        -12.4,
+        0,
+        3.6
+      ],
+      "rotationY": 0.2,
+      "scale": 1.6
+    },
+    {
+      "id": "mr_046",
+      "placeableId": "outpost__crater",
+      "position": [
+        1.4,
+        0,
+        -1.4
+      ],
+      "rotationY": 2.7,
+      "scale": 1.2
+    },
+    {
+      "id": "mr_047",
+      "placeableId": "space__rover",
+      "position": [
+        2,
+        0,
+        10.6
+      ],
+      "rotationY": 1.894,
+      "scale": 1
+    },
+    {
+      "id": "mr_048",
+      "placeableId": "outpost__alien",
+      "position": [
+        -9.9,
+        0,
+        11.6
+      ],
+      "rotationY": -3.044,
+      "scale": 0.8,
+      "behavior": "wander",
+      "homePosition": [
+        -9.9,
+        0,
+        11.6
+      ],
+      "moveSpeed": 0.5,
+      "wanderRadius": 1,
+      "locomotion": "idle"
+    },
+    {
+      "id": "mr_049",
+      "placeableId": "outpost__rock_large_a",
+      "position": [
+        -13.2,
+        0,
+        -13.3
+      ],
+      "rotationY": -2.826,
+      "scale": 2.2
+    },
+    {
+      "id": "mr_050",
+      "placeableId": "outpost__rock_large_b",
+      "position": [
+        -9.4,
+        0,
+        -13.5
+      ],
+      "rotationY": 2.084,
+      "scale": 1.6
+    },
+    {
+      "id": "mr_051",
+      "placeableId": "outpost__rock_large_a",
+      "position": [
+        3,
+        0,
+        -13.4
+      ],
+      "rotationY": 1.579,
+      "scale": 2
+    },
+    {
+      "id": "mr_052",
+      "placeableId": "outpost__rock_large_b",
+      "position": [
+        5.6,
+        0,
+        -13.2
+      ],
+      "rotationY": -1.377,
+      "scale": 1.4
+    },
+    {
+      "id": "mr_053",
+      "placeableId": "outpost__rock_large_a",
+      "position": [
+        13.3,
+        0,
+        -13.3
+      ],
+      "rotationY": 2.402,
+      "scale": 1.8
+    },
+    {
+      "id": "mr_054",
+      "placeableId": "outpost__rock_large_b",
+      "position": [
+        -13.4,
+        0,
+        7.6
+      ],
+      "rotationY": -3.096,
+      "scale": 1.6
+    },
+    {
+      "id": "mr_055",
+      "placeableId": "outpost__rock_large_a",
+      "position": [
+        -13.3,
+        0,
+        12.8
+      ],
+      "rotationY": -2.416,
+      "scale": 2
+    },
+    {
+      "id": "mr_056",
+      "placeableId": "outpost__rock_large_b",
+      "position": [
+        13.4,
+        0,
+        1.6
+      ],
+      "rotationY": 2.947,
+      "scale": 1.5
+    },
+    {
+      "id": "mr_057",
+      "placeableId": "outpost__rock_large_a",
+      "position": [
+        13.2,
+        0,
+        9.4
+      ],
+      "rotationY": 2.437,
+      "scale": 1.4
+    },
+    {
+      "id": "mr_058",
+      "placeableId": "outpost__rock_large_b",
+      "position": [
+        -1.4,
+        0,
+        13.2
+      ],
+      "rotationY": -1.988,
+      "scale": 1.7
+    },
+    {
+      "id": "mr_059",
+      "placeableId": "outpost__rock_large_a",
+      "position": [
+        8.6,
+        0,
+        13.3
+      ],
+      "rotationY": 2.426,
+      "scale": 1.5
+    },
+    {
+      "id": "mr_060",
+      "placeableId": "outpost__meteorite_half",
+      "position": [
+        -3.2,
+        0,
+        12.6
+      ],
+      "rotationY": 0.7,
+      "scale": 1.1
+    },
+    {
+      "id": "mr_061",
+      "placeableId": "outpost__meteorite_half",
+      "position": [
+        13.2,
+        0,
+        5.6
+      ],
+      "rotationY": 2.1,
+      "scale": 0.9
+    },
+    {
+      "id": "mr_062",
+      "placeableId": "outpost__rocks_small_a",
+      "position": [
+        -1.8,
+        0,
+        7.8
+      ],
+      "rotationY": 2.001,
+      "scale": 1.009
+    },
+    {
+      "id": "mr_063",
+      "placeableId": "outpost__rocks_small_b",
+      "position": [
+        5.8,
+        0,
+        6.2
+      ],
+      "rotationY": 1.217,
+      "scale": 0.93
+    },
+    {
+      "id": "mr_064",
+      "placeableId": "outpost__rocks_small_a",
+      "position": [
+        -3.4,
+        0,
+        -2.2
+      ],
+      "rotationY": 2.277,
+      "scale": 0.932
+    },
+    {
+      "id": "mr_065",
+      "placeableId": "outpost__rocks_small_b",
+      "position": [
+        3.6,
+        0,
+        -3.2
+      ],
+      "rotationY": -3.062,
+      "scale": 0.888
+    },
+    {
+      "id": "mr_066",
+      "placeableId": "outpost__rocks_small_a",
+      "position": [
+        -12.6,
+        0,
+        9.8
+      ],
+      "rotationY": -0.818,
+      "scale": 1.25
+    },
+    {
+      "id": "mr_067",
+      "placeableId": "outpost__rocks_small_b",
+      "position": [
+        9.4,
+        0,
+        10
+      ],
+      "rotationY": -0.585,
+      "scale": 1.084
+    },
+    {
+      "id": "mr_068",
+      "placeableId": "outpost__rocks_small_a",
+      "position": [
+        -5,
+        0,
+        13
+      ],
+      "rotationY": 2.337,
+      "scale": 1.243
+    },
+    {
+      "id": "mr_069",
+      "placeableId": "outpost__rocks_small_b",
+      "position": [
+        0.4,
+        0,
+        -12.8
+      ],
+      "rotationY": 1.977,
+      "scale": 1.279
+    },
+    {
+      "id": "mr_070",
+      "placeableId": "outpost__rocks_small_a",
+      "position": [
+        -10.2,
+        0,
+        4.8
+      ],
+      "rotationY": -0.435,
+      "scale": 0.952
+    },
+    {
+      "id": "mr_071",
+      "placeableId": "outpost__rocks_small_b",
+      "position": [
+        6.4,
+        0,
+        1
+      ],
+      "rotationY": 1.284,
+      "scale": 1.319
+    },
+    {
+      "id": "mr_072",
+      "placeableId": "outpost__rocks_small_a",
+      "position": [
+        -2,
+        0,
+        -5.2
+      ],
+      "rotationY": 2.322,
+      "scale": 1.302
+    },
+    {
+      "id": "mr_073",
+      "placeableId": "outpost__rocks_small_b",
+      "position": [
+        12.8,
+        0,
+        -7.4
+      ],
+      "rotationY": -1.672,
+      "scale": 1.351
+    },
+    {
+      "id": "mr_074",
+      "placeableId": "outpost__rocks_small_a",
+      "position": [
+        7.8,
+        0,
+        11.8
+      ],
+      "rotationY": 1.423,
+      "scale": 1.054
+    },
+    {
+      "id": "mr_075",
+      "placeableId": "space__astronaut",
+      "position": [
+        5,
+        0,
+        -3.8
+      ],
+      "rotationY": -1.377,
+      "scale": 1,
+      "behavior": "wander",
+      "homePosition": [
+        5,
+        0,
+        -3.8
+      ],
+      "moveSpeed": 0.7,
+      "wanderRadius": 1.6,
+      "locomotion": "idle"
+    },
+    {
+      "id": "mr_076",
+      "placeableId": "space__astronaut",
+      "position": [
+        -3.4,
+        0,
+        0.6
+      ],
+      "rotationY": -1.417,
+      "scale": 1,
+      "behavior": "wander",
+      "homePosition": [
+        -3.4,
+        0,
+        0.6
+      ],
+      "moveSpeed": 0.6,
+      "wanderRadius": 1.4,
+      "locomotion": "idle"
+    },
+    {
+      "id": "mr_077",
+      "placeableId": "space__astronaut",
+      "position": [
+        -2.8,
+        0,
+        6.6
+      ],
+      "rotationY": -0.654,
+      "scale": 1,
+      "behavior": "wander",
+      "homePosition": [
+        -2.8,
+        0,
+        6.6
+      ],
+      "moveSpeed": 0.6,
+      "wanderRadius": 1.6,
+      "locomotion": "idle"
+    }
+  ]
+}

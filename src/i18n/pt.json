@@ -286,6 +286,14 @@
     "space": {
       "name": "Espaço",
       "description": "Posto planetário alaranjado-avermelhado sob uma névoa pêssego. Uma cúpula cinza e módulos menores entre caixas de suprimento, antenas de prato e lâmpadas-baliza azuis. Plantas alienígenas e árvores escuras retorcidas crescem entre cristas e pedras; um rover de seis rodas e um anel de base grande marcam o pátio."
+    },
+    "halloween": {
+      "name": "Halloween",
+      "description": "Vale musgoso sob um céu roxo de crepúsculo. Um cemitério com grade de ferro guarda lápides lavanda e um mausoléu ladeado por cestos de fogo, com um abutre no telhado e um fantasma flutuando entre os túmulos. Abóboras entalhadas brilham numa horta cercada em volta de uma abóbora gigante; um caldeirão ferve sobre uma fogueira rodeada de velas ao lado de um altar de pedra. Um coveiro, um esqueleto e um zumbi rondam uma cova recém-aberta, um vampiro espreita perto do caldeirão e postes de luz cercam a praça das lanternas entre pinheiros retorcidos."
+    },
+    "red_planet": {
+      "name": "Marte",
+      "description": "Planície marciana vermelho-ferrugem sob um céu empoeirado cor de caramelo. Uma cúpula habitacional branca liga-se por um corredor a uma cúpula de estufa que brilha com luzes de cultivo cor-de-rosa, ao lado de um hangar e caixas de suprimentos. Um foguete alto ergue-se numa plataforma de pouso junto à sua torre de serviço, cercado de balizas azuis, perto de tanques de combustível e de um módulo de carga. Painéis solares e antenas parabólicas mantêm a base funcionando. Astronautas trabalham entre rochas e crateras de impacto; um meteorito repousa na maior cratera, onde algo pequeno e verde espreita."
     }
   },
   "mapEditor": {
@@ -313,7 +321,8 @@
       "ground": "Chão",
       "vehicles": "Veículos",
       "animals": "Animais",
-      "food": "Comida"
+      "food": "Comida",
+      "spooky": "Assustador"
     },
     "libraryHint": "Escolha uma categoria, clique em um objeto e depois no chão para colocar. Clique em um objeto colocado para selecionar — gire, redimensione ou exclua em Propriedades.",
     "inspector": "Propriedades",
@@ -339,7 +348,9 @@
       "grass": "Grama",
       "dirt": "Terra",
       "concrete": "Concreto",
-      "factory": "Fábrica escura"
+      "factory": "Fábrica escura",
+      "graveyard": "Musgo de cemitério",
+      "regolith": "Regolito marciano"
     },
     "bgColor": "Céu / névoa",
     "rotation": "Rotação",
@@ -404,7 +415,9 @@
       "cars": "Carros",
       "animals": "Animais",
       "food": "Comida",
-      "space": "Espaço"
+      "space": "Espaço",
+      "graveyard": "Cemitério",
+      "outpost": "Posto avançado"
     }
   }
 }

@@ -110,7 +110,7 @@ export function getFireFxKind(placeableId: string): FireFxKind | null {
   }
   if (
     placeableId === "campfire" ||
-    /campfire/i.test(placeableId) ||
+    /campfire|fire_basket/i.test(placeableId) ||
     /Campfire\.glb$/i.test(decoded)
   ) {
     return "campfire";

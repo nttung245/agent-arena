@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { sampleAgent, sampleMap } from "@/test/fixtures";
+import { isPlaceableId } from "@/lib/assets/catalog";
+import { isArenaMapDefinition } from "@/lib/maps/schema";
 import {
   BUILTIN_MAP_IDS,
   buildMapRuntime,
@@ -24,6 +26,17 @@ describe("builtin maps", () => {
     expect(listed.every((m) => m.builtin)).toBe(true);
     expect(getBuiltinMap("nope")).toBeNull();
     expect(getBuiltinMap(BUILTIN_MAP_IDS[0]!)?.id).toBe(BUILTIN_MAP_IDS[0]);
+  });
+
+  it("ships valid aamf maps that only use known placeables", () => {
+    for (const map of listBuiltinMaps()) {
+      expect(isArenaMapDefinition(map), map.id).toBe(true);
+      expect(map.spawnPoints.length, map.id).toBeGreaterThan(0);
+      const unknown = map.placeables
+        .map((p) => p.placeableId)
+        .filter((id) => !isPlaceableId(id));
+      expect(unknown, map.id).toEqual([]);
+    }
   });
 });
 

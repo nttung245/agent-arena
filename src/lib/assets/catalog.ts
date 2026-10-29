@@ -10,7 +10,8 @@ export type AssetCategory =
   | "camping"
   | "vehicles"
   | "animals"
-  | "food";
+  | "food"
+  | "spooky";
 
 /** Stable placeable id — curated short ids + `pack__slug` for pack fills. */
 export type PlaceableId = string;
@@ -39,6 +40,7 @@ export interface PlaceableSpec {
 
 interface PlaceablesYaml {
   wander: Record<string, { walk: string[]; idle: string[] }>;
+  packScale?: Record<string, number>;
   curated: Record<
     string,
     {
@@ -62,6 +64,9 @@ const PLACEABLES = placeablesYaml as PlaceablesYaml;
 /** Wander-capable pack files. Clip hints apply when the GLB includes animations. */
 const WANDER_LOCOMOTION: Record<string, { walk: string[]; idle: string[] }> =
   PLACEABLES.wander;
+
+/** Packs modeled at one shared scale — their files skip per-file auto-fit. */
+const PACK_SCALE: Record<string, number> = PLACEABLES.packScale ?? {};
 
 function wanderMeta(
   pack: string,
@@ -124,11 +129,12 @@ function labelFromFile(file: string): string {
 
 function inferCategory(pack: string, file: string): AssetCategory {
   const n = file.toLowerCase();
-  if (pack === "space") return "space";
+  if (pack === "space" || pack === "outpost") return "space";
   if (pack === "trees" || pack === "nature") return "nature";
   if (pack === "cars") return "vehicles";
   if (pack === "animals") return "animals";
   if (pack === "food") return "food";
+  if (pack === "graveyard") return "spooky";
   if (pack === "camping") {
     if (n.includes("tree") || n === "rock.glb") return "nature";
     return "camping";
@@ -158,6 +164,9 @@ function defaultFootprint(category: AssetCategory, file: string): [number, numbe
     return [0.7, 0.7];
   }
   if (category === "space") {
+    if (n.includes("dome") || n.includes("hangar")) return [6.5, 5.7];
+    if (n.includes("landing pad") || n.includes("lander")) return [3.6, 4.4];
+    if (n.includes("crater")) return [1.6, 1.8];
     if (n.includes("house pod")) return [12.5, 4.5];
     if (n.includes("house long")) return [2.4, 4.6];
     if (n.includes("house cylinder")) return [3.3, 3.3];
@@ -177,6 +186,13 @@ function defaultFootprint(category: AssetCategory, file: string): [number, numbe
     if (n.includes("tent")) return [2.2, 2.0];
     if (n.includes("island")) return [2.5, 2.5];
     return [0.9, 0.9];
+  }
+  if (category === "spooky") {
+    if (n.includes("crypt")) return [3.8, 4.8];
+    if (n.includes("fence")) return [2.0, 0.4];
+    if (n.includes("pine")) return [2.4, 2.6];
+    if (/^grave[ .]|coffin|rocks|altar|bench|shovel/.test(n)) return [1.6, 1.4];
+    return [0.8, 0.7];
   }
   if (/sofa|couch|bed|bathtub|desk|table|wardrobe|fridge|bookcase|shelf|wall/.test(n)) {
     return [1.4, 0.8];
@@ -289,7 +305,8 @@ function buildCatalog(): Record<PlaceableId, PlaceableSpec> {
     }
 
     const category = inferCategory(pack, file);
-    const fit = defaultAutoFit(category, file);
+    const packScale = PACK_SCALE[pack];
+    const fit = packScale ? undefined : defaultAutoFit(category, file);
     const wander = wanderMeta(pack, file);
     const canAnimate = /^Fire\.glb$/i.test(file);
     specs[id] = {
@@ -298,9 +315,9 @@ function buildCatalog(): Record<PlaceableId, PlaceableSpec> {
       pack,
       footprint: defaultFootprint(category, file),
       glb,
-      scale: 1,
-      autoFit: fit.autoFit,
-      targetSize: fit.targetSize,
+      scale: packScale ?? 1,
+      autoFit: fit?.autoFit,
+      targetSize: fit?.targetSize,
       ...wander,
       ...(canAnimate ? { canAnimate: true } : {}),
     };
@@ -352,6 +369,7 @@ export const ASSET_CATEGORIES: AssetCategory[] = [
   "vehicles",
   "animals",
   "food",
+  "spooky",
 ];
 
 export const ASSET_PACKS = [
@@ -363,4 +381,6 @@ export const ASSET_PACKS = [
   "animals",
   "food",
   "space",
+  "graveyard",
+  "outpost",
 ] as const;
