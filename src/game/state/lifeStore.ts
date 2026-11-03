@@ -68,7 +68,7 @@ function missingKey(): OneIn8bError {
 
 export const useLifeStore = create<LifeStore>((set, get) => {
   const apply = (next: LifeNext) => {
-    if (next.run) saveRun(next.run);
+    if (next.run?.token) saveRun(next.run);
     set({
       run: next.run,
       scene: next.scene,
@@ -106,7 +106,12 @@ export const useLifeStore = create<LifeStore>((set, get) => {
         return;
       }
       set({ busy: true, error: null });
-      apply(await startLife(deps, config));
+      const next = await startLife(deps, config);
+      if (next.error && !next.run.token) {
+        set({ busy: false, error: next.error });
+        return;
+      }
+      apply(next);
     },
 
     async choose(key) {

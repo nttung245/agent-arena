@@ -21,6 +21,25 @@
   height: 100%;
 }
 
+.life-exit {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  z-index: 30;
+  border: 1px solid rgb(243 237 226 / 0.28);
+  border-radius: 999px;
+  padding: 7px 14px;
+  background: rgb(20 18 16 / 0.62);
+  color: #f3ede2;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.life-exit:hover {
+  background: rgb(243 237 226 / 0.14);
+}
+
 .life-html-overlay {
   pointer-events: none;
   user-select: none;

@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { useArenaStore } from "@/store/arenaStore";
 import { DayNightSwitch } from "@/components/ui/DayNightSwitch";
 
-export function Hud() {
+export function Hud({ onLife }: { onLife: () => void }) {
   const { t } = useTranslation();
   const userName = useArenaStore((s) => s.userName);
   const agents = useArenaStore((s) => s.agents);
@@ -30,6 +30,13 @@ export function Hud() {
         </span>
       </div>
       <div className="hud__actions">
+        <button
+          type="button"
+          className="hud__life"
+          onClick={onLife}
+        >
+          {t("life.entry")}
+        </button>
         <DayNightSwitch mode={dayNight} onToggle={toggleDayNight} />
         <button
           type="button"
