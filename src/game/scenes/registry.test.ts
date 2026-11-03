@@ -34,4 +34,20 @@ describe("scene registry", () => {
       );
     }
   });
+
+  it("ships the birth, home, hospital, memorial, and wedding templates", () => {
+    for (const id of [
+      "birth_home",
+      "birth_hospital",
+      "home_family",
+      "hospital",
+      "cemetery_memorial",
+      "wedding_home",
+    ] as const) {
+      expect(SCENE_TEMPLATES[id].name).not.toContain("stub");
+      expect(SCENE_TEMPLATES[id].map.placeables.length).toBeGreaterThanOrEqual(
+        3,
+      );
+    }
+  });
 });

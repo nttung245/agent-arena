@@ -1,7 +1,12 @@
 import type { ArenaMapDefinition } from "@/lib/maps/schema";
 import type { LifeTemplateId, SceneTemplate } from "@/game/scenes/types";
+import { birthHome } from "@/game/scenes/templates/birthHome";
+import { cemeteryMemorial } from "@/game/scenes/templates/cemeteryMemorial";
 import { homeChildhood } from "@/game/scenes/templates/homeChildhood";
+import { homeFamily } from "@/game/scenes/templates/homeFamily";
+import { birthHospital, hospital } from "@/game/scenes/templates/hospital";
 import { schoolClassroom } from "@/game/scenes/templates/schoolClassroom";
+import { weddingHome } from "@/game/scenes/templates/weddingHome";
 import { schoolyard } from "@/game/scenes/templates/schoolyard";
 import { streetNeighborhood } from "@/game/scenes/templates/streetNeighborhood";
 import {
@@ -29,12 +34,18 @@ const ALL_TEMPLATE_IDS: readonly LifeTemplateId[] = [
 ];
 
 const REAL_TEMPLATES: Partial<Record<LifeTemplateId, SceneTemplate>> = {
+  birth_home: birthHome,
+  birth_hospital: birthHospital,
   home_childhood: homeChildhood,
+  home_family: homeFamily,
   school_classroom: schoolClassroom,
   schoolyard,
   street_neighborhood: streetNeighborhood,
   workplace_office: workplaceOffice,
   workplace_shop: workplaceShop,
+  hospital,
+  cemetery_memorial: cemeteryMemorial,
+  wedding_home: weddingHome,
 };
 
 /** Temporary template until the dedicated scene is authored. */
