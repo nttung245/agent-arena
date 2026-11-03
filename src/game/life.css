@@ -96,6 +96,19 @@
   background: rgb(243 237 226 / 0.14);
 }
 
+.life-hud__credit {
+  position: absolute;
+  left: 18px;
+  bottom: 14px;
+  pointer-events: auto;
+  color: rgb(243 237 226 / 0.42);
+  font-size: 11px;
+}
+
+.life-hud__credit a {
+  color: inherit;
+}
+
 .life-button--primary {
   border-color: #d8b56a;
   background: #d8b56a;
