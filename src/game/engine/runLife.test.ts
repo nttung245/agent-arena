@@ -5,6 +5,7 @@ import {
   advanceLife,
   buyItems,
   configToStart,
+  resumeLife,
   startLife,
   submitChoice,
   type LifeDeps,
@@ -139,6 +140,71 @@ describe("startLife", () => {
     expect(next.scene?.choiceBindings).toHaveProperty("study");
     expect(transport.calls[0]).toMatchObject({ token: "t1", until: "decision" });
     expect(transport.calls[1]).toMatchObject({ token: "t2", choose: "a" });
+  });
+
+  it("persists the staged scene so resume does not step past it", async () => {
+    const transport = fakeTransport(sequence);
+    const d = deps(transport);
+    const born = await startLife(d, {});
+    expect(born.run.pendingScene?.template).toBe("birth_home");
+
+    const resumed = await resumeLife(d, born.run);
+    expect(resumed.scene?.template).toBe("birth_home");
+    expect(transport.calls).toHaveLength(0);
+  });
+
+  it("falls back to a minimal scene when the director fails", async () => {
+    const transport = fakeTransport(sequence);
+    const d: LifeDeps = {
+      ...deps(transport),
+      director: {
+        direct: async () => {
+          throw new Error("boom");
+        },
+      },
+    };
+    const born = await startLife(d, {});
+    expect(born.scene).not.toBeNull();
+    expect(born.run.pendingScene).not.toBeNull();
+  });
+
+  it("binds every choice when the fallback handles a decision", async () => {
+    const run = createRun(
+      {},
+      {
+        state: { age: 6, name: "Lan" },
+        events: [],
+        decision: null,
+        token: "t1",
+      },
+    );
+    const transport = fakeTransport([
+      {
+        state: { age: 10 },
+        events: [],
+        decision: {
+          id: "d_school",
+          question: "School?",
+          about: "school",
+          choices: [
+            { key: "study", label: "Study" },
+            { key: "play", label: "Play" },
+          ],
+        },
+        token: "t2",
+      },
+    ]);
+    const d: LifeDeps = {
+      ...deps(transport),
+      director: {
+        direct: async () => {
+          throw new Error("boom");
+        },
+      },
+    };
+    const next = await advanceLife(d, run);
+    expect(next.scene?.choiceBindings).toHaveProperty("study");
+    expect(next.run.pendingScene?.choiceBindings).toHaveProperty("play");
   });
 
   it("stages death when the life ends at birth", async () => {

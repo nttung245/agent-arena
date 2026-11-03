@@ -60,6 +60,8 @@ export interface SceneInteractable {
 
 export interface ScenePlan {
   template: LifeTemplateId;
+  /** The kind of beat this scene stages; the UI uses it to choose overlays. */
+  triggerKind?: "birth" | "decision" | "event" | "reflection" | "death";
   title: string;
   summary: string;
   timeOfDay: "morning" | "noon" | "afternoon" | "evening" | "night";

@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useRef } from "react";
+import { Suspense, useMemo, useRef } from "react";
 import { ArenaFloor } from "@/components/scene/OfficeFloor";
 import { FirstPersonControls } from "@/game/controls/FirstPersonControls";
 import { TouchControls } from "@/game/controls/TouchControls";
@@ -36,10 +36,14 @@ export function LifeScene({
     lookY: 0,
   });
   const startSocket = template.sockets[plan.player.socket];
-  const start = startSocket ?? {
-    position: [0, 0, 0] as [number, number, number],
-    rotationY: 0,
-  };
+  const start = useMemo(
+    () =>
+      startSocket ?? {
+        position: [0, 0, 0] as [number, number, number],
+        rotationY: 0,
+      },
+    [startSocket],
+  );
 
   const cast = plan.cast.flatMap((member) => {
     const socket = template.sockets[member.socket];

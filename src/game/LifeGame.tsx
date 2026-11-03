@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "@/game/life.css";
-import { isReflectionAge } from "@/game/engine/chapters";
 import { readLifeKey, writeLifeKey } from "@/game/engine/oneIn8b";
 import { buildReview } from "@/game/engine/review";
 import { summarizeYears } from "@/game/engine/summary";
@@ -81,6 +80,7 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
   const [journalOpen, setJournalOpen] = useState(false);
   const [paused, setPaused] = useState(false);
   const [reviewOpen, setReviewOpen] = useState(false);
+  const [deathSceneSeen, setDeathSceneSeen] = useState(false);
   const [summary, setSummary] = useState<JournalEntry[] | null>(null);
   const [sceneTitles, setSceneTitles] = useState<string[]>([]);
   const [spendingSeen, setSpendingSeen] = useState<string | null>(null);
@@ -118,7 +118,13 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
   }, [run, scene]);
 
   const review = useMemo(
-    () => (run ? buildReview(run, sceneTitles) : null),
+    () =>
+      run
+        ? buildReview(
+            run,
+            run.sceneTitles?.length ? run.sceneTitles : sceneTitles,
+          )
+        : null,
     [run, sceneTitles],
   );
 
@@ -129,6 +135,7 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
     setJournalOpen(false);
     setPaused(false);
     setReviewOpen(false);
+    setDeathSceneSeen(false);
     setSummary(null);
     setSceneTitles([]);
     setSpendingSeen(null);
@@ -151,6 +158,7 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
           <ResumeCard
             onResume={() => {
               setResumeAvailable(false);
+              setBirthSeen(true);
               void resume();
             }}
             onNew={beginNew}
@@ -181,16 +189,47 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
   }
 
   if (run.ended || run.phase === "death") {
+    const endedTitles = run.sceneTitles?.length
+      ? run.sceneTitles
+      : sceneTitles;
+    const endedTemplate = scene ? getSceneTemplate(scene.template) : null;
+
+    if (scene && endedTemplate && !deathSceneSeen) {
+      return (
+        <div className="life-mode">
+          <LifeScene
+            template={endedTemplate}
+            plan={scene}
+            onInteract={() => setDeathSceneSeen(true)}
+          />
+          <Dialogue
+            plan={scene}
+            decision={null}
+            busy={false}
+            onChoose={() => undefined}
+            onContinue={() => setDeathSceneSeen(true)}
+          />
+          {journalOpen && (
+            <Journal run={run} onClose={() => setJournalOpen(false)} />
+          )}
+        </div>
+      );
+    }
+
     if (!review || !reviewOpen) {
       return (
         <div className="life-mode">
           <ExitButton onExit={onExit} />
           <DeathScreen
-            review={review ?? buildReview(run, sceneTitles)}
+            review={review ?? buildReview(run, endedTitles)}
             run={run}
-            sceneTitles={sceneTitles}
+            sceneTitles={endedTitles}
+            onJournal={() => setJournalOpen(true)}
             onContinue={() => setReviewOpen(true)}
           />
+          {journalOpen && (
+            <Journal run={run} onClose={() => setJournalOpen(false)} />
+          )}
         </div>
       );
     }
@@ -205,6 +244,23 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
     );
   }
 
+  if (error) {
+    return (
+      <div className="life-mode">
+        <ExitButton onExit={onExit} />
+        <LifeError
+          error={error}
+          onRetry={() => void resume()}
+          onNewKey={(key) => {
+            writeLifeKey(key);
+            void resume();
+          }}
+          onExit={onExit}
+        />
+      </div>
+    );
+  }
+
   if (!scene) {
     return (
       <div className="life-mode">
@@ -213,7 +269,7 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
           initialKey={readLifeKey() ?? ""}
           onStart={handleStart}
           busy={busy}
-          error={error?.message ?? "The life is between scenes."}
+          error="The life is between scenes."
         />
       </div>
     );
@@ -222,7 +278,7 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
   const template = getSceneTemplate(scene.template);
   const sceneKey = `${scene.template}:${run.state.age}:${scene.title}`;
   const reflectionAge =
-    isReflectionAge(run.state.age) &&
+    scene.triggerKind === "reflection" &&
     run.thoughts[run.state.age] == null &&
     skippedReflection !== run.state.age
       ? run.state.age

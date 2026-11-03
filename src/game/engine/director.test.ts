@@ -126,6 +126,7 @@ describe("createDeterministicDirector", () => {
       dressing: [],
     });
     expect(plan.template).toBe("school_classroom");
+    expect(plan.triggerKind).toBe("decision");
     expect(plan.choiceBindings).toEqual({
       study: expect.any(String),
       play: expect.any(String),
@@ -148,5 +149,81 @@ describe("createDeterministicDirector", () => {
     });
     expect(plan.choiceBindings).toEqual({});
     expect(plan.interactables.some((i) => i.id === "continue")).toBe(true);
+  });
+
+  it("skips a deceased parent", async () => {
+    const director = createDeterministicDirector(
+      new Set(["generic-female", "generic-male"]),
+    );
+    const deadFacts = {
+      ...facts,
+      people: [
+        { name: "Hoa", role: "mother", age: 60, alive: false },
+        { name: "Minh", role: "father", age: 65, alive: true },
+      ],
+    };
+    const plan = await director.direct({
+      trigger: {
+        kind: "decision",
+        id: "d_school",
+        age: 10,
+        decision: decision("school"),
+      },
+      run: run(10),
+      facts: deadFacts,
+      templates,
+      dressing: [],
+    });
+    expect(plan.cast.map((member) => member.name)).not.toContain("Hoa");
+    expect(plan.cast.map((member) => member.name)).toContain("Minh");
+  });
+
+  it("marks a reflection scene as a reflection", async () => {
+    const director = createDeterministicDirector(
+      new Set(["generic-female"]),
+    );
+    const plan = await director.direct({
+      trigger: { kind: "reflection", id: "reflection:5", age: 5 },
+      run: run(5),
+      facts,
+      templates,
+      dressing: [],
+    });
+    expect(plan.triggerKind).toBe("reflection");
+  });
+
+  it("binds choices to distinct template interactions", async () => {
+    const anchored = {
+      ...template("school_classroom"),
+      interactables: [
+        { id: "desk", socket: "table", label: "Desk", kind: "use" as const },
+        {
+          id: "window",
+          socket: "player_start",
+          label: "Window",
+          kind: "look" as const,
+        },
+      ],
+    };
+    const director = createDeterministicDirector(
+      new Set(["generic-female", "generic-male"]),
+    );
+    const plan = await director.direct({
+      trigger: {
+        kind: "decision",
+        id: "d_school",
+        age: 10,
+        decision: decision("school"),
+      },
+      run: run(10),
+      facts,
+      templates: { ...templates, school_classroom: anchored },
+      dressing: [],
+    });
+    const sockets = plan.interactables
+      .filter((item) => item.choiceKey)
+      .map((item) => item.socket);
+    expect(sockets).toHaveLength(2);
+    expect(new Set(sockets).size).toBe(2);
   });
 });

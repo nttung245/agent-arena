@@ -1,4 +1,5 @@
 import { uid } from "@/lib/storage";
+import type { ScenePlan } from "@/game/scenes/types";
 import type {
   LiveResponse,
   OneIn8bDeath,
@@ -60,6 +61,10 @@ export interface LifeRun {
   phase: LifePhase;
   meta: OneIn8bMeta | null;
   usage: OneIn8bUsage | null;
+  /** The scene the player is currently in, persisted so resume does not skip it. */
+  pendingScene?: ScenePlan | null;
+  /** Titles of the scenes seen so far, for the life review. */
+  sceneTitles?: string[];
 }
 
 export interface CompletedLife {
@@ -99,6 +104,26 @@ export function journalFromResponse(
     .filter((entry) => entry.text.trim().length > 0);
 }
 
+function birthJournal(res: LiveResponse): JournalEntry[] {
+  const entries = journalFromResponse(res, "birth", res.state.year);
+  if (entries.length > 0) return entries;
+  const name =
+    typeof res.state.name === "string" && res.state.name.trim()
+      ? res.state.name
+      : null;
+  return [
+    {
+      id: uid("j"),
+      age: typeof res.state.age === "number" ? res.state.age : 0,
+      year: res.state.year,
+      text: name
+        ? `${name} was born in Vietnam.`
+        : "A life began in Vietnam.",
+      kind: "birth",
+    },
+  ];
+}
+
 export function createRun(config: LifeConfig, res: LiveResponse): LifeRun {
   return {
     id: uid("life"),
@@ -110,7 +135,7 @@ export function createRun(config: LifeConfig, res: LiveResponse): LifeRun {
     decision: res.decision ?? null,
     focus: res.focus ?? null,
     sheet: res.sheet ?? [],
-    journal: journalFromResponse(res, "birth", res.state.year),
+    journal: birthJournal(res),
     thoughts: {},
     chapterIndex: 0,
     sceneCount: 0,
@@ -119,6 +144,8 @@ export function createRun(config: LifeConfig, res: LiveResponse): LifeRun {
     phase: res.ended ? "death" : "birth",
     meta: res.meta ?? null,
     usage: res.usage ?? null,
+    pendingScene: null,
+    sceneTitles: [],
   };
 }
 
@@ -149,6 +176,7 @@ export function applyLiveResponse(run: LifeRun, res: LiveResponse): LifeRun {
     phase: res.ended ? "death" : run.phase,
     meta: res.meta ?? run.meta,
     usage: res.usage ?? run.usage,
+    pendingScene: null,
   };
 }
 

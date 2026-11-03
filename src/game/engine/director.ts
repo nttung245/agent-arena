@@ -87,7 +87,7 @@ export function createDeterministicDirector(
       const cast: SceneCastMember[] = [];
       const mother = facts.people.find((person) => person.role === "mother");
       const father = facts.people.find((person) => person.role === "father");
-      if (mother) {
+      if (mother?.alive) {
         cast.push({
           role: "mother",
           name: mother.name,
@@ -98,7 +98,7 @@ export function createDeterministicDirector(
           lines: [`${mother.name} looks at you.`],
         });
       }
-      if (father) {
+      if (father?.alive) {
         cast.push({
           role: "father",
           name: father.name,
@@ -127,17 +127,19 @@ export function createDeterministicDirector(
       const choiceBindings: Record<string, string> = {};
 
       if (decision) {
-        for (const choice of decision.choices) {
+        const anchors = template.interactables;
+        decision.choices.forEach((choice, index) => {
+          const anchor = anchors[index % Math.max(1, anchors.length)];
           const id = `choice_${choice.key}`;
           interactables.push({
             id,
-            socket: socketFor("table"),
+            socket: anchor?.socket ?? socketFor("table"),
             label: choice.label,
-            kind: "talk",
+            kind: anchor?.kind ?? "talk",
             choiceKey: choice.key,
           });
           choiceBindings[choice.key] = id;
-        }
+        });
       } else {
         interactables.push({
           id: "continue",
@@ -163,6 +165,7 @@ export function createDeterministicDirector(
 
       const plan: ScenePlan = {
         template: templateId,
+        triggerKind: trigger.kind,
         title: decision?.question ?? trigger.eventText ?? template.name,
         summary:
           trigger.kind === "death"

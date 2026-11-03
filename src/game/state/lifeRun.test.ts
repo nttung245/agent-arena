@@ -28,6 +28,22 @@ describe("createRun", () => {
       text: "You were born in a village in Vietnam.",
       kind: "birth",
     });
+    expect(run.pendingScene).toBeNull();
+    expect(run.sceneTitles).toEqual([]);
+  });
+
+  it("writes a truthful birth entry when the engine returns no events", () => {
+    const run = createRun(
+      {},
+      {
+        state: { age: 0, name: "Lan" },
+        events: [],
+        decision: null,
+        token: "t1",
+      },
+    );
+    expect(run.journal[0]).toMatchObject({ kind: "birth" });
+    expect(run.journal[0]?.text).toContain("born in Vietnam");
   });
 });
 

@@ -15,11 +15,13 @@ export function DeathScreen({
   review,
   run,
   sceneTitles = [],
+  onJournal,
   onContinue,
 }: {
   review: LifeReview;
   run?: LifeRun;
   sceneTitles?: string[];
+  onJournal: () => void;
   onContinue: () => void;
 }) {
   const saved = useRef(false);
@@ -42,13 +44,26 @@ export function DeathScreen({
         <p className="life-panel__muted">
           No scene is shown. What remains is the life you lived.
         </p>
-        <button
-          type="button"
-          className="life-button life-button--primary"
-          onClick={onContinue}
-        >
-          Look back on this life
-        </button>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          <button
+            type="button"
+            className="life-button life-button--primary"
+            onClick={onContinue}
+          >
+            Look back on this life
+          </button>
+          <button type="button" className="life-button" onClick={onJournal}>
+            Open journal
+          </button>
+        </div>
+
+        <p className="life-credit">
+          Life simulated by the{" "}
+          <a href="https://1in8b.life/en/api/" target="_blank" rel="noreferrer">
+            1in8b Engine (1in8b.life)
+          </a>
+          . Simulated life, not a real person.
+        </p>
       </div>
     </div>
   );

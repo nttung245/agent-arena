@@ -7,7 +7,7 @@ import {
   type SceneTrigger,
 } from "@/game/engine/chapters";
 import { OneIn8bError, type LifeTransport } from "@/game/engine/oneIn8b";
-import type { SceneDirector } from "@/game/engine/director";
+import { selectTemplate, type SceneDirector } from "@/game/engine/director";
 import type {
   LiveResponse,
   StartOptions,
@@ -19,9 +19,11 @@ import {
   type LifeConfig,
   type LifeRun,
 } from "@/game/state/lifeRun";
-import { buildFactSheet } from "@/game/scenes/validate";
+import { buildFactSheet, validateScenePlan } from "@/game/scenes/validate";
 import type {
+  LifeFactSheet,
   LifeTemplateId,
+  SceneInteractable,
   ScenePlan,
   SceneTemplate,
 } from "@/game/scenes/types";
@@ -95,6 +97,90 @@ export function configToStart(config: LifeConfig): StartOptions {
   return options;
 }
 
+function withScene(run: LifeRun, scene: ScenePlan): LifeRun {
+  const titles = run.sceneTitles ?? [];
+  return {
+    ...run,
+    pendingScene: scene,
+    sceneTitles: titles.includes(scene.title)
+      ? titles
+      : [...titles, scene.title],
+  };
+}
+
+function fallbackPlan(
+  deps: LifeDeps,
+  run: LifeRun,
+  trigger: SceneTrigger,
+  facts: LifeFactSheet,
+): ScenePlan | null {
+  const templateId = selectTemplate(trigger, run);
+  const template = deps.templates[templateId];
+  if (!template) return null;
+
+  const choices = trigger.decision?.choices ?? [];
+  const anchors = template.interactables;
+  const interactables: SceneInteractable[] = choices.map((choice, index) => {
+    const anchor = anchors[index % Math.max(1, anchors.length)];
+    return {
+      id: `choice_${choice.key}`,
+      socket: anchor?.socket ?? "player_start",
+      label: choice.label,
+      kind: anchor?.kind ?? "use",
+      choiceKey: choice.key,
+    };
+  });
+  if (interactables.length === 0) {
+    interactables.push({
+      id: "continue",
+      socket: "player_start",
+      label: "Continue",
+      kind: "look",
+    });
+  }
+
+  const plan: ScenePlan = {
+    template: templateId,
+    triggerKind: trigger.kind,
+    title: (trigger.decision?.question ?? trigger.eventText ?? template.name).slice(
+      0,
+      80,
+    ),
+    summary: `A moment at age ${trigger.age}.`,
+    timeOfDay: "morning",
+    weather: "clear",
+    cast: [],
+    player: {
+      socket: "player_start",
+      age: run.state.age,
+      cameraHeight: 1.2,
+    },
+    dialogue: [
+      {
+        speaker: facts.playerName,
+        text:
+          trigger.decision?.question ??
+          trigger.eventText ??
+          "Time passes.",
+      },
+    ],
+    interactables,
+    choiceBindings: Object.fromEntries(
+      choices.map((choice) => [choice.key, `choice_${choice.key}`]),
+    ),
+    ambience: templateId,
+  };
+
+  const result = validateScenePlan(plan, {
+    template,
+    characterIds: deps.characterIds,
+    choiceKeys: choices.map((choice) => choice.key),
+    focusKeys: [],
+    facts,
+  });
+  return result.ok ? result.plan : null;
+}
+
 async function stageScene(
   deps: LifeDeps,
   run: LifeRun,
@@ -109,8 +195,10 @@ async function stageScene(
       templates: deps.templates,
       dressing: [],
     });
-    return { run, scene };
+    return { run: withScene(run, scene), scene };
   } catch (error) {
+    const fallback = fallbackPlan(deps, run, trigger, facts);
+    if (fallback) return { run: withScene(run, fallback), scene: fallback };
     return { run, scene: null, error: asLifeError(error) };
   }
 }
@@ -333,6 +421,7 @@ export async function resumeLife(
   run: LifeRun,
 ): Promise<LifeNext> {
   if (run.ended) return { run, scene: null };
+  if (run.pendingScene) return { run, scene: run.pendingScene };
   try {
     const response = await deps.transport.step({
       token: run.token,
