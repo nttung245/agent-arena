@@ -386,6 +386,7 @@ export interface StartOptions {
   fifth?: string;
   place?: "town" | "village";
   faith?: string;
+  disability?: string;
   policy?: "auto" | "ambitious";
   seed?: number;
   sensitive?: 0 | 1;
@@ -440,7 +441,7 @@ git commit -m "feat(life): add 1in8b engine types and transport"
 - Consumes: `LiveResponse`, `OneIn8bState`, `OneIn8bDecision`, `OneIn8bDeath`, `OneIn8bUsage`, `OneIn8bMeta` from `@/game/engine/types`; `uid` from `@/lib/storage`.
 - Produces:
   - `type LifePhase = "setup" | "birth" | "scene" | "summary" | "reflection" | "death" | "review" | "memorial"`.
-  - `interface LifeConfig { year?: number; future?: boolean; sex?: "female" | "male" | "random"; fifth?: string; place?: "town" | "village"; seed?: number; }`.
+  - `interface LifeConfig { year?: number; future?: boolean; sex?: "female" | "male" | "random"; fifth?: string; place?: "town" | "village"; faith?: string; disability?: string; seed?: number; }`.
   - `interface JournalEntry { id: string; age: number; year?: number; text: string; source?: string; kind: "event" | "decision" | "summary" | "thought" | "birth"; choiceKey?: string; }`.
   - `interface LifeRun { id: string; startedAt: number; engineVersion: string; config: LifeConfig; token: string; state: OneIn8bState; decision: OneIn8bDecision | null; focus: OneIn8bFocus | null; sheet: OneIn8bSheetItem[]; journal: JournalEntry[]; thoughts: Record<number, string>; chapterIndex: number; sceneCount: number; ended: boolean; death: OneIn8bDeath | null; phase: LifePhase; meta: OneIn8bMeta | null; usage: OneIn8bUsage | null; }`.
   - `interface CompletedLife { id: string; name: string; country: string; bornYear?: number; diedYear?: number; ageAtDeath?: number; cause?: string; journal: JournalEntry[]; thoughts: Record<number, string>; sceneTitles: string[]; completedAt: number; engineVersion: string; }`.
@@ -1653,7 +1654,7 @@ Fields:
 - Country: “Vietnam” (read-only).
 - Period: a `<select>` with `Past (1986–2025)`, `Today`, `Future`, `Any`. A year slider (1986–2025) when Past is selected.
 - Sex: female / male / random.
-- Advanced (collapsed): family income fifth (1–5 or any), city/village/any.
+- Advanced (collapsed): family income fifth (1–5 or any), city/village/any, faith (any/Buddhist/Catholic/other), disability (none/movement/hearing/sight/autism/intellectual).
 - API key: password input, prefilled from `readLifeKey()`, with a “Get a free key” link to `https://1in8b.life/en/api/` and a mailto `api@1in8b.life`.
 - Scene director: “Template scenes (no LLM)” (the only option in this plan).
 - Content notice and credit.
@@ -1769,7 +1770,7 @@ Expected: FAIL — module not found.
 
 - Past uses `year`; Today omits `year` and `future`; Future sets `future: true`; Any picks randomly among a random past year (1986–2025), today, and future.
 - `sex: "random"` picks female or male.
-- Always `country: "VNM"`, `policy: "auto"`, `sensitive: 0`, `suicide: 0`; pass `fifth` and `place` when set.
+- Always `country: "VNM"`, `policy: "auto"`, `sensitive: 0`, `suicide: 0`; pass `fifth`, `place`, `faith`, and `disability` when set.
 
 `startLife`:
 
@@ -1891,6 +1892,7 @@ Expected: FAIL — module not found.
 - `summarizeYears` filters `run.journal` by `age >= fromAge && age <= toAge`.
 - `journalSections` groups by kind; `birth` includes `birth` and the age-0 event.
 - `Journal` renders sections with the engine credit and the simulated line. It shows stats from `run.state` only when the fields are numbers; otherwise a dash. Family names from `buildFactSheet`. Thoughts from `run.thoughts`.
+- The life map and survival curve from the 2D site are deferred in this plan: `/live` does not return a per-year survival curve, and the plan does not request `trace`. The journal shows the full event timeline instead.
 - `Summary` renders the year range, a short “years pass” line, and the filtered entries; a Continue button.
 - `Spending` renders the engine’s sheet items with name, “does”, and price. Checkboxes allow at most two items. “Buy” sends the selected ids; “Skip” sends none. It appears at a chapter boundary when `run.sheet.length > 0`, before the summary.
 - `Reflection` renders the age, a prompt, a textarea, “Save thought” and “Skip.” The prompt is one of: age 5 “What did you take for granted?”, 15 “What did you want to become?”, 30 “What are you carrying?”, 50 “What would you tell your younger self?”, 70 “What remains?”.
@@ -2331,4 +2333,5 @@ git commit -m "docs(life): document the Life in Vietnam mode and phase 2 status"
 - **LLM scene director:** prompt, JSON schema validation, fact guard, caching, fallback, dialogue quality.
 - **Art pass:** 10–15 Vietnamese props (motorbike, altar, shophouse, plastic stool, market stall, conical hat, etc.), `ATTRIBUTION.md`, `npm run assets:inventory`.
 - **Remaining templates:** `workplace_factory`, `farm_field`, `temple_church`, `station`.
+- **Journal visuals:** life map and survival curve (requires `trace` or `/simulate` and extra units).
 - **Cohort of same-second lives, audio, Vietnamese localization, more countries.**
