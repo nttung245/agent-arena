@@ -15,7 +15,7 @@ import {
 } from "@/lib/three/characterRig";
 import type { SceneCastMember, SceneSocket } from "@/game/scenes/types";
 
-export function ageScale(age: number): number {
+function ageScale(age: number): number {
   if (age < 3) return 0.55;
   if (age < 12) return 0.72;
   if (age < 18) return 0.88;
