@@ -41,4 +41,4 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://sametkabay.github.io/agent-arena/sitemap.xml
+Sitemap: https://nttung245.github.io/agent-arena/sitemap.xml

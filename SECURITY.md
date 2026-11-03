@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Use [GitHub Security Advisories](https://github.com/sametkabay/agent-arena/security/advisories/new) for this repository. Do not open a public issue for a vulnerability that could expose user API keys.
+Use [GitHub Security Advisories](https://github.com/nttung245/agent-arena/security/advisories/new) for this repository. Do not open a public issue for a vulnerability that could expose user API keys.
 
 ## What this app stores
 

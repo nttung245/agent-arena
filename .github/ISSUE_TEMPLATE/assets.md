@@ -7,7 +7,7 @@ labels: ["good first issue", "help wanted"]
 
 **What**
 - [ ] New GLB pack or character look
-- [ ] Fix / complete a row in [`public/assets/ATTRIBUTION.md`](https://github.com/sametkabay/agent-arena/blob/main/public/assets/ATTRIBUTION.md)
+- [ ] Fix / complete a row in [`public/assets/ATTRIBUTION.md`](https://github.com/nttung245/agent-arena/blob/main/public/assets/ATTRIBUTION.md)
 
 **Source**
 - Author:
@@ -17,7 +17,7 @@ labels: ["good first issue", "help wanted"]
 
 **Checklist for new files**
 - [ ] Files live under `public/assets/packs/` or `public/assets/characters/`
-- [ ] [`public/assets/ATTRIBUTION.md`](https://github.com/sametkabay/agent-arena/blob/main/public/assets/ATTRIBUTION.md) lists author, source, and license
+- [ ] [`public/assets/ATTRIBUTION.md`](https://github.com/nttung245/agent-arena/blob/main/public/assets/ATTRIBUTION.md) lists author, source, and license
 - [ ] `npm run assets:inventory` if pack files changed
 - [ ] License is compatible (CC0 or CC BY). **Do not relicense assets as MIT.**
 

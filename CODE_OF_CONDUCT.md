@@ -60,7 +60,7 @@ representative at an online or offline event.
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported by opening a GitHub issue on
-[sametkabay/agent-arena](https://github.com/sametkabay/agent-arena/issues)
+[nttung245/agent-arena](https://github.com/nttung245/agent-arena/issues)
 or by contacting the maintainer via GitHub. All complaints will be reviewed and
 investigated promptly and fairly.
 

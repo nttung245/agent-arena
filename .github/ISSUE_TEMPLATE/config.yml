@@ -1,8 +1,8 @@
 blank_issues_enabled: true
 contact_links:
   - name: Live demo
-    url: https://sametkabay.github.io/agent-arena/
+    url: https://nttung245.github.io/agent-arena/
     about: Try the playground before filing a bug.
   - name: Contributing guide
-    url: https://github.com/sametkabay/agent-arena/blob/main/CONTRIBUTING.md
+    url: https://github.com/nttung245/agent-arena/blob/main/CONTRIBUTING.md
     about: Setup, tests, and good first issue types.

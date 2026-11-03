@@ -2,24 +2,24 @@
 
 **Agent Arena is an open-source, browser-native multi-agent playground.** You place LLM-powered characters on a 3D map (office, forest, or space), watch them idle-talk, and chat with them privately or in a shared arena. It runs entirely in the browser with OpenAI, Gemini, Claude, or Ollama — no Agent Arena backend.
 
-[![Live demo](https://img.shields.io/badge/Try_live_demo-2563eb?style=for-the-badge)](https://sametkabay.github.io/agent-arena/)
+[![Live demo](https://img.shields.io/badge/Try_live_demo-2563eb?style=for-the-badge)](https://nttung245.github.io/agent-arena/)
 [![Code: MIT](https://img.shields.io/badge/code-MIT-yellow.svg)](./LICENSE)
 [![Assets](https://img.shields.io/badge/3D_assets-see_ATTRIBUTION-informational.svg)](./public/assets/ATTRIBUTION.md)
-[![Version](https://img.shields.io/badge/version-0.1.0--preview-orange)](https://github.com/sametkabay/agent-arena)
-[![Client-side](https://img.shields.io/badge/client--side-no_backend-2ea043)](https://github.com/sametkabay/agent-arena)
+[![Version](https://img.shields.io/badge/version-0.1.0--preview-orange)](https://github.com/nttung245/agent-arena)
+[![Client-side](https://img.shields.io/badge/client--side-no_backend-2ea043)](https://github.com/nttung245/agent-arena)
 
 > **Early preview** (`v0.1.0`) — map format and UI may still change.
 
-[Live demo](https://sametkabay.github.io/agent-arena/) · [Run locally](#run-locally) · [Issues](https://github.com/sametkabay/agent-arena/issues) · [Contributing](./CONTRIBUTING.md) · [License](./LICENSE)
+[Live demo](https://nttung245.github.io/agent-arena/) · [Run locally](#run-locally) · [Issues](https://github.com/nttung245/agent-arena/issues) · [Contributing](./CONTRIBUTING.md) · [License](./LICENSE)
 
 **Contents:** [Try it](#try-the-live-demo) · [Run locally](#run-locally) · [Controls](#controls) · [Features](#features) · [Configuration](#configuration) · [Deploy](#deploy-github-pages) · [FAQ](#troubleshooting--faq) · [Roadmap](#roadmap) · [Contributing](#contributing)
 
 <p align="center">
-  <a href="https://sametkabay.github.io/agent-arena/">
+  <a href="https://nttung245.github.io/agent-arena/">
     <img src="docs/screenshot-space-night.png" alt="Space map at night — four agents on a Martian outpost, private chat open with Explorer" width="920" />
   </a>
 </p>
-<p align="center"><sub><b>Mars night at the Space outpost</b> — four agents, speech bubbles, private chat with Explorer. <a href="https://sametkabay.github.io/agent-arena/">Open the live demo</a></sub></p>
+<p align="center"><sub><b>Mars night at the Space outpost</b> — four agents, speech bubbles, private chat with Explorer. <a href="https://nttung245.github.io/agent-arena/">Open the live demo</a></sub></p>
 
 **At a glance**
 
@@ -36,7 +36,7 @@
 
 ### Try the live demo
 
-Open **[https://sametkabay.github.io/agent-arena/](https://sametkabay.github.io/agent-arena/)**, pick a display name, language, and day/night, add a model under **Settings → AI Models**, bind it on an agent under **Settings → Agents**, then click an agent to chat.
+Open **[https://nttung245.github.io/agent-arena/](https://nttung245.github.io/agent-arena/)**, pick a display name, language, and day/night, add a model under **Settings → AI Models**, bind it on an agent under **Settings → Agents**, then click an agent to chat.
 
 > Cloud providers work on the static demo **subject to provider CORS**. **Ollama / localhost models need the local dev server.**
 
@@ -45,7 +45,7 @@ Open **[https://sametkabay.github.io/agent-arena/](https://sametkabay.github.io/
 **Requirements:** Node.js **20+** (CI uses **24**), npm. Modern browser with **WebGL2** (Chromium, Firefox, or Safari). Desktop-first — the scene uses mouse + right-click.
 
 ```bash
-git clone https://github.com/sametkabay/agent-arena.git
+git clone https://github.com/nttung245/agent-arena.git
 cd agent-arena
 npm install
 npm run dev
@@ -336,15 +336,15 @@ scripts/          # pack inventory generator
 
 ## Deploy (GitHub Pages)
 
-Push to `main` runs [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) ([![Deploy](https://github.com/sametkabay/agent-arena/actions/workflows/deploy.yml/badge.svg)](https://github.com/sametkabay/agent-arena/actions/workflows/deploy.yml)).
+Push to `main` runs [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) ([![Deploy](https://github.com/nttung245/agent-arena/actions/workflows/deploy.yml/badge.svg)](https://github.com/nttung245/agent-arena/actions/workflows/deploy.yml)).
 
 1. Repo **Settings → Pages → Source: GitHub Actions**
 2. Push to `main` (or run the workflow manually)
-3. Site: **https://sametkabay.github.io/agent-arena/**
+3. Site: **https://nttung245.github.io/agent-arena/**
 
 Vite `base` is `/` in dev and `/agent-arena/` on production builds so asset URLs match the project Pages path.
 
-Crawler files on the demo origin: [`robots.txt`](https://sametkabay.github.io/agent-arena/robots.txt), [`sitemap.xml`](https://sametkabay.github.io/agent-arena/sitemap.xml), [`llms.txt`](https://sametkabay.github.io/agent-arena/llms.txt). Google still reads `robots.txt` from the `github.io` host root — submit the sitemap in [Google Search Console](https://search.google.com/search-console) and Bing Webmaster after deploy.
+Crawler files on the demo origin: [`robots.txt`](https://nttung245.github.io/agent-arena/robots.txt), [`sitemap.xml`](https://nttung245.github.io/agent-arena/sitemap.xml), [`llms.txt`](https://nttung245.github.io/agent-arena/llms.txt). Google still reads `robots.txt` from the `github.io` host root — submit the sitemap in [Google Search Console](https://search.google.com/search-console) and Bing Webmaster after deploy.
 
 ---
 
@@ -375,7 +375,7 @@ See [`CONTRIBUTING.md`](./CONTRIBUTING.md) (setup, pre-commit hook, lint/test) a
 
 `npm test` runs Vitest on `src/lib` and **fails below 80% coverage**. `npm run lint` is oxlint. Pre-commit runs both (`simple-git-hooks` via `npm install`); CI also runs `npm run build`.
 
-**Good first contributions:** [good first issue](https://github.com/sametkabay/agent-arena/labels/good%20first%20issue) tickets — locale translations (`src/i18n/` + `agent-arena.yaml`), new builtin maps, and attributed GLB packs.
+**Good first contributions:** [good first issue](https://github.com/nttung245/agent-arena/labels/good%20first%20issue) tickets — locale translations (`src/i18n/` + `agent-arena.yaml`), new builtin maps, and attributed GLB packs.
 
 ---
 
@@ -396,7 +396,7 @@ Ideas and PRs welcome.
 - 3D packs and characters: Kenney (CC0) and poly.pizza (CC BY / CC0) — [`public/assets/ATTRIBUTION.md`](public/assets/ATTRIBUTION.md)
 - [Vite](https://vitejs.dev/) · [React](https://react.dev/) · [Three.js](https://threejs.org/) / [R3F](https://docs.pmnd.rs/react-three-fiber) · [Zustand](https://zustand-demo.pmnd.rs/) · [i18next](https://www.i18next.com/)
 
-If Agent Arena helps you prototype agent UX, [star the repo](https://github.com/sametkabay/agent-arena) — it helps others find it.
+If Agent Arena helps you prototype agent UX, [star the repo](https://github.com/nttung245/agent-arena) — it helps others find it.
 
 ---
 

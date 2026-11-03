@@ -18,7 +18,7 @@ Indoor office / outdoor camp / other — lighting, mood, day vs night:
 4. Smoke-check day and night in Chromium
 
 **Assets**
-- [ ] Uses only GLBs already in `public/assets/` (or a follow-up [assets issue](https://github.com/sametkabay/agent-arena/issues/new?template=assets.md) credits new files)
+- [ ] Uses only GLBs already in `public/assets/` (or a follow-up [assets issue](https://github.com/nttung245/agent-arena/issues/new?template=assets.md) credits new files)
 - [ ] `public/assets/ATTRIBUTION.md` is unchanged **or** updated in the same PR
 
 Shipped builtins: `office`, `nature`, `space`, `halloween`, `red_planet`.

@@ -4,13 +4,13 @@
   "version": "0.1.0",
   "description": "Agent Arena is an open-source, browser-native multi-agent playground. Place LLM characters on a 3D map, watch them live, and chat — no backend.",
   "license": "MIT",
-  "homepage": "https://sametkabay.github.io/agent-arena/",
+  "homepage": "https://nttung245.github.io/agent-arena/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sametkabay/agent-arena.git"
+    "url": "git+https://github.com/nttung245/agent-arena.git"
   },
   "bugs": {
-    "url": "https://github.com/sametkabay/agent-arena/issues"
+    "url": "https://github.com/nttung245/agent-arena/issues"
   },
   "engines": {
     "node": ">=20"

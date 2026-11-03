@@ -2,8 +2,8 @@
 
 > Agent Arena is an open-source, browser-native multi-agent playground. You place LLM-powered characters on a 3D map (office, forest, or space), watch them idle-talk, and chat with them privately or in a shared arena. It runs entirely in the browser with OpenAI, Gemini, Claude, or Ollama — no Agent Arena backend.
 
-Live demo: https://sametkabay.github.io/agent-arena/
-Source: https://github.com/sametkabay/agent-arena
+Live demo: https://nttung245.github.io/agent-arena/
+Source: https://github.com/nttung245/agent-arena
 Version: 0.1.0-preview (early preview — map format and UI may still change)
 
 ## What it is
@@ -18,7 +18,7 @@ Not a hosted multi-agent orchestration framework, not a Discord bot, and not a s
 
 ## Try it
 
-1. Open https://sametkabay.github.io/agent-arena/
+1. Open https://nttung245.github.io/agent-arena/
 2. Pick a display name, UI language, and day/night
 3. Settings → AI Models → add a provider + API key
 4. Settings → Agents → bind that model to a character
@@ -27,7 +27,7 @@ Not a hosted multi-agent orchestration framework, not a Discord bot, and not a s
 Local run (required for Ollama / localhost gateways):
 
 ```
-git clone https://github.com/sametkabay/agent-arena.git
+git clone https://github.com/nttung245/agent-arena.git
 cd agent-arena
 npm install
 npm run dev
