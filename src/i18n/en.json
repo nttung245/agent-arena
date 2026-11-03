@@ -3,6 +3,9 @@
     "title": "Agent Arena",
     "tagline": "Your local multi-agent playground"
   },
+  "life": {
+    "entry": "Live a life"
+  },
   "nameGate": {
     "badge": "Welcome",
     "heading": "What should we call you?",

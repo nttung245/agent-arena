@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { useProgress } from "@react-three/drei";
 import { NameGate } from "@/components/NameGate";
 import { Hud } from "@/components/Hud";
@@ -12,6 +12,10 @@ import { ArenaScene } from "@/components/scene/ArenaScene";
 import { useArenaStore } from "@/store/arenaStore";
 import { appConfig } from "@/lib/config";
 import { embed, worldModelUrls } from "@/lib/embed";
+
+const LifeGame = lazy(() =>
+  import("@/game/LifeGame").then((module) => ({ default: module.LifeGame })),
+);
 
 /** Tells the embedding page once the world's models have loaded, so it can show the world. */
 function EmbedReadySignal() {
@@ -50,6 +54,14 @@ export default function App() {
   const toast = useArenaStore((s) => s.toast);
   const mapEditorOpen = useArenaStore((s) => s.mapEditorOpen);
   const dayNight = useArenaStore((s) => s.dayNight);
+  const [lifeOpen, setLifeOpen] = useState(false);
+
+  const closeLife = () => {
+    setLifeOpen(false);
+    const url = new URL(window.location.href);
+    url.searchParams.delete("life");
+    window.history.replaceState({}, "", url);
+  };
 
   useEffect(() => {
     hydrate();
@@ -91,6 +103,20 @@ export default function App() {
     return () => window.clearInterval(id);
   }, []);
 
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).has("life")) {
+      setLifeOpen(true);
+    }
+  }, []);
+
+  if (lifeOpen) {
+    return (
+      <Suspense fallback={null}>
+        <LifeGame onExit={closeLife} />
+      </Suspense>
+    );
+  }
+
   if (embed) {
     return (
       <div className="app app--embed" data-day-night={dayNight}>
@@ -120,7 +146,7 @@ export default function App() {
       </div>
       {!mapEditorOpen && (
         <>
-          <Hud />
+          <Hud onLife={() => setLifeOpen(true)} />
           <ArenaSidePanels />
           <ChatPanel />
           <FloatingChatLog />

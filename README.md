@@ -12,7 +12,7 @@
 
 [Live demo](https://nttung245.github.io/agent-arena/) · [Run locally](#run-locally) · [Issues](https://github.com/nttung245/agent-arena/issues) · [Contributing](./CONTRIBUTING.md) · [License](./LICENSE)
 
-**Contents:** [Try it](#try-the-live-demo) · [Run locally](#run-locally) · [Controls](#controls) · [Features](#features) · [Configuration](#configuration) · [Deploy](#deploy-github-pages) · [FAQ](#troubleshooting--faq) · [Roadmap](#roadmap) · [Contributing](#contributing)
+**Contents:** [Try it](#try-the-live-demo) · [Run locally](#run-locally) · [Life in Vietnam](#life-in-vietnam-experimental) · [Controls](#controls) · [Features](#features) · [Configuration](#configuration) · [Deploy](#deploy-github-pages) · [FAQ](#troubleshooting--faq) · [Roadmap](#roadmap) · [Contributing](#contributing)
 
 <p align="center">
   <a href="https://nttung245.github.io/agent-arena/">
@@ -29,6 +29,19 @@
 - Tune personas, maps, lighting, and provider defaults in YAML — no redeploy to experiment
 
 **What this is not:** not a hosted multi-agent orchestration framework, not a Discord bot, and not a server-side agent runtime — it’s a visual playground you run (or host statically) yourself.
+
+---
+
+## Life in Vietnam (experimental)
+
+A first-person 3D life simulation built on the **1in8b Engine**. You are born in Vietnam and live one complete life, from birth to death. The engine draws the life — family, health, school, work, love, migration, death — from real demographic statistics; the 3D layer stages the turning points as places you can walk through. The journal keeps the full record between scenes.
+
+- Open `?life` or choose **Live a life** in the HUD.
+- Bring your own free `k8b_` key from [1in8b.life/en/api](https://1in8b.life/en/api/). It stays in this browser and is sent only to `1in8b.life`.
+- The mode is 15+. Every life is simulated, not a real person. Hard events appear at their real rates but are never shown graphically.
+- Credit: [1in8b Engine (1in8b.life)](https://1in8b.life/en/api/). The engine’s sources include the UN, WHO and the World Bank.
+
+The core arc (birth to death, one modern-era scene kit, deterministic scene direction) is implemented. The design and the follow-up work — more eras, the LLM scene director, Vietnamese props, audio — live in [`docs/superpowers/specs/2026-11-03-life-in-vietnam-design.md`](docs/superpowers/specs/2026-11-03-life-in-vietnam-design.md).
 
 ---
 
