@@ -20,4 +20,18 @@ describe("scene registry", () => {
     expect(getSceneTemplate("home_childhood").id).toBe("home_childhood");
     expect(() => getSceneTemplate("nope" as never)).toThrow();
   });
+
+  it("ships the school, street, and work templates", () => {
+    for (const id of [
+      "schoolyard",
+      "street_neighborhood",
+      "workplace_office",
+      "workplace_shop",
+    ] as const) {
+      expect(SCENE_TEMPLATES[id].name).not.toContain("stub");
+      expect(SCENE_TEMPLATES[id].map.placeables.length).toBeGreaterThanOrEqual(
+        3,
+      );
+    }
+  });
 });

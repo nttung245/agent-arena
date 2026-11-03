@@ -2,6 +2,12 @@ import type { ArenaMapDefinition } from "@/lib/maps/schema";
 import type { LifeTemplateId, SceneTemplate } from "@/game/scenes/types";
 import { homeChildhood } from "@/game/scenes/templates/homeChildhood";
 import { schoolClassroom } from "@/game/scenes/templates/schoolClassroom";
+import { schoolyard } from "@/game/scenes/templates/schoolyard";
+import { streetNeighborhood } from "@/game/scenes/templates/streetNeighborhood";
+import {
+  workplaceOffice,
+  workplaceShop,
+} from "@/game/scenes/templates/workplace";
 
 const ALL_TEMPLATE_IDS: readonly LifeTemplateId[] = [
   "birth_home",
@@ -25,6 +31,10 @@ const ALL_TEMPLATE_IDS: readonly LifeTemplateId[] = [
 const REAL_TEMPLATES: Partial<Record<LifeTemplateId, SceneTemplate>> = {
   home_childhood: homeChildhood,
   school_classroom: schoolClassroom,
+  schoolyard,
+  street_neighborhood: streetNeighborhood,
+  workplace_office: workplaceOffice,
+  workplace_shop: workplaceShop,
 };
 
 /** Temporary template until the dedicated scene is authored. */
