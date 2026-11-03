@@ -1,6 +1,6 @@
 # Life in Vietnam — 3D life-simulation design
 
-- **Status:** design draft for approval
+- **Status:** approved; core arc implemented (phases 0–2). Follow-up: era kits, LLM scene director, Vietnamese props, audio, cohort, more countries.
 - **Date:** 2026-11-03
 - **Repo:** `agent-arena`
 - **Working title:** *Một Đời* (One Life)
