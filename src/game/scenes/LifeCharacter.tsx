@@ -90,8 +90,15 @@ function GlbCharacter({
     };
   }, [mixer, clone, headScale]);
 
+  const reducedMotion = useMemo(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true,
+    [],
+  );
+
   useFrame(({ clock }) => {
-    if (!group.current) return;
+    if (!group.current || reducedMotion) return;
     group.current.position.y =
       Math.sin(clock.elapsedTime * 1.6 + member.age) * 0.008;
   });

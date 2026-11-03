@@ -1,10 +1,11 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type MutableRefObject } from "react";
 import {
   clampToBounds,
   nearestInteractable,
   nextPosition,
   type Bounds,
+  type TouchState,
 } from "@/game/controls/movement";
 
 export interface FirstPersonControlsProps {
@@ -18,6 +19,7 @@ export interface FirstPersonControlsProps {
     position: [number, number];
     radius: number;
   }>;
+  touchState?: MutableRefObject<TouchState>;
 }
 
 const MOVE_SPEED = 2.2;
@@ -31,6 +33,7 @@ export function FirstPersonControls({
   enabled,
   onInteract,
   interactables,
+  touchState,
 }: FirstPersonControlsProps) {
   const { camera, gl } = useThree();
   const keys = useRef<Record<string, boolean>>({});
@@ -88,12 +91,26 @@ export function FirstPersonControls({
 
   useFrame((_, delta) => {
     if (!enabled) return;
+    const touch = touchState?.current;
+    if (touch && (touch.lookX !== 0 || touch.lookY !== 0)) {
+      yaw.current -= touch.lookX * LOOK_SPEED;
+      pitch.current = Math.max(
+        -PITCH_LIMIT,
+        Math.min(PITCH_LIMIT, pitch.current - touch.lookY * LOOK_SPEED),
+      );
+      camera.rotation.y = yaw.current;
+      camera.rotation.x = pitch.current;
+      touch.lookX = 0;
+      touch.lookY = 0;
+    }
     const forward =
       (keys.current.KeyW || keys.current.ArrowUp ? 1 : 0) -
-      (keys.current.KeyS || keys.current.ArrowDown ? 1 : 0);
+      (keys.current.KeyS || keys.current.ArrowDown ? 1 : 0) +
+      (touch?.forward ?? 0);
     const strafe =
       (keys.current.KeyD || keys.current.ArrowRight ? 1 : 0) -
-      (keys.current.KeyA || keys.current.ArrowLeft ? 1 : 0);
+      (keys.current.KeyA || keys.current.ArrowLeft ? 1 : 0) +
+      (touch?.strafe ?? 0);
     const [x, z] = nextPosition(
       [camera.position.x, camera.position.z],
       {

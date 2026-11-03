@@ -1,7 +1,9 @@
 import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Suspense, useRef } from "react";
 import { ArenaFloor } from "@/components/scene/OfficeFloor";
 import { FirstPersonControls } from "@/game/controls/FirstPersonControls";
+import { TouchControls } from "@/game/controls/TouchControls";
+import type { TouchState } from "@/game/controls/movement";
 import { buildSceneMap } from "@/game/scenes/registry";
 import { LifeCharacter } from "@/game/scenes/LifeCharacter";
 import { LifeProps } from "@/game/scenes/LifeProps";
@@ -27,6 +29,12 @@ export function LifeScene({
   onInteract: (id: string) => void;
 }) {
   const map = buildSceneMap(template, []);
+  const touchState = useRef<TouchState>({
+    forward: 0,
+    strafe: 0,
+    lookX: 0,
+    lookY: 0,
+  });
   const startSocket = template.sockets[plan.player.socket];
   const start = startSocket ?? {
     position: [0, 0, 0] as [number, number, number],
@@ -62,7 +70,7 @@ export function LifeScene({
   };
 
   return (
-    <div className="life-canvas">
+    <div className="life-canvas" role="application" aria-label="3D life scene">
       <Canvas
         shadows
         dpr={[1, 1.5]}
@@ -91,8 +99,10 @@ export function LifeScene({
           enabled
           onInteract={onInteract}
           interactables={interactables}
+          touchState={touchState}
         />
       </Canvas>
+      <TouchControls state={touchState} />
     </div>
   );
 }

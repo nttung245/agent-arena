@@ -93,6 +93,16 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
   }, []);
 
   useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setJournalOpen(false);
+      setPaused(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
     if (!run || !scene) return;
     const key = `${scene.template}:${run.state.age}:${scene.title}`;
     if (lastSceneKey.current === key) return;

@@ -13,6 +13,14 @@ export interface MoveInput {
   dt: number;
 }
 
+/** Shared touch input written by the DOM joystick and read by the camera. */
+export interface TouchState {
+  forward: number;
+  strafe: number;
+  lookX: number;
+  lookY: number;
+}
+
 export function nextPosition(
   current: [number, number],
   input: MoveInput,

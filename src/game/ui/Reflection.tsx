@@ -29,6 +29,7 @@ export function Reflection({
           A thought stays in this life’s record. Writing is optional.
         </p>
         <textarea
+          aria-label="Your thought"
           value={text}
           onChange={(event) => setText(event.target.value)}
           placeholder="e.g. Being taken to a doctor when I was ill"

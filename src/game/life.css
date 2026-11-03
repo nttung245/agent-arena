@@ -204,6 +204,43 @@
   cursor: not-allowed;
 }
 
+.life-touch {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: none;
+  pointer-events: none;
+}
+
+.life-touch__stick {
+  position: absolute;
+  left: 22px;
+  bottom: 185px;
+  width: 104px;
+  height: 104px;
+  border: 1px solid rgb(243 237 226 / 0.35);
+  border-radius: 50%;
+  background: rgb(20 18 16 / 0.38);
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.life-touch__look {
+  position: absolute;
+  right: 0;
+  top: 15%;
+  width: 45%;
+  height: 55%;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .life-touch {
+    display: block;
+  }
+}
+
 .life-interact-prompt {
   position: absolute;
   left: 50%;
