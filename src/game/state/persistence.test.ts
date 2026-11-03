@@ -9,8 +9,9 @@ import {
   saveRun,
 } from "@/game/state/persistence";
 import { completeRun, createRun } from "@/game/state/lifeRun";
+import type { LiveResponse } from "@/game/engine/types";
 
-const start = {
+const start: LiveResponse = {
   state: { age: 0, name: "Lan", year: 1995, country: "VNM" },
   events: [[0, "You were born."]],
   decision: null,

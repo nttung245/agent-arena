@@ -30,7 +30,9 @@ afterEach(() => {
 
 describe("createOneIn8bTransport", () => {
   it("starts a Vietnam life with the key in the header only", async () => {
-    const fetchMock = vi.fn(async () => ok(baseResponse));
+    const fetchMock = vi.fn(
+      async (_url: string, _init?: RequestInit) => ok(baseResponse),
+    );
     const transport = createOneIn8bTransport(
       "k8b_test",
       fetchMock as unknown as typeof fetch,
@@ -65,7 +67,9 @@ describe("createOneIn8bTransport", () => {
   });
 
   it("sends step choices without losing the token", async () => {
-    const fetchMock = vi.fn(async () => ok(baseResponse));
+    const fetchMock = vi.fn(
+      async (_url: string, _init?: RequestInit) => ok(baseResponse),
+    );
     const transport = createOneIn8bTransport(
       "k8b_test",
       fetchMock as unknown as typeof fetch,
