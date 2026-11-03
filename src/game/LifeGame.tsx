@@ -13,6 +13,7 @@ import { BirthCard } from "@/game/ui/BirthCard";
 import { DeathScreen } from "@/game/ui/DeathScreen";
 import { Dialogue } from "@/game/ui/Dialogue";
 import { Journal } from "@/game/ui/Journal";
+import { LifeError } from "@/game/ui/LifeError";
 import { LifeHud } from "@/game/ui/LifeHud";
 import { Memorial } from "@/game/ui/Memorial";
 import { PauseMenu } from "@/game/ui/PauseMenu";
@@ -310,25 +311,15 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
         />
       )}
       {error && (
-        <div className="life-overlay" role="alert">
-          <div className="life-panel life-error">
-            <h2>The world paused</h2>
-            <p>{error.message}</p>
-            <p className="life-panel__muted">Code: {error.code}</p>
-            <div style={{ display: "flex", gap: 8 }}>
-              <button
-                type="button"
-                className="life-button life-button--primary"
-                onClick={() => void resume()}
-              >
-                Try again
-              </button>
-              <button type="button" className="life-button" onClick={onExit}>
-                Leave
-              </button>
-            </div>
-          </div>
-        </div>
+        <LifeError
+          error={error}
+          onRetry={() => void resume()}
+          onNewKey={(key) => {
+            writeLifeKey(key);
+            void resume();
+          }}
+          onExit={onExit}
+        />
       )}
     </div>
   );

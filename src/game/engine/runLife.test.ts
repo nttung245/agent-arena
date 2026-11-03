@@ -10,6 +10,7 @@ import {
   type LifeDeps,
 } from "@/game/engine/runLife";
 import { createRun } from "@/game/state/lifeRun";
+import { OneIn8bError, type LifeTransport } from "@/game/engine/oneIn8b";
 import type { LiveResponse, StepBody } from "@/game/engine/types";
 import type { SceneTemplate } from "@/game/scenes/types";
 
@@ -42,7 +43,7 @@ const templates = {
 
 const characterIds = new Set(["generic-female", "generic-male"]);
 
-function deps(transport: ReturnType<typeof fakeTransport>): LifeDeps {
+function deps(transport: LifeTransport): LifeDeps {
   return {
     transport,
     director: createDeterministicDirector(characterIds),
@@ -208,5 +209,40 @@ describe("submitChoice and buyItems", () => {
       token: "t1",
       buy: ["medicine"],
     });
+  });
+});
+
+describe("recoverable engine errors", () => {
+  const startResponse: LiveResponse = {
+    state: { age: 0, name: "Lan" },
+    events: [[0, "Born."]],
+    decision: null,
+    token: "t1",
+  };
+
+  it("preserves the run when the key is rejected mid-life", async () => {
+    const transport: LifeTransport = {
+      start: async () => startResponse,
+      step: async () => {
+        throw new OneIn8bError("bad key", "key", 401);
+      },
+    };
+    const born = await startLife(deps(transport), {});
+    const next = await advanceLife(deps(transport), born.run);
+    expect(next.run.token).toBe("t1");
+    expect(next.error?.code).toBe("key");
+  });
+
+  it("preserves the run on a quota error", async () => {
+    const transport: LifeTransport = {
+      start: async () => startResponse,
+      step: async () => {
+        throw new OneIn8bError("quota", "month", 429);
+      },
+    };
+    const born = await startLife(deps(transport), {});
+    const next = await advanceLife(deps(transport), born.run);
+    expect(next.run.token).toBe("t1");
+    expect(next.error?.code).toBe("month");
   });
 });
