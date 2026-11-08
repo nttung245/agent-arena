@@ -9,6 +9,7 @@ import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { fileURLToPath } from "node:url";
 import { ISO3, WPP } from "./sources.mjs";
+import { findHeaderRow, readSheet } from "./xlsx.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const cacheDir = path.join(repoRoot, ".cache", "life-data");
@@ -27,11 +28,10 @@ function round(value) {
   return value === 0 ? 0 : Number(value.toPrecision(4));
 }
 
-async function download(file) {
+async function download(file, url = WPP.base + file) {
   const target = path.join(cacheDir, file);
   if (fs.existsSync(target)) return target;
   fs.mkdirSync(cacheDir, { recursive: true });
-  const url = WPP.base + file;
   console.log(`downloading ${file}`);
   const res = await fetch(url);
   if (!res.ok || !res.body) throw new Error(`${url}: HTTP ${res.status}`);
@@ -219,6 +219,53 @@ async function buildIndicators() {
   };
 }
 
+/** Crisis kinds the engine can name as a cause, mapped from WPP's event types. */
+function crisisKind(eventType) {
+  if (eventType === "Conflict" || eventType === "Battle deaths") return "conflict";
+  if (eventType.startsWith("Natural Disaster")) return "disaster";
+  if (eventType === "Epidemic") return "epidemic";
+  if (eventType === "COVID-19") return "covid";
+  throw new Error(`crises: unknown event type "${eventType}"`);
+}
+
+/**
+ * Yearly share of all deaths from each crisis kind. WPP already includes these
+ * deaths in its life tables, so the engine treats them as causes inside
+ * all-cause mortality, never as an extra hazard.
+ */
+async function buildCrises(indicators) {
+  const file = await download(WPP.crises.file, WPP.crises.url);
+  const rows = readSheet(file, WPP.crises.sheet);
+  const headerIndex = findHeaderRow(rows, ["ISO3_Code", "Year", "EventType", "Deaths"]);
+  const header = rows[headerIndex];
+  const col = (name) => header.indexOf(name);
+  const deathsByYear = {};
+  for (const row of rows.slice(headerIndex + 1)) {
+    if (row[col("ISO3_Code")] !== ISO3) continue;
+    const year = Number(row[col("Year")]);
+    const kind = crisisKind(String(row[col("EventType")]));
+    const deaths = Number(row[col("Deaths")]);
+    if (!Number.isFinite(deaths) || deaths <= 0) continue;
+    (deathsByYear[year] ??= {})[kind] = (deathsByYear[year][kind] ?? 0) + deaths;
+  }
+  const years = {};
+  for (const year of Object.keys(deathsByYear).map(Number).sort((a, b) => a - b)) {
+    const total = indicators.deaths[year - FIRST_YEAR] * 1000;
+    const entry = {};
+    for (const [kind, deaths] of Object.entries(deathsByYear[year]).sort()) {
+      const share = deaths / total;
+      if (!(share < 0.5)) throw new Error(`crises: ${kind} in ${year} is ${share} of all deaths`);
+      entry[kind] = { deaths: Math.round(deaths), share: round(share) };
+    }
+    years[year] = entry;
+  }
+  return {
+    source: `${WPP.name}, metadata for mortality crises (${WPP.licence})`,
+    note: "years[y][kind].share = crisis deaths / all deaths that year. These deaths are already inside mortality.json. 'conflict' adds WPP's Conflict and Battle deaths event types.",
+    years,
+  };
+}
+
 /** JSON with one array of numbers per line, so a data refresh produces a readable diff. */
 function writeJson(name, value) {
   const text = JSON.stringify(value, null, 1).replace(/\[\s*(-?[\d.e+-]+(?:,\s*-?[\d.e+-]+)*)\s*\]/g, (_, body) =>
@@ -232,4 +279,6 @@ function writeJson(name, value) {
 
 writeJson("mortality.json", await buildMortality());
 writeJson("fertility.json", await buildFertility());
-writeJson("indicators.json", await buildIndicators());
+const indicators = await buildIndicators();
+writeJson("indicators.json", indicators);
+writeJson("crises.json", await buildCrises(indicators));

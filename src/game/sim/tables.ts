@@ -3,6 +3,7 @@
  * table's range use its nearest year; WPP tables run 1950–2100 (estimates to
  * 2023, then the UN's medium-variant projections).
  */
+import crises from "@data/life/vnm/crises.json";
 import fertility from "@data/life/vnm/fertility.json";
 import indicators from "@data/life/vnm/indicators.json";
 import mortality from "@data/life/vnm/mortality.json";
@@ -54,6 +55,28 @@ export function totalFertilityRate(year: number): number {
 /** Deaths in thousands in the given year, all causes. */
 export function totalDeaths(year: number): number {
   return indicators.deaths[yearIndex(indicators, year)];
+}
+
+export type CrisisKind = "conflict" | "disaster" | "epidemic" | "covid";
+
+const CRISIS_YEARS = crises.years as Record<
+  string,
+  Partial<Record<CrisisKind, { deaths: number; share: number }>>
+>;
+
+/**
+ * Each crisis kind's share of all deaths in the given year (WPP). These deaths
+ * are already inside deathChance(); a death is attributed to a crisis by share,
+ * never added on top. Years with no crisis return an empty object.
+ */
+export function crisisShares(year: number): Partial<Record<CrisisKind, number>> {
+  const entry = CRISIS_YEARS[String(Math.round(year))];
+  if (!entry) return {};
+  const shares: Partial<Record<CrisisKind, number>> = {};
+  for (const [kind, value] of Object.entries(entry) as [CrisisKind, { share: number }][]) {
+    shares[kind] = value.share;
+  }
+  return shares;
 }
 
 /**

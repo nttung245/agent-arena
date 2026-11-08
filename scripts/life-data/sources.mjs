@@ -20,4 +20,10 @@ export const WPP = {
     fertility: "WPP2024_Fertility_by_Age1.csv.gz",
     indicators: "WPP2024_Demographic_Indicators_Medium.csv.gz",
   },
+  /** Excess deaths from conflicts, disasters and epidemics that WPP folds into its mortality. */
+  crises: {
+    url: "https://population.un.org/wpp/assets/Excel%20Files/4_Metadata/WPP2024_F02_Metadata.xlsx",
+    file: "WPP2024_F02_Metadata.xlsx",
+    sheet: "Mortality_Crises",
+  },
 };

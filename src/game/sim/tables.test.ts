@@ -5,6 +5,7 @@ import {
   boyShare,
   cohortFertility,
   cohortLifeExpectancy,
+  crisisShares,
   deathChance,
   totalDeaths,
   totalFertilityRate,
@@ -60,6 +61,32 @@ describe("boyShare and totals", () => {
 
   it("reports deaths in thousands", () => {
     expect(totalDeaths(1990)).toBeGreaterThan(100);
+  });
+});
+
+describe("crisisShares", () => {
+  it("attributes a large share of 1968 and 1972 deaths to the war, and almost none after 1975", () => {
+    expect(crisisShares(1968).conflict).toBeGreaterThan(0.3);
+    expect(crisisShares(1972).conflict).toBeGreaterThan(0.3);
+    for (let year = 1976; year <= 2009; year++) expect(crisisShares(year).conflict).toBeUndefined();
+    // WPP lists a few dozen violent deaths a year from 2010; they are not a war.
+    for (let year = 2010; year <= 2023; year++) expect(crisisShares(year).conflict ?? 0).toBeLessThan(0.001);
+  });
+
+  it("covers every war year from 1950 to 1975", () => {
+    for (let year = 1950; year <= 1975; year++) expect(crisisShares(year).conflict).toBeGreaterThan(0);
+  });
+
+  it("returns an empty object for a quiet year and shares below one half", () => {
+    expect(crisisShares(1977)).toEqual({});
+    for (let year = 1950; year <= 2023; year++) {
+      const total = Object.values(crisisShares(year)).reduce((sum, share) => sum + share, 0);
+      expect(total).toBeLessThan(0.5);
+    }
+  });
+
+  it("knows COVID-19 deaths", () => {
+    expect(crisisShares(2021).covid).toBeGreaterThan(0);
   });
 });
 

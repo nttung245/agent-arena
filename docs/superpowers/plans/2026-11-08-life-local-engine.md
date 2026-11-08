@@ -189,7 +189,7 @@ data/life/
   vnm/mortality.json        qx by single age 0–100 × sex × year 1950–2100 (WPP)
   vnm/fertility.json        ASFR by single age 15–49 × year; sex ratio at birth (WPP)
   vnm/causes.json           cause shares by age group × sex × year (GHE) + pre-2000 rule
-  vnm/conflict.json         conflict share of deaths by year, 1950–1975 (WPP); region and age split estimated
+  vnm/crises.json           conflict, disaster, epidemic and COVID-19 shares of deaths by year (WPP)
   vnm/school.json           stage progression by year, with income-fifth and town/village gradients
   vnm/work.json             employment by sector by year; income shares by fifth; GDP per capita PPP
   vnm/marriage.json         ever-married share by age group × sex × year
@@ -254,12 +254,11 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 ### Task 3: Data pipeline — causes of death
 
-**Files:** Extend `build.mjs`. Create `data/life/vnm/causes.json` and `data/life/vnm/conflict.json`.
+**Files:** Extend `build.mjs`. Create `scripts/life-data/xlsx.mjs`, `data/life/vnm/crises.json` and `data/life/vnm/causes.json`.
 
 - [ ] Settle Licence question 1 first, and record the outcome in `SOURCES.md`.
 - [ ] Cause shares by age group × sex × year, from GHE 2023 via the OData API (2000–2023) or from the fallback in Licence question 1. Group the causes into about 20 that a life record can name, such as stroke, heart disease, lung cancer, liver cancer, other cancers, COPD, tuberculosis, road injury, drowning and infections in infancy. Self-harm stays in the data, flagged `hidden: true` (see "Content rules").
-- [ ] Before 2000, use the 2000 shares, marked `estimate: true`. This understates infectious disease in the 1950s–80s; it is a known limit. After 2023, hold the 2023 shares.
-- [ ] `conflict.json`: for each year from 1950 to 1975, the conflict share of all deaths. It is WPP `Mortality_Crises` conflict deaths divided by WPP `Deaths` for that year, so it comes from the source with no estimate needed. The split by region and age/sex (men 15–40 heaviest) is an estimate, cited and marked as such. Conflict is a share inside all-cause mortality, so the other causes shrink in proportion in those years. 1979 has no entry.
+- [ ] Before 2000, use the 2000 shares, marked `estimate: true`. This understates infectious disease in the 1950s–80s; it is a known limit. After - [x] `crises.json`: each year's share of all deaths from conflict (WPP event types Conflict + Battle deaths), disasters, epidemics and COVID-19: WPP `Mortality_Crises` deaths divided by WPP `Deaths`. Sourced, no estimate. War shares run from 1.5% to 36.5% (1972) of all deaths over 1950–1975. From 2010, WPP lists a few dozen violent deaths a year; they are labelled violence, not war. The split of war deaths by region and age/sex (men 15–40 heaviest) is an estimate that belongs in `effects.yaml` (Task 7). Conflict is a share inside all-cause mortality, so the other causes shrink in proportion in those years. 1979 has no entry.se years. 1979 has no entry.
 - [ ] A test asserts that each age × sex × year row of shares sums to 1 (±1e-6).
 
 ### Task 4: Data pipeline — school, work, marriage, migration
