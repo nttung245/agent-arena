@@ -96,7 +96,7 @@ function isFaith(value: string | undefined): value is Faith {
   return value !== undefined && value in BIRTH.faiths.shares;
 }
 
-function drawSex(rng: Rng, year: number): Sex {
+export function drawSex(rng: Rng, year: number): Sex {
   return roll(rng, boyShare(year)) ? "male" : "female";
 }
 
@@ -199,6 +199,7 @@ export function drawBirth(options: BirthOptions, rng: Rng): SimState {
       knowledge,
       bonds,
     },
+    partnerId: null,
     illnesses: [],
     ended: false,
     death: null,

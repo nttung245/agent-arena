@@ -321,10 +321,12 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 **Files:** Create `src/game/sim/family.ts` and tests.
 
-- [ ] First partnership from the marriage hazard (age 16 and up). The partner's age gap is an estimate in `effects.yaml`, and the partner becomes a `Relative`.
-- [ ] Births only within a partnership, at the marital fertility rate (see "Rates"), for the woman in the couple aged 15–49. Children become `Relative`s from age 0.
-- [ ] Divorce at a low estimated rate, cited. Widowhood comes from the partner's own death roll in Task 7.
-- [ ] Calibration: for women born in 1960 and 1985, the simulated mean number of children is within ±0.15 of the cohort total fertility computed along the ASFR diagonal. The ever-married share by age group is within ±5 percentage points of `marriage.json`.
+- [x] First partnership from the marriage hazard (age 16 and up). The partner's age gap is an estimate in `effects.yaml`, and the partner becomes a `Relative`.
+- [x] Births only within a partnership, at the marital fertility rate (see "Rates"), for the woman in the couple aged 15–49. Children become `Relative`s from age 0.
+- [x] Divorce at a low estimated rate, cited. Widowhood comes from the partner's own death roll in Task 7.
+- [x] Calibration: for women born in 1960 and 1985, the simulated mean number of children is within ±0.15 of the cohort total fertility computed along the ASFR diagonal. The ever-married share by age group is within ±5 percentage points of `marriage.json`.
+
+*As built:* younger siblings come from the mother's married fertility while both parents live. A partner's death is recorded in the relatives' death roll (`widowed`), so a person who dies later the same year is never left partnered to someone dead. Partnerships are between a man and a woman because the marriage data is; same-sex partnerships are a follow-up. Calibration: women born 1960 who reach 50 have 3.07 children (UN 3.12), born 1985 1.80 (UN 1.95); ever-partnered shares are within 3.2 points of the UN's at the ages checked.
 
 ### Task 10: School, work, income, retirement
 

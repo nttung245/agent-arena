@@ -101,3 +101,19 @@ illness:
   # Health points lost each year while ill, and regained on recovery.
   healthLossPerYear: 6
   healthGainOnRecovery: 10
+
+family:
+  estimate: true
+  note: >-
+    First partnerships follow the UN's ever-married shares (marriage.json); births follow the UN's
+    fertility rates divided by the married share, so national totals hold. The values below are
+    placeholders without a table behind them.
+  # Years the man is older than the woman in a couple, drawn evenly from this range.
+  partnerGapMin: 0
+  partnerGapMax: 6
+  # Yearly chance a partnership ends in divorce, before and from the given year.
+  divorce: { before: 0.001, from: 0.004, year: 2000 }
+  # After a divorce or a partner's death: yearly chance of a new partner, up to an age.
+  repartner: { chance: 0.05, maxAge: 60 }
+  # A married woman's yearly birth chance can't pass this.
+  maxBirthChance: 0.6

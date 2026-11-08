@@ -48,6 +48,13 @@ export interface IllnessCourse {
 
 export interface Effects {
   mortality: { multipliers: { fifth: number[]; place: { town: number; village: number } } };
+  family: {
+    partnerGapMin: number;
+    partnerGapMax: number;
+    divorce: { before: number; from: number; year: number };
+    repartner: { chance: number; maxAge: number };
+    maxBirthChance: number;
+  };
   illness: {
     courses: Record<string, IllnessCourse>;
     treatment: { death: number; recovery: number };

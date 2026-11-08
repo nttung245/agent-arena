@@ -5,7 +5,7 @@
  * national rate is unchanged). The cause comes from causes.ts.
  */
 import { EFFECTS, chronicShare, pickCause } from "@/game/sim/causes";
-import type { Fifth, Person, Place, Relative, SimState } from "@/game/sim/person";
+import type { Fifth, Person, Place, Relative, SimEvent, SimState } from "@/game/sim/person";
 import { meanOne, roll, scaleChance } from "@/game/sim/pick";
 import type { Rng } from "@/game/sim/rng";
 import { deathChance, urbanShare } from "@/game/sim/tables";
@@ -68,16 +68,24 @@ function relativeDeathChance(relative: Relative, person: Person, year: number): 
   );
 }
 
-/** Rolls this year's death for every living relative; returns those who died. */
-export function rollRelativeDeaths(state: SimState, rng: Rng): Relative[] {
-  const died: Relative[] = [];
+/**
+ * Rolls this year's death for every living relative. A partner's death ends
+ * the partnership at once, so the person is a widow or widower even if they
+ * die later the same year.
+ */
+export function rollRelativeDeaths(state: SimState, rng: Rng): SimEvent[] {
+  const events: SimEvent[] = [];
   for (const relative of state.relatives) {
     if (!relative.alive || relative.birthYear > state.year) continue;
     if (!roll(rng, relativeDeathChance(relative, state.person, state.year))) continue;
     relative.alive = false;
     relative.diedYear = state.year;
     relative.cause = pickCause(rng, state.year, state.year - relative.birthYear, relative.sex);
-    died.push(relative);
+    events.push({ type: "relativeDied", relativeId: relative.id, cause: relative.cause });
+    if (relative.id === state.partnerId) {
+      state.partnerId = null;
+      events.push({ type: "widowed", relativeId: relative.id });
+    }
   }
-  return died;
+  return events;
 }

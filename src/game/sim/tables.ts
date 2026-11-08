@@ -6,6 +6,7 @@
 import crises from "@data/life/vnm/crises.json";
 import fertility from "@data/life/vnm/fertility.json";
 import indicators from "@data/life/vnm/indicators.json";
+import marriage from "@data/life/vnm/marriage.json";
 import migration from "@data/life/vnm/migration.json";
 import mortality from "@data/life/vnm/mortality.json";
 import { chanceFromRate } from "@/game/sim/pick";
@@ -54,6 +55,49 @@ export function interpolate(series: Readonly<Record<string, number>>, year: numb
 /** Share of Viet Nam's population living in towns and cities (0–1). Before 1960, the 1960 value. */
 export function urbanShare(year: number): number {
   return interpolate(migration.urbanShare, year) / 100;
+}
+
+type MarriageTable = Record<Sex, Record<string, Record<string, number>>>;
+const EVER_MARRIED = marriage.everMarried as MarriageTable;
+const marriageYears: Record<Sex, number[]> = {
+  female: Object.keys(EVER_MARRIED.female).map(Number).sort((a, b) => a - b),
+  male: Object.keys(EVER_MARRIED.male).map(Number).sort((a, b) => a - b),
+};
+
+/** One survey's share ever married at an exact age: linear between 5-year group midpoints, 0 at 15. */
+function everMarriedInSurvey(groups: Record<string, number>, age: number): number {
+  const points: [number, number][] = [[15, 0]];
+  for (const start of Object.keys(groups).map(Number).sort((a, b) => a - b)) {
+    points.push([start + 2.5, groups[String(start)]]);
+  }
+  if (age <= points[0][0]) return 0;
+  for (let i = 1; i < points.length; i++) {
+    const [x1, y1] = points[i];
+    if (age <= x1) {
+      const [x0, y0] = points[i - 1];
+      return y0 + ((y1 - y0) * (age - x0)) / (x1 - x0);
+    }
+  }
+  return points[points.length - 1][1];
+}
+
+/**
+ * Share of people of this sex who have ever married by an exact age, in the
+ * given year: interpolated between survey years (UN World Marriage Data),
+ * held at the nearest survey outside 1988–2015.
+ */
+export function everMarried(sex: Sex, year: number, age: number): number {
+  const years = marriageYears[sex];
+  const at = (y: number) => everMarriedInSurvey(EVER_MARRIED[sex][String(y)], age);
+  if (year <= years[0]) return at(years[0]);
+  if (year >= years[years.length - 1]) return at(years[years.length - 1]);
+  for (let i = 1; i < years.length; i++) {
+    if (year <= years[i]) {
+      const [y0, y1] = [years[i - 1], years[i]];
+      return at(y0) + ((at(y1) - at(y0)) * (year - y0)) / (y1 - y0);
+    }
+  }
+  return at(years[years.length - 1]);
 }
 
 export const DATA_YEARS: Readonly<YearRange> = {

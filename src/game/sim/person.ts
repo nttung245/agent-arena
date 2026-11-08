@@ -27,6 +27,11 @@ export interface Relative extends PersonName {
   alive: boolean;
   diedYear?: number;
   cause?: string;
+  /** Partners: the year the partnership began, and the year it ended in divorce. */
+  since?: number;
+  divorcedYear?: number;
+  /** Children: the id of the other parent (a partner of the person). */
+  otherParentId?: string;
 }
 
 export interface Person extends PersonName {
@@ -69,6 +74,7 @@ export interface Illness {
 export type SimEvent =
   | { type: "diagnosed" | "recovered" | "worsened"; cause: string }
   | { type: "relativeDied"; relativeId: string; cause: string }
+  | { type: "partnered" | "divorced" | "widowed" | "childBorn" | "siblingBorn"; relativeId: string }
   | { type: "died"; cause: string };
 
 export interface SimState {
@@ -83,6 +89,8 @@ export interface SimState {
   relatives: Relative[];
   nextRelativeId: number;
   stats: Stats;
+  /** The current partner's relative id, or null. */
+  partnerId: string | null;
   illnesses: Illness[];
   ended: boolean;
   death: SimDeath | null;
@@ -93,6 +101,7 @@ export const STAT_KEYS = ["health", "happiness", "knowledge", "bonds"] as const;
 const FERTILE_FROM = 15;
 const FERTILE_TO = 49;
 const MIN_FATHER_AGE = 16;
+export const MIN_PARTNER_AGE = 16;
 
 /**
  * Every rule a life must never break. Returns one message per violation, so a
@@ -146,6 +155,35 @@ export function checkInvariants(state: SimState): string[] {
     if (father.sex !== "male") fail("father is not male");
     if (person.birthYear - father.birthYear < MIN_FATHER_AGE) fail("father too young at the birth");
     if (father.familyName !== person.familyName) fail("child does not carry the father's family name");
+  }
+  const partners = relatives.filter((r) => r.role === "partner");
+  if (state.partnerId !== null) {
+    const partner = partners.find((p) => p.id === state.partnerId);
+    if (!partner) fail(`partnerId ${state.partnerId} is not a partner`);
+    else if (!partner.alive || partner.divorcedYear !== undefined) fail("current partner is dead or divorced");
+  }
+  for (const partner of partners) {
+    if (partner.since === undefined) fail(`partner ${partner.id} has no start year`);
+    else {
+      if (partner.since - person.birthYear < MIN_PARTNER_AGE) fail(`partnered at ${partner.since - person.birthYear}`);
+      if (partner.since - partner.birthYear < MIN_PARTNER_AGE) fail(`partner ${partner.id} was ${partner.since - partner.birthYear}`);
+    }
+    if (partner.sex === person.sex) fail(`partner ${partner.id} has the same sex`);
+  }
+  for (const child of relatives.filter((r) => r.role === "child")) {
+    const other = partners.find((p) => p.id === child.otherParentId);
+    if (!other) {
+      fail(`child ${child.id} has no other parent`);
+      continue;
+    }
+    if (other.since === undefined || child.birthYear < other.since) fail(`child ${child.id} born before the partnership`);
+    if (other.divorcedYear !== undefined && child.birthYear > other.divorcedYear) fail(`child ${child.id} born after the divorce`);
+    const mother = person.sex === "female" ? { birthYear: person.birthYear, diedYear: state.death?.year } : other;
+    const motherAge = child.birthYear - mother.birthYear;
+    if (motherAge < FERTILE_FROM || motherAge > FERTILE_TO) fail(`child ${child.id} born to a mother of ${motherAge}`);
+    if (mother.diedYear !== undefined && child.birthYear > mother.diedYear) fail(`child ${child.id} born after the mother died`);
+    const fatherFamily = person.sex === "male" ? person.familyName : other.familyName;
+    if (child.familyName !== fatherFamily) fail(`child ${child.id} does not carry the father's family name`);
   }
   for (const sibling of relatives.filter((r) => r.role === "sibling")) {
     if (!mother) break;
