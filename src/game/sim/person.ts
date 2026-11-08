@@ -54,6 +54,23 @@ export interface SimDeath {
   cause: string;
 }
 
+/** A long illness the person is living with. */
+export interface Illness {
+  cause: string;
+  /** Year of diagnosis. */
+  since: number;
+  treated: boolean;
+}
+
+/**
+ * What happened, as data. text.ts turns these into journal lines; keeping them
+ * structured lets the scene director and tests read them without parsing text.
+ */
+export type SimEvent =
+  | { type: "diagnosed" | "recovered" | "worsened"; cause: string }
+  | { type: "relativeDied"; relativeId: string; cause: string }
+  | { type: "died"; cause: string };
+
 export interface SimState {
   version: 1;
   seed: number;
@@ -66,6 +83,7 @@ export interface SimState {
   relatives: Relative[];
   nextRelativeId: number;
   stats: Stats;
+  illnesses: Illness[];
   ended: boolean;
   death: SimDeath | null;
 }
@@ -105,6 +123,13 @@ export function checkInvariants(state: SimState): string[] {
     } else if (r.diedYear !== undefined) {
       fail(`${r.role} ${r.id} is alive with a death year`);
     }
+  }
+
+  const causes = new Set<string>();
+  for (const illness of state.illnesses) {
+    if (causes.has(illness.cause)) fail(`two illnesses with cause ${illness.cause}`);
+    causes.add(illness.cause);
+    if (illness.since < person.birthYear || illness.since > state.year) fail(`illness ${illness.cause} outside the life`);
   }
 
   const mother = relatives.find((r) => r.role === "mother");

@@ -39,8 +39,21 @@ interface CrisisEffect {
   weights: Record<Sex, number[]>;
 }
 
+export interface IllnessCourse {
+  /** Mean years from diagnosis to the end of the illness (recovery or death). */
+  years: number;
+  /** Share of people diagnosed who recover. */
+  cure: number;
+}
+
 export interface Effects {
   mortality: { multipliers: { fifth: number[]; place: { town: number; village: number } } };
+  illness: {
+    courses: Record<string, IllnessCourse>;
+    treatment: { death: number; recovery: number };
+    healthLossPerYear: number;
+    healthGainOnRecovery: number;
+  };
   causes: {
     bands: number[];
     groups: Record<CauseGroup, number[]> & { sex: Partial<Record<CauseGroup, Partial<Record<Sex, number>>>> };
@@ -244,9 +257,20 @@ export interface CauseChance {
   p: number;
 }
 
+const distributionCache = new Map<string, readonly CauseChance[]>();
+
 /** The full distribution of causes for a death at this year, age and sex. Sums to 1. */
-export function causeDistribution(year: number, age: number, sex: Sex): CauseChance[] {
+export function causeDistribution(year: number, age: number, sex: Sex): readonly CauseChance[] {
   const band = bandOf(age);
+  const key = `${Math.round(year)}|${band}|${sex}`;
+  const cached = distributionCache.get(key);
+  if (cached) return cached;
+  const result = buildDistribution(Math.round(year), band, sex);
+  distributionCache.set(key, result);
+  return result;
+}
+
+function buildDistribution(year: number, band: number, sex: Sex): readonly CauseChance[] {
   const out: CauseChance[] = [];
   const crises = crisisProbabilities(year);
   let crisisTotal = 0;
@@ -271,14 +295,26 @@ export function causeDistribution(year: number, age: number, sex: Sex): CauseCha
     }
   }
   const norm = sum(out.map((c) => c.p));
-  return out.map((c) => ({ cause: c.cause, p: c.p / norm }));
+  return Object.freeze(out.map((c) => Object.freeze({ cause: c.cause, p: c.p / norm })));
 }
 
-export function pickCause(rng: Rng, year: number, age: number, sex: Sex): CauseId {
+/**
+ * Draws a cause for a death at this year, age and sex. With `sudden`, long
+ * illnesses are left out: those deaths come only through an illness's course.
+ */
+export function pickCause(rng: Rng, year: number, age: number, sex: Sex, options: { sudden?: boolean } = {}): CauseId {
+  const candidates = causeDistribution(year, age, sex).filter((c) => !options.sudden || !isChronicCourse(c.cause));
   return weightedPick(
     rng,
-    causeDistribution(year, age, sex).map((c) => ({ key: c.cause, weight: c.p })),
+    candidates.map((c) => ({ key: c.cause, weight: c.p })),
   );
+}
+
+/** Share of deaths at this year, age and sex that come from long illnesses. */
+export function chronicShare(year: number, age: number, sex: Sex): number {
+  return causeDistribution(year, age, sex)
+    .filter((c) => isChronicCourse(c.cause))
+    .reduce((total, c) => total + c.p, 0);
 }
 
 export function isCrisisCause(cause: CauseId): cause is CrisisKind {

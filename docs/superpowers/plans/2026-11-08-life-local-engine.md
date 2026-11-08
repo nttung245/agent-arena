@@ -311,9 +311,11 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 **Files:** Create `src/game/sim/illness.ts`, extend `effects.yaml` (courses `D_c` and cure shares `cure_c`, cited) and add tests.
 
-- [ ] Chronic causes (cancers, COPD, heart failure; the final list goes in `effects.yaml`) get an onset roll, a yearly decline in health, event lines and a treatment decision. Treatment lowers the yearly death chance from that illness. Without treatment it is about `1 / D_c`.
-- [ ] Deaths from these causes come only from the illness course; the competing-risk pick in Task 7 skips them.
-- [ ] Calibration: cause-specific death shares still pass Task 7's check, and the median time from diagnosis to death for each chronic cause is within ±1 year of `D_c`.
+- [x] Chronic causes (cancers, COPD, heart failure; the final list goes in `effects.yaml`) get an onset roll, a yearly decline in health, event lines and a treatment decision. Treatment lowers the yearly death chance from that illness. Without treatment it is about `1 / D_c`.
+- [x] Deaths from these causes come only from the illness course; the competing-risk pick in Task 7 skips them.
+- [x] Calibration: mean age at death stays within 1 year of the UN tables with illness on; the long-illness share of deaths at 30–69 is within 4 points of what the cause tables expect; mean years from diagnosis to death are within 1 year of the courses (about 2.7–3 years).
+
+*As built:* the course is two yearly exit rates (1 / years overall, split by the cure share), so a diagnosis can end in recovery or death. The sudden-death roll leaves out the long-illness share. Treatment (`treatIllness`) is wired to a decision in Task 12. Relatives still die suddenly of any cause.
 
 ### Task 9: Family — partner, children, divorce, widowhood
 

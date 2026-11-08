@@ -199,6 +199,7 @@ export function drawBirth(options: BirthOptions, rng: Rng): SimState {
       knowledge,
       bonds,
     },
+    illnesses: [],
     ended: false,
     death: null,
   };

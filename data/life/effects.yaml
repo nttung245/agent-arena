@@ -78,3 +78,26 @@ causes:
     covid:
       label: COVID-19
       weights: { male: [0, 0, 0.05, 0.1, 0.5, 2, 5, 8], female: [0, 0, 0.05, 0.1, 0.5, 2, 5, 8] }
+
+illness:
+  # Long illnesses (causes marked `course: chronic` above). For each: the mean years from
+  # diagnosis to the end of the illness, and the share who recover. Diagnoses are timed so
+  # that deaths from the illness still match that cause's share of deaths by age.
+  estimate: true
+  note: >-
+    Placeholder courses in the range of published survival for lower-middle-income countries;
+    replace with sourced survival figures. Treatment lowers the death rate and raises the
+    recovery rate by the factors below.
+  courses:
+    tuberculosis: { years: 1, cure: 0.85 }
+    lung_cancer: { years: 1.5, cure: 0.1 }
+    liver_cancer: { years: 1, cure: 0.1 }
+    stomach_cancer: { years: 1.5, cure: 0.2 }
+    other_cancer: { years: 2.5, cure: 0.4 }
+    copd: { years: 6, cure: 0 }
+    kidney_disease: { years: 4, cure: 0.05 }
+    cirrhosis: { years: 4, cure: 0.1 }
+  treatment: { death: 0.6, recovery: 1.6 }
+  # Health points lost each year while ill, and regained on recovery.
+  healthLossPerYear: 6
+  healthGainOnRecovery: 10

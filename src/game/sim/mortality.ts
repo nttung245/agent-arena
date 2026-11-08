@@ -4,7 +4,7 @@
  * household's income fifth and town/village (rescaled to average 1, so the
  * national rate is unchanged). The cause comes from causes.ts.
  */
-import { EFFECTS, pickCause } from "@/game/sim/causes";
+import { EFFECTS, chronicShare, pickCause } from "@/game/sim/causes";
 import type { Fifth, Person, Place, Relative, SimState } from "@/game/sim/person";
 import { meanOne, roll, scaleChance } from "@/game/sim/pick";
 import type { Rng } from "@/game/sim/rng";
@@ -27,20 +27,29 @@ export function householdMultiplier(fifth: Fifth, place: Place, year: number): n
   return FIFTH_MULTIPLIER[String(fifth) as keyof typeof FIFTH_MULTIPLIER] * placeMultiplier(place, year);
 }
 
+/**
+ * The person's chance of a sudden death this year: the UN rate without the
+ * share that long illnesses account for (those deaths come through illness.ts).
+ */
 export function personDeathChance(state: SimState): number {
   const { person, year, age } = state;
-  return scaleChance(deathChance(person.sex, year, age), householdMultiplier(person.fifth, person.place, year));
+  const sudden = deathChance(person.sex, year, age) * (1 - chronicShare(year, age, person.sex));
+  return scaleChance(sudden, householdMultiplier(person.fifth, person.place, year));
 }
 
 /**
- * Rolls the person's death for the current year. On death it records the age,
- * year and cause and ends the life; it returns true if the person died.
+ * Rolls the person's sudden death for the current year. On death it records
+ * the age, year and cause and ends the life; it returns true if the person died.
  */
 export function rollPersonDeath(state: SimState, rng: Rng): boolean {
   if (state.ended) return false;
   if (!roll(rng, personDeathChance(state))) return false;
   state.ended = true;
-  state.death = { age: state.age, year: state.year, cause: pickCause(rng, state.year, state.age, state.person.sex) };
+  state.death = {
+    age: state.age,
+    year: state.year,
+    cause: pickCause(rng, state.year, state.age, state.person.sex, { sudden: true }),
+  };
   return true;
 }
 
