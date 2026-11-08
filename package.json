@@ -23,6 +23,7 @@
     "lint": "oxlint .",
     "test": "vitest run --coverage",
     "assets:inventory": "node scripts/generate-pack-inventory.mjs",
+    "life:data": "node scripts/life-data/build.mjs",
     "prepare": "simple-git-hooks"
   },
   "simple-git-hooks": {
