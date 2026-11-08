@@ -1,0 +1,48 @@
+# Vietnamese names for simulated people. Our own lists; the family-name shares are an estimate.
+# Order: family name, middle name, given name (Nguyễn Thị Lan). People are addressed by the given name.
+
+familyNames:
+  estimate: true
+  source: >-
+    Commonly cited shares of Vietnamese family names (Wikipedia, "Vietnamese name", citing a 2005
+    survey). The rest of the population is spread evenly over the other names listed.
+  # `south` is the spelling used mostly in the Centre and South.
+  shares:
+    - { name: Nguyễn, share: 0.384 }
+    - { name: Trần, share: 0.11 }
+    - { name: Lê, share: 0.095 }
+    - { name: Phạm, share: 0.071 }
+    - { name: Hoàng, south: Huỳnh, share: 0.051 }
+    - { name: Phan, share: 0.045 }
+    - { name: Vũ, south: Võ, share: 0.039 }
+    - { name: Đặng, share: 0.021 }
+    - { name: Bùi, share: 0.02 }
+    - { name: Đỗ, share: 0.014 }
+    - { name: Hồ, share: 0.013 }
+    - { name: Ngô, share: 0.013 }
+    - { name: Dương, share: 0.01 }
+    - { name: Lý, share: 0.005 }
+  others: [Đinh, Trịnh, Đoàn, Lâm, Mai, Trương, Lương, Hà, Cao, Tạ, Châu, Lưu, Kiều, Thái, Tô, Quách]
+
+# Middle and given names by era of birth: until 1979, 1980-1999, 2000 on.
+eras: [1979, 1999]
+
+middleNames:
+  male:
+    - [Văn, Văn, Văn, Đức, Hữu, Quang, Xuân, Đình]
+    - [Văn, Văn, Minh, Đức, Quang, Thanh, Hoàng, Ngọc]
+    - [Minh, Gia, Bảo, Đức, Quốc, Anh, Văn, Hoàng]
+  female:
+    - [Thị, Thị, Thị, Thị, Ngọc, Thu, Kim, Xuân]
+    - [Thị, Thị, Ngọc, Thu, Thanh, Thùy, Phương, Hồng]
+    - [Ngọc, Bảo, Khánh, Thùy, Phương, Gia, Minh, Thị]
+
+givenNames:
+  male:
+    - [Hùng, Dũng, Sơn, Thắng, Cường, Hải, Long, Trung, Thành, Bình, Tâm, Phong, Lợi, Tiến, Toàn]
+    - [Tuấn, Hùng, Dũng, Nam, Hải, Long, Huy, Đức, Thành, Việt, Tùng, Quang, Hiếu, Khánh, Trung]
+    - [Minh, Huy, Khoa, Bảo, An, Khang, Phúc, Quân, Nam, Long, Đức, Kiên, Duy, Hoàng, Lâm]
+  female:
+    - [Lan, Hoa, Hương, Mai, Nga, Thủy, Hạnh, Dung, Yến, Hồng, Liên, Cúc, Huệ, Loan, Tuyết]
+    - [Hương, Trang, Hằng, Linh, Thảo, Hà, Ngọc, Phương, Hiền, Nhung, Thúy, Vân, Quỳnh, Lan, Oanh]
+    - [Linh, Anh, Vy, Nhi, Ngọc, Châu, My, Chi, Quỳnh, Trang, Thư, Hân, An, Diệp, Khánh]

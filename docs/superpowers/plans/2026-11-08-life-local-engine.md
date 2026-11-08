@@ -235,9 +235,9 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 **Files:** Modify `src/game/engine/types.ts` and every importer (17 files, found with `grep -rl "OneIn8b\|LiveResponse" src/game`).
 
-- [ ] Rename `OneIn8bState` → `LifeState`, `OneIn8bDecision` → `LifeDecision`, `OneIn8bChoice` → `LifeChoice`, `OneIn8bFocus` → `LifeFocus`, `OneIn8bSheetItem` → `LifeSheetItem`, `OneIn8bDeath` → `LifeDeath`, `OneIn8bMeta` → `LifeMeta`, `OneIn8bUsage` → `LifeUsage`, `OneIn8bEvent` → `LifeEvent`, `LiveResponse` → `LifeStepResult`, `OneIn8bError` → `LifeEngineError`.
-- [ ] Add optional `major?: boolean` and `template?: LifeTemplateId` to `LifeDecision`, plus `region?: "north" | "central" | "south"` to `LifeConfig` and `LifeState`. 1in8b never sends them, so behaviour is unchanged.
-- [ ] `npx tsc -b`, `npm run lint`, `npm test`: all green with no test logic changed, only names.
+- [x] Rename `OneIn8bState` → `LifeState`, `OneIn8bDecision` → `LifeDecision`, `OneIn8bChoice` → `LifeChoice`, `OneIn8bFocus` → `LifeFocus`, `OneIn8bSheetItem` → `LifeSheetItem`, `OneIn8bDeath` → `LifeDeath`, `OneIn8bMeta` → `LifeMeta`, `OneIn8bUsage` → `LifeUsage`, `OneIn8bEvent` → `LifeEvent`, `LiveResponse` → `LifeStepResult`, `OneIn8bError` → `LifeEngineError`.
+- [x] Add optional `major?: boolean` and `template?: LifeTemplateId` to `LifeDecision`, plus `region?: "north" | "central" | "south"` to `LifeConfig` and `LifeState`. 1in8b never sends them, so behaviour is unchanged.
+- [x] `npx tsc -b`, `npm run lint`, `npm test`: all green with no test logic changed, only names.
 
 ### Task 2: Data pipeline — mortality and fertility (WPP)
 
@@ -283,18 +283,18 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 - `qx(year, age, sex)`, `asfr(year, age)`, `causeShares(year, ageGroup, sex)`, `stageChance(year, stage, fifth, place)`, `sectorShares(year)`, `marriedShare(year, ageGroup, sex)`, `urbanShare(year)`, `emigration(year)`.
 - `roll(rng, p): boolean`, `softmaxPick(rng, options: { key: string; logWeight: number }[]): string`, `meanOne(multipliers, weights)`.
 
-- [ ] Tests come first. The same seed gives the same sequence. Restoring a saved state continues the sequence exactly. Lookups clamp out-of-range years and ages as described in "Rates". `softmaxPick` frequencies over 100,000 draws match the weights within ±1 percentage point. `meanOne` output has a weighted mean of 1.
+- [x] Tests come first. The same seed gives the same sequence. Restoring a saved state continues the sequence exactly. Lookups clamp out-of-range years and ages as described in "Rates". `softmaxPick` frequencies over 100,000 draws match the weights within ±1 percentage point. `meanOne` output has a weighted mean of 1.
 
 ### Task 6: Person model and birth
 
-**Files:** Create `src/game/sim/person.ts`, `birth.ts`, `data/life/names.yaml`, and tests.
+**Files:** Create `src/game/sim/person.ts`, `birth.ts`, `data/life/names.yaml`, `data/life/birth.yaml` (region and faith shares from the 2019 census, parent age gap, starting stats; all estimates), and tests.
 
 **Produces:** `SimState` (`person`, `relatives`, `year`, `age`, `stats`, `illnesses`, `pendingDecision`, `focus`, `rng`, `ended`, `death`); `drawBirth(config: LifeConfig, rng): SimState`; `checkInvariants(state): string[]`.
 
-- [ ] Draw sex from the sex ratio at birth. Draw region, town/village and faith from population shares; town/village uses the urban share for the birth year. The income fifth is uniform. Any config value overrides its draw.
-- [ ] Parents: the mother's age at the birth comes from that year's ASFR shape; the father is older by a sampled gap (an estimate). The number of older siblings is sampled from the mother's age and the cohort's fertility. Parents and siblings are `Relative`s with their own sex, age and alive flag.
-- [ ] Names: family name by population share, middle name by sex and era, given name by sex and era. `names.yaml` is our own list, with sources for the family-name shares.
-- [ ] Tests: config overrides are respected; `checkInvariants` on 5,000 births returns no errors; the sex ratio over 20,000 births is within ±1% of the table.
+- [x] Draw sex from the sex ratio at birth. Draw region, town/village and faith from population shares; town/village uses the urban share for the birth year. The income fifth is uniform. Any config value overrides its draw.
+- [x] Parents: the mother's age at the birth comes from that year's ASFR shape; the father is older by a sampled gap (an estimate). The number of older siblings is sampled from the mother's age and the cohort's fertility. Parents and siblings are `Relative`s with their own sex, age and alive flag.
+- [x] Names: family name by population share, middle name by sex and era, given name by sex and era. `names.yaml` is our own list, with sources for the family-name shares.
+- [x] Tests: config overrides are respected; `checkInvariants` on 5,000 births returns no errors; the sex ratio over 20,000 births is within ±1% of the table.
 
 ### Task 7: Mortality and causes
 

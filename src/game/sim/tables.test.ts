@@ -6,6 +6,8 @@ import {
   cohortFertility,
   cohortLifeExpectancy,
   crisisShares,
+  interpolate,
+  urbanShare,
   deathChance,
   totalDeaths,
   totalFertilityRate,
@@ -98,5 +100,23 @@ describe("cohort measures", () => {
 
   it("gives earlier cohorts more children", () => {
     expect(cohortFertility(1940 + 15)).toBeGreaterThan(cohortFertility(1990));
+  });
+});
+
+describe("interpolate and urbanShare", () => {
+  const series = { "2000": 10, "2010": 30 };
+
+  it("is linear between published years and flat outside them", () => {
+    expect(interpolate(series, 2005)).toBe(20);
+    expect(interpolate(series, 1990)).toBe(10);
+    expect(interpolate(series, 2030)).toBe(30);
+    expect(interpolate({ "2010": 30, "2000": 10 }, 2002)).toBeCloseTo(14, 10);
+    expect(() => interpolate({}, 2000)).toThrow();
+  });
+
+  it("gives an urban share between 0 and 1 that rises over time", () => {
+    expect(urbanShare(1950)).toBe(urbanShare(1960));
+    expect(urbanShare(2020)).toBeGreaterThan(urbanShare(1980));
+    expect(urbanShare(2020) > 0 && urbanShare(2020) < 1).toBe(true);
   });
 });

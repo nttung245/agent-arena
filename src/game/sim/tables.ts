@@ -6,6 +6,7 @@
 import crises from "@data/life/vnm/crises.json";
 import fertility from "@data/life/vnm/fertility.json";
 import indicators from "@data/life/vnm/indicators.json";
+import migration from "@data/life/vnm/migration.json";
 import mortality from "@data/life/vnm/mortality.json";
 import { chanceFromRate } from "@/game/sim/pick";
 
@@ -19,6 +20,34 @@ interface YearRange {
 function yearIndex(table: YearRange, year: number): number {
   const y = Math.round(year);
   return Math.min(Math.max(y, table.firstYear), table.lastYear) - table.firstYear;
+}
+
+/**
+ * Reads a sparse series ({ "1999": 85.7, "2002": 89.1, ... }) at any year:
+ * linear between published years, and the nearest published value outside
+ * them. Values outside the published years are estimates.
+ */
+export function interpolate(series: Readonly<Record<string, number>>, year: number): number {
+  const points = Object.entries(series)
+    .map(([key, value]) => [Number(key), value] as const)
+    .sort((a, b) => a[0] - b[0]);
+  if (points.length === 0) throw new Error("interpolate: empty series");
+  if (year <= points[0][0]) return points[0][1];
+  const last = points[points.length - 1];
+  if (year >= last[0]) return last[1];
+  for (let i = 1; i < points.length; i++) {
+    const [x1, y1] = points[i];
+    if (year <= x1) {
+      const [x0, y0] = points[i - 1];
+      return y0 + ((y1 - y0) * (year - x0)) / (x1 - x0);
+    }
+  }
+  return last[1];
+}
+
+/** Share of Viet Nam's population living in towns and cities (0–1). Before 1960, the 1960 value. */
+export function urbanShare(year: number): number {
+  return interpolate(migration.urbanShare, year) / 100;
 }
 
 export const DATA_YEARS: Readonly<YearRange> = {
