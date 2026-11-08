@@ -330,12 +330,14 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 ### Task 10: School, work, income, retirement
 
-**Files:** Create `src/game/sim/school.ts`, `work.ts` and tests.
+**Files:** Create `src/game/sim/school.ts`, `work.ts`, `year.ts` (the yearly loop so far), `data/life/jobs.yaml`, and tests.
 
-- [ ] School stages in order. The chance of going on uses `stageChance` with the income-fifth and town/village multipliers, plus the knowledge stat (mean one).
-- [ ] Labour entry after leaving school. The sector is a softmax over `sectorShares(year)` times education multipliers; the job title comes from an authored list per sector and education level. Income is the person's place in the national distribution (income fifth plus education), turned into money with GDP per capita PPP.
-- [ ] Retirement at the legal age for that year and sex (cited in `effects.yaml`).
-- [ ] Calibration: primary and lower-secondary completion for cohorts 1980 and 2000 are within ±5 percentage points of `school.json`. Sector shares among working-age people in 1995 and 2015 are within ±5 points of `work.json`.
+- [x] School stages in order. The chance of going on uses `stageChance` with the income-fifth and town/village multipliers, plus the knowledge stat (mean one).
+- [x] Labour entry after leaving school. The sector is a softmax over `sectorShares(year)` times education multipliers; the job title comes from an authored list per sector and education level. Income is the person's place in the national distribution (income fifth plus education), turned into money with GDP per capita PPP.
+- [x] Retirement at the legal age for that year and sex (cited in `effects.yaml`).
+- [x] Calibration: primary and lower-secondary completion for cohorts 1980 and 2000 are within ±5 percentage points of `school.json`. Sector shares among working-age people in 1995 and 2015 are within ±5 points of `work.json`.
+
+*As built:* completion is read from UIS 4 years after a stage ends (UIS measures people 3–5 years past it) and adjusted by income fifth and sex; town/village is left out of school because it overlaps with income. The schooling and place tilts on sectors are rescaled each year to average 1 over that year's workforce, and workers in a shrinking sector leave it at the rate it shrinks, so the workforce follows the World Bank's shares. The household's income fifth does not change with the person's own career yet. Calibration: lower-secondary completion 86.0% vs UIS 85.5%, upper secondary 57.9% vs 56.3%; sector shares within 4.5 points in 1995 and 2015.
 
 ### Task 11: History, moves, disasters
 

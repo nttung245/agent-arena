@@ -200,6 +200,8 @@ export function drawBirth(options: BirthOptions, rng: Rng): SimState {
       bonds,
     },
     partnerId: null,
+    education: { completed: "none", studying: null },
+    work: { status: "notYet", income: 0 },
     illnesses: [],
     ended: false,
     death: null,

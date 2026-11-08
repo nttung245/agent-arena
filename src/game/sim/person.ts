@@ -11,6 +11,27 @@ export type Place = "town" | "village";
 export type Fifth = 1 | 2 | 3 | 4 | 5;
 export type Faith = "none" | "buddhist" | "catholic" | "protestant" | "hoaHao" | "caoDai" | "other";
 export type RelativeRole = "mother" | "father" | "sibling" | "partner" | "child";
+export type SchoolStage = "none" | "primary" | "lowerSecondary" | "upperSecondary" | "tertiary";
+export const SCHOOL_STAGES: readonly SchoolStage[] = ["none", "primary", "lowerSecondary", "upperSecondary", "tertiary"];
+export type Sector = "agriculture" | "industry" | "services";
+export const SECTORS: readonly Sector[] = ["agriculture", "industry", "services"];
+
+export interface Education {
+  /** The highest stage finished. */
+  completed: SchoolStage;
+  /** The stage being studied now, or null when out of school. */
+  studying: SchoolStage | null;
+}
+
+export interface Work {
+  status: "notYet" | "working" | "retired";
+  sector?: Sector;
+  job?: string;
+  /** Yearly income in constant 2021 international dollars (PPP). */
+  income: number;
+  /** Year the person first started work. */
+  since?: number;
+}
 
 export interface PersonName {
   /** Family, middle and given name: "Nguyễn Thị Lan". */
@@ -75,7 +96,11 @@ export type SimEvent =
   | { type: "diagnosed" | "recovered" | "worsened"; cause: string }
   | { type: "relativeDied"; relativeId: string; cause: string }
   | { type: "partnered" | "divorced" | "widowed" | "childBorn" | "siblingBorn"; relativeId: string }
-  | { type: "died"; cause: string };
+  | { type: "died"; cause: string }
+  | { type: "schoolStarted" }
+  | { type: "schoolFinished" | "schoolLeft"; stage: SchoolStage }
+  | { type: "startedWork" | "changedJob"; sector: Sector; job: string }
+  | { type: "retired" };
 
 export interface SimState {
   version: 1;
@@ -91,6 +116,8 @@ export interface SimState {
   stats: Stats;
   /** The current partner's relative id, or null. */
   partnerId: string | null;
+  education: Education;
+  work: Work;
   illnesses: Illness[];
   ended: boolean;
   death: SimDeath | null;
@@ -102,6 +129,7 @@ const FERTILE_FROM = 15;
 const FERTILE_TO = 49;
 const MIN_FATHER_AGE = 16;
 export const MIN_PARTNER_AGE = 16;
+export const MIN_WORK_AGE = 15;
 
 /**
  * Every rule a life must never break. Returns one message per violation, so a
@@ -133,6 +161,18 @@ export function checkInvariants(state: SimState): string[] {
       fail(`${r.role} ${r.id} is alive with a death year`);
     }
   }
+
+  const { education, work } = state;
+  const stageIndex = (stage: SchoolStage) => SCHOOL_STAGES.indexOf(stage);
+  if (education.studying !== null && stageIndex(education.studying) !== stageIndex(education.completed) + 1) {
+    fail(`studying ${education.studying} after finishing ${education.completed}`);
+  }
+  if (education.studying !== null && state.age > 30) fail(`still in school at ${state.age}`);
+  if (work.status !== "notYet") {
+    if (work.since === undefined) fail("working with no start year");
+    else if (work.since - person.birthYear < MIN_WORK_AGE) fail(`started work at ${work.since - person.birthYear}`);
+  }
+  if (work.status === "working" && (!work.sector || !work.job)) fail("working with no sector or job");
 
   const causes = new Set<string>();
   for (const illness of state.illnesses) {

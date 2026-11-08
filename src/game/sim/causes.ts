@@ -17,6 +17,7 @@
 import effectsRaw from "@data/life/effects.yaml";
 import causesRaw from "@data/life/vnm/causes.json";
 import deathsRaw from "@data/life/vnm/deaths.json";
+import type { SchoolStage, Sector } from "@/game/sim/person";
 import { weightedPick } from "@/game/sim/pick";
 import type { Rng } from "@/game/sim/rng";
 import { crisisShares, interpolate, type CrisisKind, type Sex } from "@/game/sim/tables";
@@ -54,6 +55,27 @@ export interface Effects {
     divorce: { before: number; from: number; year: number };
     repartner: { chance: number; maxAge: number };
     maxBirthChance: number;
+  };
+  school: {
+    finishAge: Record<Exclude<SchoolStage, "none">, number>;
+    startAge: number;
+    surveyLag: number;
+    tertiaryCompletion: number;
+    maxChance: number;
+  };
+  work: {
+    minAge: number;
+    jobChange: number;
+    retiredIncome: number;
+    sectorBySchool: Record<SchoolStage, Record<Sector, number>>;
+    sectorByPlace: Record<"town" | "village", Record<Sector, number>>;
+    incomeBySchool: Record<SchoolStage, number>;
+    retirement: {
+      men: { until2020: number; monthsPerYear: number; max: number };
+      women: { until2020: number; monthsPerYear: number; max: number };
+      farmerAge: number;
+      farmerHealthFloor: number;
+    };
   };
   illness: {
     courses: Record<string, IllnessCourse>;
