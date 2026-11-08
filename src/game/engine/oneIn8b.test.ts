@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { LifeEngineError } from "@/game/engine/types";
 import {
   LIFE_KEY_STORAGE,
-  OneIn8bError,
   clearLifeKey,
   createOneIn8bTransport,
   readLifeKey,
@@ -102,7 +102,7 @@ describe("createOneIn8bTransport", () => {
       status: 401,
     });
     await expect(transport.start({ country: "VNM" })).rejects.toBeInstanceOf(
-      OneIn8bError,
+      LifeEngineError,
     );
   });
 

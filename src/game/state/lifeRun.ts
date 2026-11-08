@@ -1,14 +1,14 @@
 import { uid } from "@/lib/storage";
 import type { ScenePlan } from "@/game/scenes/types";
 import type {
-  LiveResponse,
-  OneIn8bDeath,
-  OneIn8bDecision,
-  OneIn8bFocus,
-  OneIn8bMeta,
-  OneIn8bSheetItem,
-  OneIn8bState,
-  OneIn8bUsage,
+  LifeStepResult,
+  LifeDeath,
+  LifeDecision,
+  LifeFocus,
+  LifeMeta,
+  LifeSheetItem,
+  LifeState,
+  LifeUsage,
 } from "@/game/engine/types";
 
 export type LifePhase =
@@ -48,19 +48,19 @@ export interface LifeRun {
   engineVersion: string;
   config: LifeConfig;
   token: string;
-  state: OneIn8bState;
-  decision: OneIn8bDecision | null;
-  focus: OneIn8bFocus | null;
-  sheet: OneIn8bSheetItem[];
+  state: LifeState;
+  decision: LifeDecision | null;
+  focus: LifeFocus | null;
+  sheet: LifeSheetItem[];
   journal: JournalEntry[];
   thoughts: Record<number, string>;
   chapterIndex: number;
   sceneCount: number;
   ended: boolean;
-  death: OneIn8bDeath | null;
+  death: LifeDeath | null;
   phase: LifePhase;
-  meta: OneIn8bMeta | null;
-  usage: OneIn8bUsage | null;
+  meta: LifeMeta | null;
+  usage: LifeUsage | null;
   /** The scene the player is currently in, persisted so resume does not skip it. */
   pendingScene?: ScenePlan | null;
   /** Titles of the scenes seen so far, for the life review. */
@@ -83,7 +83,7 @@ export interface CompletedLife {
 }
 
 export function journalFromResponse(
-  res: LiveResponse,
+  res: LifeStepResult,
   kind: JournalEntry["kind"],
   year?: number,
 ): JournalEntry[] {
@@ -104,7 +104,7 @@ export function journalFromResponse(
     .filter((entry) => entry.text.trim().length > 0);
 }
 
-function birthJournal(res: LiveResponse): JournalEntry[] {
+function birthJournal(res: LifeStepResult): JournalEntry[] {
   const entries = journalFromResponse(res, "birth", res.state.year);
   if (entries.length > 0) return entries;
   const name =
@@ -124,7 +124,7 @@ function birthJournal(res: LiveResponse): JournalEntry[] {
   ];
 }
 
-export function createRun(config: LifeConfig, res: LiveResponse): LifeRun {
+export function createRun(config: LifeConfig, res: LifeStepResult): LifeRun {
   return {
     id: uid("life"),
     startedAt: Date.now(),
@@ -149,7 +149,7 @@ export function createRun(config: LifeConfig, res: LiveResponse): LifeRun {
   };
 }
 
-export function applyLiveResponse(run: LifeRun, res: LiveResponse): LifeRun {
+export function applyStepResult(run: LifeRun, res: LifeStepResult): LifeRun {
   const events = journalFromResponse(res, "event", res.state.year);
   const decisionEntries: JournalEntry[] = res.decision
     ? [

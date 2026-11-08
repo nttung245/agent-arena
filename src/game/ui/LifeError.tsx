@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { OneIn8bError } from "@/game/engine/oneIn8b";
+import type { LifeEngineError } from "@/game/engine/types";
 
 const MESSAGES: Record<string, string> = {
   key: "The 1in8b key was rejected. Paste a valid key to continue this life.",
@@ -20,7 +20,7 @@ export function LifeError({
   onNewKey,
   onExit,
 }: {
-  error: OneIn8bError;
+  error: LifeEngineError;
   onRetry: () => void;
   onNewKey: (key: string) => void;
   onExit: () => void;

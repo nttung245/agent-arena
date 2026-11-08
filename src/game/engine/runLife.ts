@@ -6,15 +6,15 @@ import {
   selectTrigger,
   type SceneTrigger,
 } from "@/game/engine/chapters";
-import { OneIn8bError, type LifeTransport } from "@/game/engine/oneIn8b";
+import { LifeEngineError, type LifeTransport } from "@/game/engine/types";
 import { selectTemplate, type SceneDirector } from "@/game/engine/director";
 import type {
-  LiveResponse,
+  LifeStepResult,
   StartOptions,
   StepBody,
 } from "@/game/engine/types";
 import {
-  applyLiveResponse,
+  applyStepResult,
   createRun,
   type LifeConfig,
   type LifeRun,
@@ -38,15 +38,15 @@ export interface LifeDeps {
 export interface LifeNext {
   run: LifeRun;
   scene: ScenePlan | null;
-  error?: OneIn8bError;
+  error?: LifeEngineError;
 }
 
-function asLifeError(error: unknown): OneIn8bError {
-  if (error instanceof OneIn8bError) return error;
+function asLifeError(error: unknown): LifeEngineError {
+  if (error instanceof LifeEngineError) return error;
   if (error instanceof Error) {
-    return new OneIn8bError(error.message, "unknown", 0);
+    return new LifeEngineError(error.message, "unknown", 0);
   }
-  return new OneIn8bError("Something went wrong", "unknown", 0);
+  return new LifeEngineError("Something went wrong", "unknown", 0);
 }
 
 function failedRun(config: LifeConfig): LifeRun {
@@ -206,8 +206,8 @@ async function stageScene(
 async function resolveMinorDecisions(
   deps: LifeDeps,
   run: LifeRun,
-  response: LiveResponse,
-): Promise<{ run: LifeRun; response: LiveResponse; error?: OneIn8bError }> {
+  response: LifeStepResult,
+): Promise<{ run: LifeRun; response: LifeStepResult; error?: LifeEngineError }> {
   let currentRun = run;
   let currentResponse = response;
 
@@ -225,7 +225,7 @@ async function resolveMinorDecisions(
     } catch (error) {
       return { run: currentRun, response: currentResponse, error: asLifeError(error) };
     }
-    currentRun = applyLiveResponse(currentRun, currentResponse);
+    currentRun = applyStepResult(currentRun, currentResponse);
   }
 
   return { run: currentRun, response: currentResponse };
@@ -239,7 +239,7 @@ async function continueAfterAction(
   deps: LifeDeps,
   run: LifeRun,
   previousAge: number,
-  response: LiveResponse,
+  response: LifeStepResult,
 ): Promise<LifeNext> {
   const resolved = await resolveMinorDecisions(deps, run, response);
   const next = resolved.run;
@@ -277,7 +277,7 @@ async function advanceFrom(
   let previous = previousAge;
 
   for (let step = 0; step < 30; step += 1) {
-    let response: LiveResponse;
+    let response: LifeStepResult;
     try {
       response = await deps.transport.step({
         token: current.token,
@@ -287,7 +287,7 @@ async function advanceFrom(
       return { run: current, scene: null, error: asLifeError(error) };
     }
 
-    let next = applyLiveResponse(current, response);
+    let next = applyStepResult(current, response);
     const resolved = await resolveMinorDecisions(deps, next, response);
     next = resolved.run;
     if (resolved.error) {
@@ -365,7 +365,7 @@ export async function submitChoice(
       token: run.token,
       choose: key,
     });
-    const applied = applyLiveResponse(run, response);
+    const applied = applyStepResult(run, response);
     const withChoice: LifeRun = {
       ...applied,
       journal: [
@@ -393,7 +393,7 @@ async function act(
 ): Promise<LifeNext> {
   try {
     const response = await deps.transport.step(body);
-    const applied = applyLiveResponse(run, response);
+    const applied = applyStepResult(run, response);
     return continueAfterAction(deps, applied, run.state.age, response);
   } catch (error) {
     return { run, scene: null, error: asLifeError(error) };
@@ -427,7 +427,7 @@ export async function resumeLife(
       token: run.token,
       view: true,
     });
-    const applied = applyLiveResponse(run, response);
+    const applied = applyStepResult(run, response);
     return continueAfterAction(deps, applied, run.state.age, response);
   } catch (error) {
     return { run, scene: null, error: asLifeError(error) };

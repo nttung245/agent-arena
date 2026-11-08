@@ -1,10 +1,7 @@
 import { create } from "zustand";
 import { ALL_CHARACTERS } from "@/lib/assets/characters";
-import {
-  OneIn8bError,
-  createOneIn8bTransport,
-  readLifeKey,
-} from "@/game/engine/oneIn8b";
+import { createOneIn8bTransport, readLifeKey } from "@/game/engine/oneIn8b";
+import { LifeEngineError } from "@/game/engine/types";
 import { createDeterministicDirector } from "@/game/engine/director";
 import {
   advanceLife,
@@ -30,7 +27,7 @@ export interface LifeStore {
   run: LifeRun | null;
   scene: ScenePlan | null;
   phase: LifePhase;
-  error: OneIn8bError | null;
+  error: LifeEngineError | null;
   busy: boolean;
   start: (config: LifeConfig) => Promise<void>;
   choose: (key: string) => Promise<void>;
@@ -62,8 +59,8 @@ function buildDeps(): LifeDeps | null {
   };
 }
 
-function missingKey(): OneIn8bError {
-  return new OneIn8bError("Paste a 1in8b API key to begin.", "key", 401);
+function missingKey(): LifeEngineError {
+  return new LifeEngineError("Paste a 1in8b API key to begin.", "key", 401);
 }
 
 export const useLifeStore = create<LifeStore>((set, get) => {

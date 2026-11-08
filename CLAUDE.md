@@ -122,7 +122,7 @@ npx vitest run src/lib/storage.test.ts -t "clampChattiness"
 - **What it is:** a first-person life simulation, lazy-loaded with `React.lazy`. While it is open, `App.tsx` renders only `<LifeGame>`, so the arena Canvas unmounts.
 - **Docs:** the design spec and the implementation plan live in `docs/superpowers/`. Read the plan's "Global Constraints" and "Review Focus" sections before you change this mode.
 - **Engine:** each life comes from the external 1in8b API (`POST https://1in8b.life/api/v1/live`). The browser calls it with the player's own `k8b_` key.
-  - `engine/oneIn8b.ts` is the transport (`LifeTransport`). Failures are `OneIn8bError` with a `code`, such as `key`, `rate` or `month`.
+  - `engine/types.ts` holds the engine-neutral contract: `LifeTransport` (`start`/`step`), `LifeStepResult`, and `LifeEngineError` with a `code`, such as `key`, `rate` or `month`. `engine/oneIn8b.ts` is the 1in8b implementation of that transport.
   - Every response returns a sealed `token`. It is the only way to resume a life, so recoverable errors (bad key, quota) must keep the run and its token.
 - **State:** `state/lifeStore.ts` is its own Zustand store, independent of `arenaStore`. It uses three localStorage keys:
   - `agent-arena-life` holds the current run.

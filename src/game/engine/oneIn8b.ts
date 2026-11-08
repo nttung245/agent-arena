@@ -1,24 +1,13 @@
-import type { LiveResponse, StartOptions, StepBody } from "@/game/engine/types";
+import {
+  LifeEngineError,
+  type LifeStepResult,
+  type LifeTransport,
+  type StartOptions,
+  type StepBody,
+} from "@/game/engine/types";
 
 export const API_BASE = "https://1in8b.life/api/v1";
 export const LIFE_KEY_STORAGE = "agent-arena-life-key";
-
-export class OneIn8bError extends Error {
-  readonly code: string;
-  readonly status: number;
-
-  constructor(message: string, code: string, status: number) {
-    super(message);
-    this.name = "OneIn8bError";
-    this.code = code;
-    this.status = status;
-  }
-}
-
-export interface LifeTransport {
-  start(options: StartOptions, signal?: AbortSignal): Promise<LiveResponse>;
-  step(body: StepBody, signal?: AbortSignal): Promise<LiveResponse>;
-}
 
 export function readLifeKey(): string | null {
   if (typeof localStorage === "undefined") return null;
@@ -45,16 +34,16 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function normalizeResponse(raw: unknown): LiveResponse {
+function normalizeResponse(raw: unknown): LifeStepResult {
   if (!isRecord(raw) || !isRecord(raw.state) || !Array.isArray(raw.events)) {
-    throw new OneIn8bError("Invalid engine response", "invalid_response", 0);
+    throw new LifeEngineError("Invalid engine response", "invalid_response", 0);
   }
   return {
     ...raw,
-    state: raw.state as LiveResponse["state"],
-    events: raw.events as LiveResponse["events"],
+    state: raw.state as LifeStepResult["state"],
+    events: raw.events as LifeStepResult["events"],
     decision: isRecord(raw.decision)
-      ? (raw.decision as unknown as LiveResponse["decision"])
+      ? (raw.decision as unknown as LifeStepResult["decision"])
       : null,
     token: typeof raw.token === "string" ? raw.token : null,
   };
@@ -69,7 +58,7 @@ export function createOneIn8bTransport(
   async function post(
     body: StartOptions | StepBody,
     signal?: AbortSignal,
-  ): Promise<LiveResponse> {
+  ): Promise<LifeStepResult> {
     let res: Response;
     try {
       res = await fetchImpl(`${API_BASE}/live`, {
@@ -82,8 +71,8 @@ export function createOneIn8bTransport(
         signal,
       });
     } catch (error) {
-      if (error instanceof OneIn8bError) throw error;
-      throw new OneIn8bError("Network error", "network", 0);
+      if (error instanceof LifeEngineError) throw error;
+      throw new LifeEngineError("Network error", "network", 0);
     }
 
     if (!res.ok) {
@@ -102,14 +91,14 @@ export function createOneIn8bTransport(
         typeof payload.error === "string" && payload.error
           ? payload.error
           : `HTTP ${res.status}`;
-      throw new OneIn8bError(message, code, res.status);
+      throw new LifeEngineError(message, code, res.status);
     }
 
     let raw: unknown;
     try {
       raw = await res.json();
     } catch {
-      throw new OneIn8bError("Invalid engine response", "invalid_response", res.status);
+      throw new LifeEngineError("Invalid engine response", "invalid_response", res.status);
     }
     return normalizeResponse(raw);
   }

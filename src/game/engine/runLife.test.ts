@@ -11,8 +11,8 @@ import {
   type LifeDeps,
 } from "@/game/engine/runLife";
 import { createRun } from "@/game/state/lifeRun";
-import { OneIn8bError, type LifeTransport } from "@/game/engine/oneIn8b";
-import type { LiveResponse, StepBody } from "@/game/engine/types";
+import { LifeEngineError, type LifeTransport } from "@/game/engine/types";
+import type { LifeStepResult, StepBody } from "@/game/engine/types";
 import type { SceneTemplate } from "@/game/scenes/types";
 
 const template = (id: SceneTemplate["id"]): SceneTemplate => ({
@@ -53,7 +53,7 @@ function deps(transport: LifeTransport): LifeDeps {
   };
 }
 
-const sequence: LiveResponse[] = [
+const sequence: LifeStepResult[] = [
   {
     state: { age: 0, name: "Lan" },
     events: [[0, "Born."]],
@@ -87,7 +87,7 @@ const sequence: LiveResponse[] = [
   },
 ];
 
-function fakeTransport(sequence: LiveResponse[]) {
+function fakeTransport(sequence: LifeStepResult[]) {
   let index = 0;
   const calls: StepBody[] = [];
   return {
@@ -279,7 +279,7 @@ describe("submitChoice and buyItems", () => {
 });
 
 describe("recoverable engine errors", () => {
-  const startResponse: LiveResponse = {
+  const startResponse: LifeStepResult = {
     state: { age: 0, name: "Lan" },
     events: [[0, "Born."]],
     decision: null,
@@ -290,7 +290,7 @@ describe("recoverable engine errors", () => {
     const transport: LifeTransport = {
       start: async () => startResponse,
       step: async () => {
-        throw new OneIn8bError("bad key", "key", 401);
+        throw new LifeEngineError("bad key", "key", 401);
       },
     };
     const born = await startLife(deps(transport), {});
@@ -303,7 +303,7 @@ describe("recoverable engine errors", () => {
     const transport: LifeTransport = {
       start: async () => startResponse,
       step: async () => {
-        throw new OneIn8bError("quota", "month", 429);
+        throw new LifeEngineError("quota", "month", 429);
       },
     };
     const born = await startLife(deps(transport), {});

@@ -1,4 +1,4 @@
-import type { OneIn8bDecision, OneIn8bFocus } from "@/game/engine/types";
+import type { LifeDecision, LifeFocus } from "@/game/engine/types";
 import type { ScenePlan } from "@/game/scenes/types";
 
 export function Dialogue({
@@ -11,8 +11,8 @@ export function Dialogue({
   onContinue,
 }: {
   plan: ScenePlan;
-  decision: OneIn8bDecision | null;
-  focus?: OneIn8bFocus | null;
+  decision: LifeDecision | null;
+  focus?: LifeFocus | null;
   busy?: boolean;
   onChoose: (key: string) => void;
   onFocus?: (key: string) => void;
