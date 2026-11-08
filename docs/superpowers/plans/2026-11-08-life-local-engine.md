@@ -256,10 +256,10 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 **Files:** Extend `build.mjs`. Create `scripts/life-data/xlsx.mjs`, `data/life/vnm/crises.json` and `data/life/vnm/causes.json`.
 
-- [ ] Settle Licence question 1 first, and record the outcome in `SOURCES.md`.
-- [ ] Cause shares by age group × sex × year, from GHE 2023 via the OData API (2000–2023) or from the fallback in Licence question 1. Group the causes into about 20 that a life record can name, such as stroke, heart disease, lung cancer, liver cancer, other cancers, COPD, tuberculosis, road injury, drowning and infections in infancy. Self-harm stays in the data, flagged `hidden: true` (see "Content rules").
-- [ ] Before 2000, use the 2000 shares, marked `estimate: true`. This understates infectious disease in the 1950s–80s; it is a known limit. After - [x] `crises.json`: each year's share of all deaths from conflict (WPP event types Conflict + Battle deaths), disasters, epidemics and COVID-19: WPP `Mortality_Crises` deaths divided by WPP `Deaths`. Sourced, no estimate. War shares run from 1.5% to 36.5% (1972) of all deaths over 1950–1975. From 2010, WPP lists a few dozen violent deaths a year; they are labelled violence, not war. The split of war deaths by region and age/sex (men 15–40 heaviest) is an estimate that belongs in `effects.yaml` (Task 7). Conflict is a share inside all-cause mortality, so the other causes shrink in proportion in those years. 1979 has no entry.se years. 1979 has no entry.
-- [ ] A test asserts that each age × sex × year row of shares sums to 1 (±1e-6).
+- [x] Settle Licence question 1 first, and record the outcome in `SOURCES.md`. *Decided 2026-11-08: build with the World Bank's CC BY 4.0 groups now and ask WHO for permission; swap in GHE if granted.*
+- [x] Cause shares, as built: `causes.json` holds the World Bank's three groups (communicable, non-communicable, injury; 2000–2021) and `deaths.json` holds WPP deaths by age band and sex. `causes.ts` turns them into a distribution over about 25 named causes using estimated age patterns from `effects.yaml`, raking whole groups each year so national shares match the World Bank's. Self-harm is never a named cause; those deaths fall proportionally on the other injury causes.
+- [x] Outside 2000–2021, hold the *age-standardized group factors* of the nearest published year (not the national shares), so decades with many child deaths get more infectious deaths on their own. Crisis deaths are taken out of the World Bank groups first (COVID-19 and epidemics from communicable, war and disasters from injury) so nothing is counted twice.
+- [x] Tests: every distribution sums to 1; national group shares match the World Bank in every published year (±0.2 points); the war share matches WPP in 1968 and 1972.
 
 ### Task 4: Data pipeline — school, work, marriage, migration
 
@@ -298,12 +298,14 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 ### Task 7: Mortality and causes
 
-**Files:** Create `src/game/sim/mortality.ts`, `data/life/effects.yaml` (the mortality part) and tests. Start `calibration.test.ts`.
+**Files:** Create `src/game/sim/mortality.ts`, `src/game/sim/causes.ts`, `data/life/effects.yaml` (mortality multipliers, cause patterns, crisis weights) and tests. Start `calibration.test.ts`.
 
-- [ ] Yearly death rolls for the person and every living relative. The multipliers are income fifth, town/village and the health stat, each normalized to mean one.
-- [ ] Cause pick by competing risks, with hidden causes redistributed (see "Content rules").
-- [ ] Conflict cause for 1950–1975, picked as one share inside the competing risks (Task 3), weighted by region, age and sex.
-- [ ] Calibration: for birth cohorts 1950, 1975 and 2000, simulated mean age at death over 4,000 lives is within ±1.0 year of the life expectancy computed along the cohort diagonal of `mortality.json`. Simulated cause shares for adults aged 30–69 are within ±3 percentage points of the table for every cause above 5%.
+*As built:* the health stat does not yet change the death rate; illness does that in Task 8. Crisis weights use water-filling so no age band passes 90% crisis deaths while the national share stays exact. Calibration (4,000 lives per cohort) lands within 1 year for 1950, 1975 and 2000, both sexes.
+
+- [x] Yearly death rolls for the person and every living relative. The multipliers are income fifth, town/village and the health stat, each normalized to mean one.
+- [x] Cause pick by competing risks, with hidden causes redistributed (see "Content rules").
+- [x] Conflict cause for 1950–1975, picked as one share inside the competing risks (Task 3), weighted by region, age and sex.
+- [x] Calibration: for birth cohorts 1950, 1975 and 2000, simulated mean age at death over 4,000 lives is within ±1.0 year of the life expectancy computed along the cohort diagonal of `mortality.json`. Simulated cause shares for adults aged 30–69 are within ±3 percentage points of the table for every cause above 5%.
 
 ### Task 8: Chronic illness course
 

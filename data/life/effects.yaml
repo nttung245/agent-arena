@@ -1,0 +1,80 @@
+# How a person's situation and age shape what happens to them. Every number here is an
+# ESTIMATE we chose, not a value read from a table. The engine always rescales them so
+# the national totals still match the sourced tables in data/life/vnm/ (see each note).
+# Replace an estimate with a sourced value when one is found, and cite it.
+
+mortality:
+  # Multipliers on the yearly chance of death. The engine rescales each set to average 1
+  # over the population (income fifths 20% each; town/village by that year's urban share),
+  # so they move people around the UN rate without moving the rate.
+  multipliers:
+    estimate: true
+    note: Poorer and rural families die somewhat earlier; the size of the gradient is a placeholder.
+    fifth: [1.3, 1.15, 1.0, 0.9, 0.8] # poorest to richest
+    place: { town: 0.9, village: 1.1 }
+
+causes:
+  # Age bands (first age of each band; the last is open). Must match deaths.json.
+  bands: [0, 1, 5, 15, 30, 45, 60, 75]
+
+  # How likely each World Bank cause group is at each age, before rescaling. Each year the
+  # engine scales whole groups so that, weighted by WPP deaths by age and sex, the national
+  # shares match the World Bank's (2000-2021; held at the nearest year outside it).
+  groups:
+    estimate: true
+    note: Shape of the age pattern only (infections and birth conditions early, injuries in youth, chronic disease later).
+    infectious: [6, 4, 2, 1.5, 1.2, 0.8, 0.7, 0.9]
+    chronic: [2.5, 2.5, 3.5, 3, 5, 8, 9, 9]
+    injury: [0.5, 3.5, 4.5, 5.5, 3.8, 1.2, 0.5, 0.3]
+    # Injuries are more common among men.
+    sex: { injury: { male: 1.8, female: 0.8 } }
+
+  # Named causes within each group: relative weight by age band, optional weight by sex.
+  # `course: chronic` marks illnesses that come with a diagnosis and decline years before death.
+  named:
+    estimate: true
+    note: Which named cause within a group, by age; a placeholder pattern, not a table.
+    infectious:
+      birth_complications: { label: complications around birth, weights: [8, 0, 0, 0, 0, 0, 0, 0] }
+      pneumonia: { label: pneumonia, weights: [2, 4, 2, 1, 1, 2, 4, 6] }
+      diarrhoea: { label: a diarrhoeal illness, weights: [1, 3, 1, 0.3, 0.2, 0.2, 0.3, 0.5] }
+      tuberculosis: { label: tuberculosis, weights: [0, 0.2, 0.5, 2, 3, 3, 2, 1], course: chronic }
+      maternal: { label: complications of childbirth, weights: [0, 0, 0, 2, 1, 0, 0, 0], sex: { male: 0 } }
+      other_infection: { label: an infection, weights: [1, 2, 2, 2, 2, 2, 2, 2] }
+    chronic:
+      congenital: { label: a condition present from birth, weights: [10, 4, 1.5, 0.5, 0, 0, 0, 0] }
+      stroke: { label: a stroke, weights: [0, 0, 0.1, 0.5, 2, 5, 8, 9] }
+      heart_disease: { label: heart disease, weights: [0, 0, 0.2, 0.8, 2, 4, 6, 8] }
+      lung_cancer: { label: lung cancer, weights: [0, 0, 0, 0.1, 0.8, 3, 4, 3], sex: { male: 2.5 }, course: chronic }
+      liver_cancer: { label: liver cancer, weights: [0, 0, 0, 0.3, 1.5, 3, 3, 2], sex: { male: 2.5 }, course: chronic }
+      stomach_cancer: { label: stomach cancer, weights: [0, 0, 0, 0.1, 0.6, 1.5, 2, 2], course: chronic }
+      other_cancer: { label: cancer, weights: [0, 0.5, 1.5, 1.5, 2, 3, 4, 3], course: chronic }
+      copd: { label: a long lung illness, weights: [0, 0, 0, 0, 0.3, 1, 3, 4], sex: { male: 1.5 }, course: chronic }
+      diabetes: { label: diabetes, weights: [0, 0, 0, 0.2, 0.5, 1.5, 2.5, 2] }
+      kidney_disease: { label: kidney failure, weights: [0, 0.1, 0.3, 0.5, 0.7, 1, 1.2, 1.2], course: chronic }
+      cirrhosis: { label: liver disease, weights: [0, 0, 0, 0.3, 1.5, 2, 1.5, 0.8], sex: { male: 3 }, course: chronic }
+    injury:
+      road: { label: a road accident, weights: [0.2, 1, 3, 6, 5, 4, 2, 1], sex: { male: 2.5 } }
+      drowning: { label: drowning, weights: [0.5, 6, 4, 1.5, 1, 0.8, 0.5, 0.3], sex: { male: 1.5 } }
+      fall: { label: a fall, weights: [0.2, 0.5, 0.5, 0.5, 0.7, 1, 2, 4] }
+      other_injury: { label: an accident, weights: [1, 2, 2, 2, 2, 2, 1.5, 1] }
+
+  # Who crisis deaths fall on, by age band. The engine rescales each year so the national
+  # share of deaths from each crisis matches crises.json (WPP).
+  crises:
+    estimate: true
+    note: War deaths fall mostly on men of fighting age; storm and flood deaths on everyone alike.
+    conflict:
+      label: the war
+      laterLabel: violence # conflict deaths WPP lists from 2010 on are not a war
+      warUntil: 1975
+      weights: { male: [0.5, 0.5, 1, 8, 5, 2, 1, 0.5], female: [0.5, 0.5, 1, 2, 1.5, 1, 0.8, 0.5] }
+    disaster:
+      label: a storm or flood
+      weights: { male: [1, 1, 1, 1, 1, 1, 1, 1], female: [1, 1, 1, 1, 1, 1, 1, 1] }
+    epidemic:
+      label: an epidemic
+      weights: { male: [3, 3, 1, 0.5, 0.5, 1, 2, 3], female: [3, 3, 1, 0.5, 0.5, 1, 2, 3] }
+    covid:
+      label: COVID-19
+      weights: { male: [0, 0, 0.05, 0.1, 0.5, 2, 5, 8], female: [0, 0, 0.05, 0.1, 0.5, 2, 5, 8] }

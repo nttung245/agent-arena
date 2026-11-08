@@ -19,6 +19,7 @@ export const WPP = {
     ],
     fertility: "WPP2024_Fertility_by_Age1.csv.gz",
     indicators: "WPP2024_Demographic_Indicators_Medium.csv.gz",
+    deaths: "WPP2024_DeathsBySingleAgeSex_Medium_1950-2023.csv.gz",
   },
   /** Excess deaths from conflicts, disasters and epidemics that WPP folds into its mortality. */
   crises: {
@@ -53,6 +54,9 @@ export const WDI = {
     "SI.POV.GINI",
   ],
   migration: ["SP.URB.TOTL.IN.ZS"],
+  // Cause-of-death groups (% of deaths) derived by the World Bank from WHO's Global Health
+  // Estimates and published under CC BY 4.0, plus road-traffic deaths per 100,000.
+  causes: ["SH.DTH.COMM.ZS", "SH.DTH.NCOM.ZS", "SH.DTH.INJR.ZS", "SH.STA.TRAF.P5"],
 };
 
 export const UIS = {

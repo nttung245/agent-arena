@@ -196,6 +196,7 @@ async function buildIndicators() {
     lexMale: "LExMale",
     births: "Births",
     deaths: "Deaths",
+    population: "TPopulation1July",
   };
   const series = Object.fromEntries(Object.keys(columns).map((key) => [key, new Array(YEARS).fill(null)]));
   for await (const row of countryRows(WPP.files.indicators)) {
@@ -214,7 +215,7 @@ async function buildIndicators() {
     source: `${WPP.name}, demographic indicators, medium variant (${WPP.licence})`,
     firstYear: FIRST_YEAR,
     lastYear: LAST_YEAR,
-    note: "srb = male births per 100 female births; births and deaths in thousands; lex* = period life expectancy at birth.",
+    note: "srb = male births per 100 female births; births, deaths and population (1 July) in thousands; lex* = period life expectancy at birth.",
     ...series,
   };
 }
@@ -263,6 +264,47 @@ async function buildCrises(indicators) {
     source: `${WPP.name}, metadata for mortality crises (${WPP.licence})`,
     note: "years[y][kind].share = crisis deaths / all deaths that year. These deaths are already inside mortality.json. 'conflict' adds WPP's Conflict and Battle deaths event types.",
     years,
+  };
+}
+
+/** Age bands the cause-of-death model works in; each value is the band's first age. */
+const DEATH_BANDS = [0, 1, 5, 15, 30, 45, 60, 75];
+const DEATHS_LAST_YEAR = 2023;
+
+/** WPP deaths by age band and sex (thousands), to weight cause shares by who actually dies. */
+async function buildDeaths() {
+  const span = DEATHS_LAST_YEAR - FIRST_YEAR + 1;
+  const result = {};
+  for (const sex of ["female", "male"]) result[sex] = Array.from({ length: span }, () => new Array(DEATH_BANDS.length).fill(0));
+  for await (const row of countryRows(WPP.files.deaths)) {
+    const y = yearIndex(row);
+    const age = Number(row.AgeGrpStart);
+    let band = 0;
+    while (band + 1 < DEATH_BANDS.length && age >= DEATH_BANDS[band + 1]) band++;
+    result.female[y][band] += Number(row.DeathFemale);
+    result.male[y][band] += Number(row.DeathMale);
+  }
+  for (const sex of ["female", "male"]) {
+    result[sex] = result[sex].map((bands, i) => {
+      if (bands.every((v) => v === 0)) throw new Error(`deaths: ${sex} ${FIRST_YEAR + i} is empty`);
+      return bands.map(round);
+    });
+  }
+  return {
+    source: `${WPP.name}, deaths by single age and sex, medium variant (${WPP.licence})`,
+    firstYear: FIRST_YEAR,
+    lastYear: DEATHS_LAST_YEAR,
+    bands: DEATH_BANDS,
+    note: "female/male[year - firstYear][band] = deaths in thousands; bands start at the listed ages, the last is open.",
+    ...result,
+  };
+}
+
+async function buildCauses() {
+  return {
+    source: `${WDI.publisher}, ${WDI.name} (${WDI.licence}), derived from WHO Global Health Estimates`,
+    note: "Percent of all deaths by cause group, as published: SH.DTH.COMM.ZS communicable, maternal, perinatal and nutritional conditions; SH.DTH.NCOM.ZS non-communicable diseases; SH.DTH.INJR.ZS injuries. SH.STA.TRAF.P5: road-traffic deaths per 100,000 people. Crisis deaths (crises.json) are inside these groups.",
+    wdi: await wdiTable(WDI.causes),
   };
 }
 
@@ -422,6 +464,8 @@ writeJson("fertility.json", await buildFertility());
 const indicators = await buildIndicators();
 writeJson("indicators.json", indicators);
 writeJson("crises.json", await buildCrises(indicators));
+writeJson("deaths.json", await buildDeaths());
+writeJson("causes.json", await buildCauses());
 writeJson("school.json", await buildSchool());
 writeJson("work.json", await buildWork());
 writeJson("marriage.json", await buildMarriage());

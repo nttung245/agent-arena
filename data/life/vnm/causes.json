@@ -1,0 +1,52 @@
+{
+ "source": "World Bank, World Development Indicators (CC BY 4.0), derived from WHO Global Health Estimates",
+ "note": "Percent of all deaths by cause group, as published: SH.DTH.COMM.ZS communicable, maternal, perinatal and nutritional conditions; SH.DTH.NCOM.ZS non-communicable diseases; SH.DTH.INJR.ZS injuries. SH.STA.TRAF.P5: road-traffic deaths per 100,000 people. Crisis deaths (crises.json) are inside these groups.",
+ "wdi": {
+  "SH.DTH.COMM.ZS": {
+   "2000": 18.97,
+   "2010": 12.54,
+   "2015": 10.82,
+   "2019": 9.131,
+   "2020": 9.16,
+   "2021": 12.4
+  },
+  "SH.DTH.NCOM.ZS": {
+   "2000": 68.07,
+   "2010": 75.84,
+   "2015": 78.56,
+   "2019": 81.06,
+   "2020": 81.23,
+   "2021": 78.21
+  },
+  "SH.DTH.INJR.ZS": {
+   "2000": 12.96,
+   "2010": 11.62,
+   "2015": 10.62,
+   "2019": 9.809,
+   "2020": 9.608,
+   "2021": 8.484
+  },
+  "SH.STA.TRAF.P5": {
+   "2000": 24.1,
+   "2001": 24.2,
+   "2002": 24.3,
+   "2003": 24.2,
+   "2004": 24.9,
+   "2005": 24.6,
+   "2006": 24.5,
+   "2007": 24.3,
+   "2008": 24.8,
+   "2009": 24.6,
+   "2010": 25.6,
+   "2011": 25.3,
+   "2012": 25.4,
+   "2013": 25,
+   "2014": 24.7,
+   "2015": 25.4,
+   "2016": 26.7,
+   "2017": 27.8,
+   "2018": 29.2,
+   "2019": 30.6
+  }
+ }
+}
