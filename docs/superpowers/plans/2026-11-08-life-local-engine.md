@@ -159,7 +159,7 @@ Candidate open sources for the earlier years are the Maddison Project (GDP) and 
 
 - No new runtime dependencies.
 - `src/game/sim/` is pure TypeScript: no React, DOM, Zustand or `fetch`. All randomness comes from the seeded generator held in the token; `Math.random` is not used anywhere in `src/game/sim/`.
-- Life data loads only with the lazy life chunk. Budget: 400 KB of JSON before compression. Task 2 measures the real size and adjusts this line.
+- Life data loads only with the lazy life chunk. Budget: 400 KB of JSON before compression. Measured after Task 4: 352 KB, of which `mortality.json` is 255 KB. If later data pushes past the budget, store `qx` with fewer digits before adding anything else.
 - Any number that is not read straight from a table is an estimate. It carries `estimate: true` and a note or source in its data file. A `decision.fact` line only quotes sourced table values, never estimates.
 - `npm run lint`, `npm test` and `npm run build` pass. `src/game/sim/**` joins the 80% coverage gate in `vitest.config.ts` (Task 5).
 - Commit after every task.
@@ -243,14 +243,14 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 **Files:** Create `scripts/life-data/build.mjs`, `scripts/life-data/sources.mjs`, `data/life/vnm/mortality.json`, `data/life/vnm/fertility.json`, `data/life/vnm/SOURCES.md`. Modify `package.json` (`"life:data": "node scripts/life-data/build.mjs"`) and `.gitignore` (`.cache/`).
 
-- [ ] Download the WPP files listed in "Data sources" into `.cache/life-data/`, skipping files already there. The cache needs about 1.2 GB.
-- [ ] Stream each `.csv.gz` through `zlib` line by line and keep only `ISO3_code == "VNM"` rows. Never load a whole file into memory. Use only Node built-ins.
-- [ ] `mortality.json`: `{ years: [1950..2100], ages: [0..100], female: number[][], male: number[][] }`, with qx rounded to 6 significant digits. Ages come from `AgeGrpStart`; 100 means 100+.
-- [ ] `fertility.json`: ASFR for ages 15–49 by year (`Variant == "Medium"`, divided by 1,000), plus `SRB` by year from the Demographic Indicators file.
-- [ ] Sanity test: period life expectancy computed from our `qx` matches WPP's `LEx` within 0.2 years for every year from 1950 to 2100, including the 1968 and 1972 dips.
-- [ ] The output is deterministic: sorted keys, fixed rounding, and re-running produces no diff.
-- [ ] Write `SOURCES.md` rows: file, source, edition, URL, licence, retrieval date, transform.
-- [ ] Measure the JSON size and update the budget line in "Global Constraints".
+- [x] Download the WPP files listed in "Data sources" into `.cache/life-data/`, skipping files already there. The cache needs about 1.2 GB.
+- [x] Stream each `.csv.gz` through `zlib` line by line and keep only `ISO3_code == "VNM"` rows. Never load a whole file into memory. Use only Node built-ins.
+- [x] `mortality.json`: `{ years: [1950..2100], ages: [0..100], female: number[][], male: number[][] }`, with qx rounded to 6 significant digits. Ages come from `AgeGrpStart`; 100 means 100+.
+- [x] `fertility.json`: ASFR for ages 15–49 by year (`Variant == "Medium"`, divided by 1,000), plus `SRB` by year from the Demographic Indicators file.
+- [x] Sanity test: period life expectancy computed from our `qx` matches WPP's `LEx` within 0.2 years for every year from 1950 to 2100, including the 1968 and 1972 dips.
+- [x] The output is deterministic: sorted keys, fixed rounding, and re-running produces no diff.
+- [x] Write `SOURCES.md` rows: file, source, edition, URL, licence, retrieval date, transform.
+- [x] Measure the JSON size and update the budget line in "Global Constraints".
 
 ### Task 3: Data pipeline — causes of death
 
@@ -265,12 +265,14 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 **Files:** Extend `build.mjs`. Create `school.json`, `work.json`, `marriage.json` and `migration.json` in `data/life/vnm/`.
 
-- [ ] Check the Maddison Project and Wittgenstein Centre licences. Use them for the years before 1990 only if they are open; otherwise use estimates (see "Gaps").
-- [ ] `school.json`: the chance of finishing each stage (primary, lower secondary, upper secondary, tertiary entry) by the year a child reaches it, from WDI totals. Add income-fifth, town/village and sex multipliers from UIS `CR.*` (Licence question 2), normalized to mean one and interpolated between survey years.
-- [ ] `work.json`: sector shares (`SL.*.EMPL.ZS`, by sex), income share by fifth (`SI.DST.*`), and GDP per capita PPP (`NY.GDP.PCAP.PP.KD`) by year.
-- [ ] `marriage.json`: `EVER_MARRIED` by 5-year age group × sex, one source per survey year, interpolated between years. Derive the first-marriage hazard from differences between age groups. Before 1988, hold 1988, marked as an estimate.
-- [ ] `migration.json`: urban share (`SP.URB.TOTL.IN.ZS`) and emigrant stock by destination × year. Derive a yearly emigration hazard from stock changes. Before 1990, spread the 1990 stock as an average outflow over 1975–1990, marked as an estimate.
-- [ ] Each file has a `SOURCES.md` row, with its licence. `school.json` is CC BY-SA 4.0. Every value that is not straight from a table is marked as an estimate.
+- [ ] Check the Maddison Project and Wittgenstein Centre licences. Use them for the years before 1990 only if they are open; otherwise use estimates (see "Gaps"). *Not done yet: v1 holds the first observed value, in engine code.*
+- [x] `school.json`: the chance of finishing each stage (primary, lower secondary, upper secondary, tertiary entry) by the year a child reaches it, from WDI totals. Add income-fifth, town/village and sex multipliers from UIS `CR.*` (Licence question 2), normalized to mean one and interpolated between survey years.
+- [x] `work.json`: sector shares (`SL.*.EMPL.ZS`, by sex), income share by fifth (`SI.DST.*`), and GDP per capita PPP (`NY.GDP.PCAP.PP.KD`) by year.
+- [x] `marriage.json`: `EVER_MARRIED` by 5-year age group × sex, one source per survey year, interpolated between years. Derive the first-marriage hazard from differences between age groups. Before 1988, hold 1988, marked as an estimate.
+- [x] `migration.json`: urban share (`SP.URB.TOTL.IN.ZS`) and emigrant stock by destination × year. Derive a yearly emigration hazard from stock changes. Before 1990, spread the 1990 stock as an average outflow over 1975–1990, marked as an estimate.
+- [x] Each file has a `SOURCES.md` row, with its licence. `school.json` is CC BY-SA 4.0. Every value that is not straight from a table is marked as an estimate.
+
+*As built:* the four files keep values as published (sparse, by year; UIS and WDI in percent). Interpolation, the 3–5-year lag in UIS completion, hazards derived from marriage shares and stock changes, and gap-filling all live in engine code (Tasks 9–11), where they are tested.
 
 ### Task 5: Sim core — generator, tables, picks
 

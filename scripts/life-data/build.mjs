@@ -8,7 +8,7 @@ import zlib from "node:zlib";
 import { Readable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { fileURLToPath } from "node:url";
-import { ISO3, WPP } from "./sources.mjs";
+import { ISO3, MARRIAGE, MIGRANTS, UIS, WDI, WPP } from "./sources.mjs";
 import { findHeaderRow, readSheet } from "./xlsx.mjs";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -266,6 +266,146 @@ async function buildCrises(indicators) {
   };
 }
 
+/** Fetches JSON once and keeps it in the cache, so rebuilds are repeatable and offline. */
+async function cachedJson(name, url) {
+  const target = path.join(cacheDir, "api", `${name}.json`);
+  if (fs.existsSync(target)) return JSON.parse(fs.readFileSync(target, "utf8"));
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  console.log(`fetching ${name}`);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
+  const body = await res.json();
+  fs.writeFileSync(target, JSON.stringify(body));
+  return body;
+}
+
+/** A WDI indicator as { year: value }, published values only, sorted by year. */
+async function wdiSeries(code) {
+  const body = await cachedJson(`wdi_${code}`, WDI.url(code));
+  const points = Array.isArray(body) ? body[1] : null;
+  if (!Array.isArray(points)) throw new Error(`WDI ${code}: unexpected response`);
+  const series = {};
+  for (const point of [...points].sort((a, b) => Number(a.date) - Number(b.date))) {
+    if (point.value === null || point.value === undefined) continue;
+    series[point.date] = round(Number(point.value));
+  }
+  if (Object.keys(series).length === 0) throw new Error(`WDI ${code}: no values for ${ISO3}`);
+  return series;
+}
+
+async function wdiTable(codes) {
+  const table = {};
+  for (const code of codes) table[code] = await wdiSeries(code);
+  return table;
+}
+
+async function buildSchool() {
+  const body = await cachedJson("uis_completion", UIS.url(UIS.codes));
+  const uis = Object.fromEntries(UIS.codes.map((code) => [code, {}]));
+  for (const record of [...body.records].sort((a, b) => a.year - b.year)) {
+    if (record.geoUnit !== ISO3 || !(record.indicatorId in uis) || record.value === null) continue;
+    uis[record.indicatorId][record.year] = round(Number(record.value));
+  }
+  for (const [code, series] of Object.entries(uis)) {
+    if (Object.keys(series).length === 0) delete uis[code];
+  }
+  if (!uis["CR.1"] || !uis["CR.2"] || !uis["CR.3"]) throw new Error("UIS: missing a total completion series");
+  return {
+    source: `${UIS.publisher}, ${UIS.name} (${UIS.licence}); ${WDI.publisher}, ${WDI.name} (${WDI.licence})`,
+    licence: "This file is released under CC BY-SA 4.0 because it adapts UIS data.",
+    note: "Values in percent, as published, by survey or reference year. UIS CR.n = share of people 3-5 years above the stage's graduation age who completed it (1 primary, 2 lower secondary, 3 upper secondary); .Q1-.Q5 income fifths (Q1 poorest), .URB/.RUR town/village, .F/.M sex. WDI completion rates are gross and can pass 100.",
+    uis,
+    wdi: await wdiTable(WDI.school),
+  };
+}
+
+async function buildWork() {
+  return {
+    source: `${WDI.publisher}, ${WDI.name} (${WDI.licence})`,
+    note: "Values as published, by year. SL.*.EMPL.ZS: employment by sector (% of employment; .FE/.MA by sex; ILO modelled estimates). NY.GDP.PCAP.PP.KD: GDP per capita, PPP, constant 2021 international $. SI.DST.*.20: income share held by each fifth (%). SI.POV.GINI: Gini index.",
+    wdi: await wdiTable(WDI.work),
+  };
+}
+
+function preferredSource(name) {
+  const rank = MARRIAGE.preference.findIndex((pattern) => pattern.test(name));
+  return rank < 0 ? MARRIAGE.preference.length : rank;
+}
+
+async function buildMarriage() {
+  const rows = readSheet(await download(MARRIAGE.file, MARRIAGE.url), MARRIAGE.sheet);
+  const headerIndex = findHeaderRow(rows, ["Country or area", "YearStart", "Sex", "AgeStart", "DataValue"]);
+  const header = rows[headerIndex];
+  const col = (name) => header.indexOf(name);
+  // sex -> year -> source -> { ageStart: share }
+  const found = { female: {}, male: {} };
+  for (const row of rows.slice(headerIndex + 1)) {
+    if (row[col("Country or area")] !== MARRIAGE.country) continue;
+    const sex = row[col("Sex")] === "Women" ? "female" : row[col("Sex")] === "Men" ? "male" : null;
+    if (!sex) continue;
+    const ageStart = Number(row[col("AgeStart")]);
+    const ageEnd = Number(row[col("AgeEnd")]);
+    // Keep the 5-year groups from 15 to 59 and the open 60+ group; skip 10-14 and finer old-age splits.
+    if (ageStart < 15 || (ageStart < 60 && ageEnd - ageStart !== 4) || (ageStart >= 60 && ageStart !== 60)) continue;
+    const year = Number(row[col("YearStart")]);
+    const source = String(row[col("DataCatalog ShortName")]);
+    ((found[sex][year] ??= {})[source] ??= {})[ageStart] = round(Number(row[col("DataValue")]) / 100);
+  }
+  const everMarried = { female: {}, male: {} };
+  const chosen = { female: {}, male: {} };
+  for (const sex of ["female", "male"]) {
+    for (const year of Object.keys(found[sex]).map(Number).sort((a, b) => a - b)) {
+      const sources = Object.entries(found[sex][year])
+        .filter(([, groups]) => Object.keys(groups).length >= 5)
+        .sort(([a], [b]) => preferredSource(a) - preferredSource(b) || a.localeCompare(b));
+      if (sources.length === 0) continue;
+      const [source, groups] = sources[0];
+      everMarried[sex][year] = groups;
+      chosen[sex][year] = source;
+    }
+    if (Object.keys(everMarried[sex]).length === 0) throw new Error(`marriage: no ${sex} data`);
+  }
+  return {
+    source: `${MARRIAGE.publisher}, ${MARRIAGE.name} (${MARRIAGE.licence})`,
+    note: "everMarried[sex][year][ageGroupStart] = share ever married (5-year groups; 60 = 60+). One source per sex and year, preferring censuses, then the annual population change survey, then DHS, MICS and AIS; the source used is in sources.",
+    everMarried,
+    sources: chosen,
+  };
+}
+
+async function buildMigration() {
+  const rows = readSheet(await download(MIGRANTS.file, MIGRANTS.url), MIGRANTS.sheet);
+  const headerIndex = findHeaderRow(rows, ["Location code of destination", "Location code of origin"]);
+  const header = rows[headerIndex];
+  const destCol = header.indexOf("Region, development group, country or area of destination");
+  const destCodeCol = header.indexOf("Location code of destination");
+  const originCodeCol = header.indexOf("Location code of origin");
+  const firstYearCol = originCodeCol + 1; // both sexes, then males, then females
+  const years = [];
+  for (let c = firstYearCol; typeof header[c] === "number" && !years.includes(header[c]); c++) years.push(header[c]);
+  const stock = {};
+  for (const row of rows.slice(headerIndex + 1)) {
+    if (row[originCodeCol] !== MIGRANTS.originCode) continue;
+    if (!(Number(row[destCodeCol]) < 900)) continue; // 900+ are world and regional totals
+    const counts = years.map((_, i) => Number(row[firstYearCol + i]) || 0);
+    stock[String(row[destCol]).replace(/\*$/, "").trim()] = counts;
+  }
+  const destinations = {};
+  const other = years.map(() => 0);
+  const last = years.length - 1;
+  for (const [name, counts] of Object.entries(stock).sort(([, a], [, b]) => b[last] - a[last])) {
+    if (counts[last] >= MIGRANTS.minStock) destinations[name] = counts;
+    else counts.forEach((n, i) => (other[i] += n));
+  }
+  destinations.Other = other;
+  return {
+    source: `${MIGRANTS.publisher}, ${MIGRANTS.name} (${MIGRANTS.licence}); ${WDI.publisher}, ${WDI.name} (${WDI.licence})`,
+    note: "emigrantStock: people born in Viet Nam living in each destination at mid-year (both sexes). These are stocks, not flows. urbanShare: % of Viet Nam's population living in towns and cities (WDI SP.URB.TOTL.IN.ZS).",
+    emigrantStock: { years, destinations },
+    urbanShare: await wdiSeries(WDI.migration[0]),
+  };
+}
+
 /** JSON with one array of numbers per line, so a data refresh produces a readable diff. */
 function writeJson(name, value) {
   const text = JSON.stringify(value, null, 1).replace(/\[\s*(-?[\d.e+-]+(?:,\s*-?[\d.e+-]+)*)\s*\]/g, (_, body) =>
@@ -282,3 +422,7 @@ writeJson("fertility.json", await buildFertility());
 const indicators = await buildIndicators();
 writeJson("indicators.json", indicators);
 writeJson("crises.json", await buildCrises(indicators));
+writeJson("school.json", await buildSchool());
+writeJson("work.json", await buildWork());
+writeJson("marriage.json", await buildMarriage());
+writeJson("migration.json", await buildMigration());
