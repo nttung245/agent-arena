@@ -8,7 +8,7 @@
  * its share of deaths by age, while the death itself arrives years after the
  * diagnosis. Treatment lowers the death rate and raises the recovery rate.
  */
-import { EFFECTS, causeDistribution, isChronicCourse, type CauseId, type IllnessCourse } from "@/game/sim/causes";
+import { EFFECTS, causeShare, isChronicCourse, type CauseId, type IllnessCourse } from "@/game/sim/causes";
 import { householdMultiplier } from "@/game/sim/mortality";
 import type { Illness, SimEvent, SimState } from "@/game/sim/person";
 import { chanceFromRate, roll, scaleChance } from "@/game/sim/pick";
@@ -28,17 +28,20 @@ export function illnessCourse(cause: CauseId): IllnessCourse {
   return course;
 }
 
-/** Share of deaths at this year, age and sex from one cause. */
-function causeShare(cause: CauseId, year: number, age: number, sex: Sex): number {
-  return causeDistribution(year, age, sex).find((c) => c.cause === cause)?.p ?? 0;
-}
+const onsetCache = new Map<number, number>();
 
 /** Chance of being diagnosed with this illness this year (before household adjustment). */
 export function onsetChance(cause: CauseId, sex: Sex, year: number, age: number): number {
+  const index = CHRONIC_CAUSES.indexOf(cause);
+  const key = ((Math.round(year) * 200 + Math.min(Math.floor(age), 199)) * 2 + (sex === "male" ? 1 : 0)) * 64 + index;
+  const cached = index >= 0 ? onsetCache.get(key) : undefined;
+  if (cached !== undefined) return cached;
   const course = illnessCourse(cause);
   const lead = Math.round(course.years);
   const deathsLater = deathChance(sex, year + lead, age + lead) * causeShare(cause, year + lead, age + lead, sex);
-  return Math.min(deathsLater / Math.max(1 - course.cure, 0.05), 0.5);
+  const chance = Math.min(deathsLater / Math.max(1 - course.cure, 0.05), 0.5);
+  onsetCache.set(key, chance);
+  return chance;
 }
 
 /** Yearly rates of leaving the illness by death and by recovery. */

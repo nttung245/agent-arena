@@ -22,9 +22,17 @@ function placeMultiplier(place: Place, year: number): number {
   return meanOne(MULTIPLIERS.place, { town, village: 1 - town })[place];
 }
 
+const householdCache = new Map<number, number>();
+
 /** How much this household's situation moves the UN death rate (about 0.7–1.4). */
 export function householdMultiplier(fifth: Fifth, place: Place, year: number): number {
-  return FIFTH_MULTIPLIER[String(fifth) as keyof typeof FIFTH_MULTIPLIER] * placeMultiplier(place, year);
+  const key = (Math.round(year) * 8 + fifth) * 2 + (place === "town" ? 1 : 0);
+  let multiplier = householdCache.get(key);
+  if (multiplier === undefined) {
+    multiplier = FIFTH_MULTIPLIER[String(fifth) as keyof typeof FIFTH_MULTIPLIER] * placeMultiplier(place, year);
+    householdCache.set(key, multiplier);
+  }
+  return multiplier;
 }
 
 /**

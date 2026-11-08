@@ -27,10 +27,16 @@ function yearIndex(table: YearRange, year: number): number {
  * linear between published years, and the nearest published value outside
  * them. Values outside the published years are estimates.
  */
+const sortedSeries = new WeakMap<object, readonly (readonly [number, number])[]>();
+
 export function interpolate(series: Readonly<Record<string, number>>, year: number): number {
-  const points = Object.entries(series)
-    .map(([key, value]) => [Number(key), value] as const)
-    .sort((a, b) => a[0] - b[0]);
+  let points = sortedSeries.get(series);
+  if (!points) {
+    points = Object.entries(series)
+      .map(([key, value]) => [Number(key), value] as const)
+      .sort((a, b) => a[0] - b[0]);
+    sortedSeries.set(series, points);
+  }
   if (points.length === 0) throw new Error("interpolate: empty series");
   if (year <= points[0][0]) return points[0][1];
   const last = points[points.length - 1];

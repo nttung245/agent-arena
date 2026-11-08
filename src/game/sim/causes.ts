@@ -257,12 +257,17 @@ export interface CauseChance {
   p: number;
 }
 
-const distributionCache = new Map<string, readonly CauseChance[]>();
+const distributionCache = new Map<number, readonly CauseChance[]>();
+const BAND_COUNT = CAUSES.bands.length;
+
+function cellKey(year: number, band: number, sex: Sex): number {
+  return (Math.round(year) * BAND_COUNT + band) * 2 + (sex === "male" ? 1 : 0);
+}
 
 /** The full distribution of causes for a death at this year, age and sex. Sums to 1. */
 export function causeDistribution(year: number, age: number, sex: Sex): readonly CauseChance[] {
   const band = bandOf(age);
-  const key = `${Math.round(year)}|${band}|${sex}`;
+  const key = cellKey(year, band, sex);
   const cached = distributionCache.get(key);
   if (cached) return cached;
   const result = buildDistribution(Math.round(year), band, sex);
@@ -310,11 +315,24 @@ export function pickCause(rng: Rng, year: number, age: number, sex: Sex, options
   );
 }
 
+const chronicCache = new Map<number, number>();
+
 /** Share of deaths at this year, age and sex that come from long illnesses. */
 export function chronicShare(year: number, age: number, sex: Sex): number {
-  return causeDistribution(year, age, sex)
-    .filter((c) => isChronicCourse(c.cause))
-    .reduce((total, c) => total + c.p, 0);
+  const key = cellKey(year, bandOf(age), sex);
+  let share = chronicCache.get(key);
+  if (share === undefined) {
+    share = causeDistribution(year, age, sex)
+      .filter((c) => isChronicCourse(c.cause))
+      .reduce((total, c) => total + c.p, 0);
+    chronicCache.set(key, share);
+  }
+  return share;
+}
+
+/** Share of deaths at this year, age and sex from one cause. */
+export function causeShare(cause: CauseId, year: number, age: number, sex: Sex): number {
+  return causeDistribution(year, age, sex).find((c) => c.cause === cause)?.p ?? 0;
 }
 
 export function isCrisisCause(cause: CauseId): cause is CrisisKind {
