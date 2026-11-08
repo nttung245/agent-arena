@@ -35,7 +35,7 @@ export default defineConfig({
     setupFiles: ["src/test/setup.ts"],
     coverage: {
       provider: "v8",
-      include: ["src/lib/**/*.ts"],
+      include: ["src/lib/**/*.ts", "src/game/sim/**/*.ts"],
       exclude: [
         "src/lib/**/*.generated.ts",
         "src/lib/three/**",
