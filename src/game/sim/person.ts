@@ -64,6 +64,8 @@ export interface Person extends PersonName {
   place: Place;
   fifth: Fifth;
   faith: Faith;
+  /** The country the person emigrated to, if they left Viet Nam. */
+  abroad?: string;
 }
 
 /** 0–100 each. */
@@ -100,7 +102,10 @@ export type SimEvent =
   | { type: "schoolStarted" }
   | { type: "schoolFinished" | "schoolLeft"; stage: SchoolStage }
   | { type: "startedWork" | "changedJob"; sector: Sector; job: string }
-  | { type: "retired" };
+  | { type: "retired" }
+  | { type: "history"; id: string }
+  | { type: "moved"; place: Place }
+  | { type: "emigrated"; destination: string };
 
 export interface SimState {
   version: 1;
@@ -119,6 +124,8 @@ export interface SimState {
   education: Education;
   work: Work;
   illnesses: Illness[];
+  /** History rows already applied (each fires at most once unless it repeats). */
+  seen: string[];
   ended: boolean;
   death: SimDeath | null;
 }

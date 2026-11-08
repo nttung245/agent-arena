@@ -131,6 +131,11 @@ export function totalFertilityRate(year: number): number {
   return indicators.tfr[yearIndex(indicators, year)];
 }
 
+/** Population on 1 July in thousands. */
+export function population(year: number): number {
+  return indicators.population[yearIndex(indicators, year)];
+}
+
 /** Deaths in thousands in the given year, all causes. */
 export function totalDeaths(year: number): number {
   return indicators.deaths[yearIndex(indicators, year)];

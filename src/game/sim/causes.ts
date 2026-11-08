@@ -77,6 +77,16 @@ export interface Effects {
       farmerHealthFloor: number;
     };
   };
+  migration: {
+    townMove: { minAge: number; maxAge: number; shareOfRural: number };
+    emigration: {
+      minAge: number;
+      maxAge: number;
+      adultShare: number;
+      stockTurnover: number;
+      early: { from: number; to: number; ofStock1990: number; weights: Record<string, number>; regions: Record<string, number> };
+    };
+  };
   illness: {
     courses: Record<string, IllnessCourse>;
     treatment: { death: number; recovery: number };

@@ -343,9 +343,11 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 **Files:** Create `src/game/sim/history.ts`, `migration.ts`, `data/life/history.yaml` and tests.
 
-- [ ] `history.yaml` rows: `id`, `from`, `to`, `regions`, `who` (age/sex filter), `effects` (hazard multipliers, sector shocks, migration pushes), `lines` (event text), `decision` (optional id), `source`. The initial scope is the main periods from 1950 to 2025: wartime and partition, reunification, the subsidy era, the 1979 border conflicts, departures by sea, Đổi Mới, the Asian financial crisis, WTO entry, COVID-19, and major named typhoons and floods by region. Every row is cited.
-- [ ] Moves: village to town using the urban-share trend; emigration using `migration.json` plus history pushes, with the destination picked by softmax over stock shares.
-- [ ] Tests: a life born in 2005 never receives a war-era row. A life born in 1950 in each region receives that region's rows at the right ages. No history row changes the mortality hazard, so simulated all-cause mortality for 1965–1975 stays on the WPP table (Review Focus 1).
+- [x] `history.yaml` rows: `id`, `from`, `to`, `regions`, `who` (age/sex filter), `effects` (hazard multipliers, sector shocks, migration pushes), `lines` (event text), `decision` (optional id), `source`. The initial scope is the main periods from 1950 to 2025: wartime and partition, reunification, the subsidy era, the 1979 border conflicts, departures by sea, Đổi Mới, the Asian financial crisis, WTO entry, COVID-19, and major named typhoons and floods by region. Every row is cited.
+- [x] Moves: village to town using the urban-share trend; emigration using `migration.json` plus history pushes, with the destination picked by softmax over stock shares.
+- [x] Tests: a life born in 2005 never receives a war-era row. A life born in 1950 in each region receives that region's rows at the right ages. No history row changes the mortality hazard, so simulated all-cause mortality for 1965–1975 stays on the WPP table (Review Focus 1).
+
+*As built:* 31 rows from the Indochina war to Typhoon Yagi (2024). Rows marked `review: true` need a person to read them before release: the 1954 move south, land reform, both military-service rows, re-education camps and the New Economic Zones. People who emigrate are past history's reach. Emigration follows the UN stock from 1990; before 1990 the 1990 stock is spread over 1975–1989 toward the years of departures by sea and the South (7.4% of people born in the South in 1955–64 had left by 1995). Adults in towns in 2019: 40.4% vs an urban share of 34.6%, which is inside the tolerance but on the high side; tune `townMove` if it matters.
 
 ### Task 12: Decisions, focus, spending, text
 

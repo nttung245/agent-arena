@@ -165,3 +165,24 @@ work:
     # Farmers have no pension age; they stop at this age or when health falls below the floor.
     farmerAge: 70
     farmerHealthFloor: 25
+
+migration:
+  estimate: true
+  note: >-
+    Village-to-town moves follow the yearly rise in the urban share (migration.json). Emigration
+    follows the UN migrant stock: the yearly outflow is its growth plus 1% of the stock (for
+    deaths and returns). Before 1990 the 1990 stock is spread over 1975-1989, weighted toward the
+    years of departures by sea and toward the South. All values below are estimates.
+  townMove: { minAge: 16, maxAge: 35, shareOfRural: 0.35 }
+  emigration:
+    minAge: 18
+    maxAge: 45
+    adultShare: 0.45
+    stockTurnover: 0.01
+    early:
+      from: 1975
+      to: 1989
+      # Share of the 1990 stock that left before 1990 (the rest left earlier or was born abroad).
+      ofStock1990: 0.9
+      weights: { "1978": 2, "1979": 3, "1980": 2.5, "1981": 2, "1987": 1.5, "1988": 1.5, "1989": 1.5 }
+      regions: { north: 0.3, central: 0.7, south: 2.0 }
