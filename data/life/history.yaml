@@ -1,0 +1,261 @@
+# What a year in Viet Nam brought, by period, region and who you were. Our own text: short,
+# factual, neutral, never graphic, and about people on every side.
+#
+# History rows never change anyone's chance of dying: the deaths of wars, storms and epidemics
+# are already inside the UN's mortality and are named as causes from crises.json. Rows add
+# journal lines, moves, and (later) decisions.
+#
+# Fields: from/to (years, inclusive); regions, places, sex, ages [min, max] (default 5-120)
+# limit who it reaches; chance is the yearly chance while it applies (default 1);
+# faithChance overrides chance by faith; a row fires at most once per life unless repeat: true.
+# effect can set region or place. review: true marks a row a person should read before release.
+
+rows:
+  - id: indochina_war
+    from: 1950
+    to: 1954
+    text: The war against French colonial rule was still going on.
+    source: First Indochina War, 1946-1954.
+
+  - id: partition
+    from: 1954
+    to: 1954
+    text: The Geneva Accords divided the country at the 17th parallel into North and South.
+    source: Geneva Accords, July 1954.
+
+  - id: move_south_1954
+    from: 1954
+    to: 1955
+    regions: [north]
+    ages: [0, 120]
+    chance: 0.06
+    faithChance: { catholic: 0.5 }
+    effect: { region: south }
+    text: Your family joined the hundreds of thousands who moved from the North to the South.
+    source: >-
+      Commonly cited estimates of 800,000-1,000,000 people moving south in 1954-55, many of them
+      Catholic, out of about 13 million in the North. The chances here are estimates.
+    review: true
+
+  - id: land_reform
+    from: 1953
+    to: 1956
+    regions: [north]
+    places: [village]
+    text: Land reform redistributed the village's fields.
+    source: Land reform in North Viet Nam, 1953-1956.
+    review: true
+
+  - id: cooperatives
+    from: 1958
+    to: 1960
+    regions: [north]
+    places: [village]
+    text: The village's fields were joined into an agricultural cooperative.
+    source: Collectivization of agriculture in the North, late 1950s.
+
+  - id: war_escalates
+    from: 1965
+    to: 1965
+    text: The war grew larger, and it reached into almost every family.
+    source: Escalation of the Viet Nam War, 1965.
+
+  - id: evacuation_north
+    from: 1965
+    to: 1968
+    regions: [north]
+    places: [town]
+    ages: [3, 14]
+    text: Air raids reached the North, and like many city children you were sent to the countryside.
+    source: Evacuation (sơ tán) of children from northern cities during the air campaigns of 1965-1968.
+
+  - id: tet_1968
+    from: 1968
+    to: 1968
+    regions: [central, south]
+    places: [town]
+    text: Fighting reached the cities during the Tết Offensive.
+    source: Tết Offensive, January-February 1968.
+
+  - id: air_raids_1972
+    from: 1972
+    to: 1972
+    regions: [north]
+    text: Air raids returned to the North at the end of 1972.
+    source: Air campaigns over North Viet Nam, 1972.
+
+  - id: military_service_war
+    from: 1960
+    to: 1975
+    sex: male
+    ages: [18, 30]
+    chance: 0.25
+    text: You were called up for military service, like many young men of your age.
+    source: Conscription on both sides during the war; the yearly chance is an estimate.
+    review: true
+
+  - id: reunification
+    from: 1975
+    to: 1975
+    ages: [3, 120]
+    text: In April 1975 the war ended and the country was reunified.
+    source: End of the Viet Nam War, 30 April 1975.
+
+  - id: re_education
+    from: 1975
+    to: 1976
+    regions: [south]
+    sex: male
+    ages: [25, 50]
+    chance: 0.04
+    text: You were sent to a re-education camp and spent years away from your family.
+    source: >-
+      Re-education camps for people linked to the former southern government after 1975; the
+      chance is an estimate.
+    review: true
+
+  - id: new_economic_zones
+    from: 1976
+    to: 1980
+    regions: [south]
+    places: [town]
+    ages: [0, 120]
+    chance: 0.03
+    effect: { place: village }
+    text: Your family was resettled from the city to a New Economic Zone in the countryside.
+    source: New Economic Zones resettlement, late 1970s; the chance is an estimate.
+    review: true
+
+  - id: subsidy_era
+    from: 1976
+    to: 1986
+    text: Food and goods were rationed, and families queued with ration books.
+    source: The subsidy period (thời bao cấp), 1976-1986.
+
+  - id: border_war_1979
+    from: 1979
+    to: 1979
+    regions: [north]
+    text: In February 1979, war broke out along the northern border.
+    source: Sino-Vietnamese border war, February-March 1979.
+
+  - id: military_service_1980s
+    from: 1979
+    to: 1989
+    sex: male
+    ages: [18, 27]
+    chance: 0.05
+    text: You were called up for military service; many young men of your age served in Cambodia.
+    source: Vietnamese troops in Cambodia, 1978-1989; the yearly chance is an estimate.
+    review: true
+
+  - id: doi_moi
+    from: 1986
+    to: 1986
+    ages: [8, 120]
+    text: The Đổi Mới reforms began. Markets reopened and families could run their own businesses again.
+    source: Sixth Party Congress, December 1986.
+
+  - id: household_farming
+    from: 1988
+    to: 1988
+    places: [village]
+    ages: [8, 120]
+    text: Under the new rules your family could farm its own plot and sell the harvest.
+    source: Resolution 10 (khoán 10), 1988.
+
+  - id: normalization
+    from: 1995
+    to: 1995
+    ages: [12, 120]
+    text: Viet Nam restored relations with the United States and joined ASEAN.
+    source: Normalization of relations and ASEAN membership, July 1995.
+
+  - id: wto
+    from: 2007
+    to: 2007
+    ages: [15, 120]
+    text: Viet Nam joined the World Trade Organization, and new factories opened across the country.
+    source: WTO accession, January 2007.
+
+  - id: covid
+    from: 2020
+    to: 2020
+    ages: [3, 120]
+    text: COVID-19 reached Viet Nam. Schools closed and people kept their distance.
+    source: COVID-19 pandemic, 2020.
+
+  - id: covid_lockdown_south
+    from: 2021
+    to: 2021
+    regions: [south]
+    ages: [3, 120]
+    text: In 2021 the South spent months in lockdown as COVID-19 spread.
+    source: Lockdowns in Ho Chi Minh City and the South, July-October 2021.
+
+  # Storms and floods. Named ones match years with high disaster deaths in crises.json.
+  - id: typhoon_cecil
+    from: 1985
+    to: 1985
+    regions: [central]
+    ages: [3, 120]
+    text: Typhoon Cecil struck the central coast and flooded the region.
+    source: Typhoon Cecil, October 1985.
+
+  - id: typhoon_linda
+    from: 1997
+    to: 1997
+    regions: [south]
+    ages: [3, 120]
+    text: Typhoon Linda struck the far south, and many fishing boats never came home.
+    source: Typhoon Linda, November 1997.
+
+  - id: floods_1999
+    from: 1999
+    to: 1999
+    regions: [central]
+    ages: [3, 120]
+    text: Great floods covered the central provinces.
+    source: Central Viet Nam floods, November 1999.
+
+  - id: typhoon_xangsane
+    from: 2006
+    to: 2006
+    regions: [central]
+    ages: [3, 120]
+    text: Typhoon Xangsane tore through the central coast.
+    source: Typhoon Xangsane, September-October 2006.
+
+  - id: typhoon_damrey
+    from: 2017
+    to: 2017
+    regions: [central]
+    ages: [3, 120]
+    text: Typhoon Damrey struck the south-central coast.
+    source: Typhoon Damrey, November 2017.
+
+  - id: floods_2020
+    from: 2020
+    to: 2020
+    regions: [central]
+    ages: [3, 120]
+    text: Weeks of storms flooded the central provinces.
+    source: Central Viet Nam floods, October 2020.
+
+  - id: typhoon_yagi
+    from: 2024
+    to: 2024
+    regions: [north]
+    ages: [3, 120]
+    text: Typhoon Yagi swept across the North.
+    source: Typhoon Yagi, September 2024.
+
+  - id: storm_season
+    from: 1950
+    to: 2100
+    regions: [central]
+    ages: [5, 120]
+    chance: 0.05
+    repeat: true
+    text: A typhoon flooded the fields, and the family had to repair the house.
+    source: Storms reach the central coast most years; the yearly chance is an estimate.

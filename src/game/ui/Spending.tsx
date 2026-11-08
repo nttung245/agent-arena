@@ -1,12 +1,12 @@
 import { useState } from "react";
-import type { OneIn8bSheetItem } from "@/game/engine/types";
+import type { LifeSheetItem } from "@/game/engine/types";
 
 export function Spending({
   sheet,
   onBuy,
   onSkip,
 }: {
-  sheet: OneIn8bSheetItem[];
+  sheet: LifeSheetItem[];
   onBuy: (ids: string[]) => void;
   onSkip: () => void;
 }) {

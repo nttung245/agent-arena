@@ -1,4 +1,5 @@
 import type { LifeReview } from "@/game/engine/review";
+import { LifeCredit } from "@/game/ui/LifeCredit";
 
 function years(review: LifeReview): string {
   if (review.bornYear != null && review.diedYear != null) {
@@ -69,13 +70,7 @@ export function Memorial({
           </button>
         </div>
 
-        <p className="life-credit">
-          Life simulated by the{" "}
-          <a href="https://1in8b.life/en/api/" target="_blank" rel="noreferrer">
-            1in8b Engine (1in8b.life)
-          </a>
-          . Simulated life, not a real person.
-        </p>
+        <LifeCredit engineVersion={review.engineVersion} />
       </div>
     </div>
   );

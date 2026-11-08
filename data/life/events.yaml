@@ -1,0 +1,39 @@
+# Journal lines for what happened, in the second person. Our own text.
+# Placeholders: {cause}, {relative}, {relation} (Your mother...), {stage}, {job}, {destination},
+# {child} (son/daughter), {sibling} (brother/sister), {choice}, {item}.
+born: You were born in {place} in the {region}, in {year}.
+diagnosed: You were diagnosed with {cause}.
+worsened: Your {cause} grew worse.
+recovered: You recovered from {cause}.
+died: You died of {cause}.
+relativeDied: "{relation}, {relative}, died of {cause}."
+widowed: You were widowed.
+partnered: You married {relative}.
+divorced: You and {relative} divorced.
+childBorn: Your {child} {relative} was born.
+siblingBorn: Your little {sibling} {relative} was born.
+schoolStarted: You started primary school.
+schoolFinished: You finished {stage}.
+schoolLeft: You left school after {stage}.
+schoolLeftNone: You left school without finishing primary school.
+startedWork: You started work as a {job}.
+changedJob: You became a {job}.
+retired: You retired.
+moved: You moved to the city.
+emigrated: You left Viet Nam for {destination}.
+chose: "You chose: {choice}."
+bought: "You spent money on {item}."
+
+stages:
+  none: no schooling
+  primary: primary school
+  lowerSecondary: lower secondary school
+  upperSecondary: upper secondary school
+  tertiary: university
+
+relations:
+  mother: Your mother
+  father: Your father
+  sibling: { female: Your sister, male: Your brother }
+  partner: { female: Your wife, male: Your husband }
+  child: { female: Your daughter, male: Your son }

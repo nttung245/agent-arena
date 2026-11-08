@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 import {
   addThought,
-  applyLiveResponse,
+  applyStepResult,
   completeRun,
   createRun,
   journalFromResponse,
 } from "@/game/state/lifeRun";
-import type { LiveResponse } from "@/game/engine/types";
+import type { LifeStepResult } from "@/game/engine/types";
 
-const start: LiveResponse = {
+const start: LifeStepResult = {
   state: { age: 0, name: "Lan", year: 1995, country: "VNM" },
   events: [[0, "You were born in a village in Vietnam."]],
   decision: null,
@@ -47,10 +47,10 @@ describe("createRun", () => {
   });
 });
 
-describe("applyLiveResponse", () => {
+describe("applyStepResult", () => {
   it("appends events with their source, updates the token, and ends", () => {
     const run = createRun({}, start);
-    const next = applyLiveResponse(run, {
+    const next = applyStepResult(run, {
       state: { age: 80, name: "Lan" },
       events: [[80, "You died at home.", "A source note"]],
       decision: null,
@@ -71,7 +71,7 @@ describe("applyLiveResponse", () => {
 
   it("tolerates a missing token by keeping the previous one", () => {
     const run = createRun({}, start);
-    const next = applyLiveResponse(run, {
+    const next = applyStepResult(run, {
       state: { age: 1 },
       events: [],
       decision: null,
@@ -115,7 +115,7 @@ describe("addThought", () => {
 describe("completeRun", () => {
   it("builds a memorial summary", () => {
     const run = createRun({ year: 1995 }, start);
-    const done = applyLiveResponse(run, {
+    const done = applyStepResult(run, {
       state: { age: 80, name: "Lan", year: 2075 },
       events: [],
       decision: null,
@@ -133,5 +133,15 @@ describe("completeRun", () => {
       cause: "old age",
     });
     expect(life.sceneTitles).toEqual(["Birth", "First day of school"]);
+  });
+});
+
+describe("applyStepResult and repeated decisions", () => {
+  it("journals a waiting decision once, even when a resume returns it again", () => {
+    const decision = { id: "treatment@1956", question: "The doctor says it is tuberculosis.", choices: [{ key: "usual", label: "Usual care" }] };
+    const run = createRun({}, { state: { age: 6, year: 1956 }, events: [], decision: null, token: "t0" });
+    const once = applyStepResult(run, { state: { age: 6, year: 1956 }, events: [], decision, token: "t1" });
+    const twice = applyStepResult(once, { state: { age: 6, year: 1956 }, events: [], decision, token: "t1" });
+    expect(twice.journal.filter((entry) => entry.text === decision.question)).toHaveLength(1);
   });
 });

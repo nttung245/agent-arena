@@ -34,16 +34,7 @@ export function LifeHud({
           </button>
         </div>
       </div>
-      <div className="life-hud__credit">
-        <a
-          href="https://1in8b.life/en/api/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          1in8b Engine
-        </a>{" "}
-        · simulated life, not a real person
-      </div>
+      <div className="life-hud__credit">Simulated from UN, World Bank and UNESCO data · not a real person</div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import type { LifeRun } from "@/game/state/lifeRun";
+import { LifeCredit } from "@/game/ui/LifeCredit";
 
 function record(value: unknown): Record<string, unknown> | null {
   return typeof value === "object" && value !== null
@@ -87,7 +88,7 @@ export function BirthCard({
           <div className="life-stat">
             <div className="life-stat__label">Family income</div>
             <div className="life-stat__value">
-              {fifth ? `Fifth ${fifth}` : "—"}
+              {fifth ? (/^\d$/.test(fifth) ? `Fifth ${fifth}` : fifth) : "—"}
             </div>
           </div>
           <div className="life-stat">
@@ -123,13 +124,7 @@ export function BirthCard({
           Begin this life
         </button>
 
-        <p className="life-credit">
-          Life simulated by the{" "}
-          <a href="https://1in8b.life/en/api/" target="_blank" rel="noreferrer">
-            1in8b Engine (1in8b.life)
-          </a>
-          . Not a real person.
-        </p>
+        <LifeCredit engineVersion={run.engineVersion} />
       </div>
     </div>
   );

@@ -1,0 +1,53 @@
+# Birth conditions the UN tables don't cover. Every value here is an estimate,
+# with its source; the engine treats them as estimates, never as sourced facts.
+
+regions:
+  estimate: true
+  source: >-
+    General Statistics Office of Viet Nam, 2019 Population and Housing Census, population by
+    socio-economic region. Red River Delta (23.4%) and Central Highlands (6.1%) are confirmed from
+    the GSO press release; the other four shares need checking against the census report.
+  note: >-
+    North = Red River Delta + Northern Midlands and Mountains. Central = North Central and Central
+    Coast + Central Highlands. South = Southeast + Mekong River Delta. The 2019 shares are used for
+    every birth year.
+  shares:
+    north: 0.364
+    central: 0.271
+    south: 0.365
+
+faiths:
+  estimate: true
+  source: >-
+    GSO 2019 census, registered religious followers, as reported by the SBS Cultural Atlas
+    (no affiliation 86.3%, Catholic 6.1%, Buddhist 4.8%, Protestant 1.0%, Hoa Hao 1.0%,
+    Cao Dai 0.6%, other 0.2%).
+  note: >-
+    "none" means no registered religion; most such families still keep ancestor worship and folk
+    practice. Faith changes ceremony scenes and text, never the odds of anything.
+  shares:
+    none: 0.863
+    catholic: 0.061
+    buddhist: 0.048
+    protestant: 0.010
+    hoaHao: 0.010
+    caoDai: 0.006
+    other: 0.002
+
+parents:
+  estimate: true
+  note: >-
+    Years the father is older than the mother, drawn evenly from this range; fathers are at least
+    minFatherAge when the child is born.
+  fatherGapMin: 0
+  fatherGapMax: 8
+  minFatherAge: 18
+
+stats:
+  estimate: true
+  note: Starting stats on a 0-100 scale; health at birth is drawn evenly from the range.
+  healthMin: 65
+  healthMax: 90
+  happiness: 60
+  knowledge: 0
+  bonds: 60

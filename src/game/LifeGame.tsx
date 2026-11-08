@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "@/game/life.css";
-import { readLifeKey, writeLifeKey } from "@/game/engine/oneIn8b";
 import { buildReview } from "@/game/engine/review";
 import { summarizeYears } from "@/game/engine/summary";
 import { getSceneTemplate } from "@/game/scenes/registry";
 import { LifeScene } from "@/game/scenes/LifeScene";
 import { useLifeStore } from "@/game/state/lifeStore";
-import { loadRun } from "@/game/state/persistence";
+import { forgetLegacyKey, loadRun } from "@/game/state/persistence";
 import type { JournalEntry, LifeConfig } from "@/game/state/lifeRun";
 import { BirthCard } from "@/game/ui/BirthCard";
 import { DeathScreen } from "@/game/ui/DeathScreen";
@@ -74,6 +73,7 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
   const reflect = useLifeStore((state) => state.reflect);
   const resume = useLifeStore((state) => state.resume);
   const reset = useLifeStore((state) => state.reset);
+  const keepLegacy = useLifeStore((state) => state.keepLegacy);
 
   const [birthSeen, setBirthSeen] = useState(false);
   const [resumeAvailable, setResumeAvailable] = useState(false);
@@ -89,6 +89,7 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
   const lastSceneAge = useRef<number | null>(null);
 
   useEffect(() => {
+    forgetLegacyKey();
     if (loadRun()) setResumeAvailable(true);
   }, []);
 
@@ -144,8 +145,7 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
     lastSceneAge.current = null;
   };
 
-  const handleStart = (config: LifeConfig, key: string) => {
-    writeLifeKey(key);
+  const handleStart = (config: LifeConfig) => {
     beginNew();
     void start(config);
   };
@@ -169,12 +169,7 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
     return (
       <div className="life-mode">
         <ExitButton onExit={onExit} />
-        <StartScreen
-          initialKey={readLifeKey() ?? ""}
-          onStart={handleStart}
-          busy={busy}
-          error={error?.message ?? null}
-        />
+        <StartScreen onStart={handleStart} busy={busy} error={error?.message ?? null} />
       </div>
     );
   }
@@ -251,10 +246,11 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
         <LifeError
           error={error}
           onRetry={() => void resume()}
-          onNewKey={(key) => {
-            writeLifeKey(key);
-            void resume();
+          onKeep={() => {
+            keepLegacy();
+            beginNew();
           }}
+          onDiscard={beginNew}
           onExit={onExit}
         />
       </div>
@@ -265,12 +261,7 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
     return (
       <div className="life-mode">
         <ExitButton onExit={onExit} />
-        <StartScreen
-          initialKey={readLifeKey() ?? ""}
-          onStart={handleStart}
-          busy={busy}
-          error="The life is between scenes."
-        />
+        <StartScreen onStart={handleStart} busy={busy} error="The life is between scenes." />
       </div>
     );
   }
@@ -380,10 +371,11 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
         <LifeError
           error={error}
           onRetry={() => void resume()}
-          onNewKey={(key) => {
-            writeLifeKey(key);
-            void resume();
+          onKeep={() => {
+            keepLegacy();
+            beginNew();
           }}
+          onDiscard={beginNew}
           onExit={onExit}
         />
       )}

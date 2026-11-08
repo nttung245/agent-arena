@@ -1,4 +1,4 @@
-import type { OneIn8bState } from "@/game/engine/types";
+import type { LifeState } from "@/game/engine/types";
 import type {
   LifeFactPerson,
   LifeFactSheet,
@@ -49,7 +49,7 @@ function householdPeople(value: unknown): unknown[] {
   return [];
 }
 
-export function buildFactSheet(state: OneIn8bState): LifeFactSheet {
+export function buildFactSheet(state: LifeState): LifeFactSheet {
   const people: LifeFactPerson[] = [];
 
   for (const [key, role] of [

@@ -46,6 +46,7 @@ export function selectTemplate(
   }
 
   const decision = trigger.decision;
+  if (decision?.template) return decision.template;
   const text = `${decision?.about ?? ""} ${decision?.question ?? ""}`.toLowerCase();
 
   if (has(text, ["school", "educat", "exam"])) return "school_classroom";

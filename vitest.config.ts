@@ -33,9 +33,12 @@ export default defineConfig({
     environment: "node",
     include: ["src/**/*.test.ts"],
     setupFiles: ["src/test/setup.ts"],
+    // The life engine's tests play hundreds of lives; under coverage on a busy
+    // machine or a CI runner a few take longer than the 5 s default.
+    testTimeout: 30_000,
     coverage: {
       provider: "v8",
-      include: ["src/lib/**/*.ts"],
+      include: ["src/lib/**/*.ts", "src/game/sim/**/*.ts"],
       exclude: [
         "src/lib/**/*.generated.ts",
         "src/lib/three/**",

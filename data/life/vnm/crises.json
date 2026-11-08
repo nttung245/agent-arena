@@ -1,0 +1,674 @@
+{
+ "source": "World Population Prospects 2024, metadata for mortality crises (CC BY 3.0 IGO)",
+ "note": "years[y][kind].share = crisis deaths / all deaths that year. These deaths are already inside mortality.json. 'conflict' adds WPP's Conflict and Battle deaths event types.",
+ "years": {
+  "1950": {
+   "conflict": {
+    "deaths": 61556,
+    "share": 0.1415
+   },
+   "epidemic": {
+    "deaths": 4,
+    "share": 0.000009193
+   }
+  },
+  "1951": {
+   "conflict": {
+    "deaths": 61556,
+    "share": 0.1427
+   },
+   "epidemic": {
+    "deaths": 21,
+    "share": 0.00004869
+   }
+  },
+  "1952": {
+   "conflict": {
+    "deaths": 61556,
+    "share": 0.1406
+   },
+   "epidemic": {
+    "deaths": 6,
+    "share": 0.0000137
+   }
+  },
+  "1953": {
+   "conflict": {
+    "deaths": 61556,
+    "share": 0.1396
+   },
+   "disaster": {
+    "deaths": 1000,
+    "share": 0.002268
+   },
+   "epidemic": {
+    "deaths": 7,
+    "share": 0.00001588
+   }
+  },
+  "1954": {
+   "conflict": {
+    "deaths": 41947,
+    "share": 0.09861
+   },
+   "epidemic": {
+    "deaths": 3,
+    "share": 0.000007052
+   }
+  },
+  "1955": {
+   "conflict": {
+    "deaths": 5800,
+    "share": 0.01492
+   }
+  },
+  "1956": {
+   "conflict": {
+    "deaths": 5800,
+    "share": 0.01494
+   },
+   "disaster": {
+    "deaths": 56,
+    "share": 0.0001443
+   }
+  },
+  "1957": {
+   "conflict": {
+    "deaths": 5800,
+    "share": 0.01471
+   }
+  },
+  "1958": {
+   "conflict": {
+    "deaths": 5800,
+    "share": 0.0146
+   }
+  },
+  "1959": {
+   "conflict": {
+    "deaths": 5800,
+    "share": 0.01456
+   }
+  },
+  "1960": {
+   "conflict": {
+    "deaths": 5800,
+    "share": 0.01458
+   }
+  },
+  "1961": {
+   "conflict": {
+    "deaths": 7775,
+    "share": 0.01985
+   }
+  },
+  "1962": {
+   "conflict": {
+    "deaths": 21912,
+    "share": 0.05337
+   }
+  },
+  "1963": {
+   "conflict": {
+    "deaths": 55128,
+    "share": 0.1233
+   }
+  },
+  "1964": {
+   "conflict": {
+    "deaths": 45308,
+    "share": 0.1016
+   },
+   "disaster": {
+    "deaths": 7400,
+    "share": 0.0166
+   },
+   "epidemic": {
+    "deaths": 872,
+    "share": 0.001956
+   }
+  },
+  "1965": {
+   "conflict": {
+    "deaths": 70427,
+    "share": 0.152
+   },
+   "epidemic": {
+    "deaths": 29,
+    "share": 0.00006259
+   }
+  },
+  "1966": {
+   "conflict": {
+    "deaths": 77963,
+    "share": 0.1654
+   },
+   "disaster": {
+    "deaths": 31,
+    "share": 0.00006576
+   },
+   "epidemic": {
+    "deaths": 167,
+    "share": 0.0003543
+   }
+  },
+  "1967": {
+   "conflict": {
+    "deaths": 87493,
+    "share": 0.1813
+   },
+   "disaster": {
+    "deaths": 3,
+    "share": 0.000006215
+   },
+   "epidemic": {
+    "deaths": 71,
+    "share": 0.0001471
+   }
+  },
+  "1968": {
+   "conflict": {
+    "deaths": 184625,
+    "share": 0.3159
+   },
+   "epidemic": {
+    "deaths": 8,
+    "share": 0.00001369
+   }
+  },
+  "1969": {
+   "conflict": {
+    "deaths": 142504,
+    "share": 0.2614
+   },
+   "epidemic": {
+    "deaths": 26,
+    "share": 0.0000477
+   }
+  },
+  "1970": {
+   "conflict": {
+    "deaths": 146312,
+    "share": 0.2643
+   },
+   "disaster": {
+    "deaths": 237,
+    "share": 0.0004282
+   },
+   "epidemic": {
+    "deaths": 1,
+    "share": 0.000001807
+   }
+  },
+  "1971": {
+   "conflict": {
+    "deaths": 139612,
+    "share": 0.2532
+   },
+   "disaster": {
+    "deaths": 112,
+    "share": 0.0002032
+   },
+   "epidemic": {
+    "deaths": 1,
+    "share": 0.000001814
+   }
+  },
+  "1972": {
+   "conflict": {
+    "deaths": 240487,
+    "share": 0.3654
+   },
+   "epidemic": {
+    "deaths": 1,
+    "share": 0.00000152
+   }
+  },
+  "1973": {
+   "conflict": {
+    "deaths": 154509,
+    "share": 0.268
+   },
+   "disaster": {
+    "deaths": 100,
+    "share": 0.0001734
+   },
+   "epidemic": {
+    "deaths": 18,
+    "share": 0.00003122
+   }
+  },
+  "1974": {
+   "conflict": {
+    "deaths": 187740,
+    "share": 0.3073
+   },
+   "epidemic": {
+    "deaths": 2,
+    "share": 0.000003273
+   }
+  },
+  "1975": {
+   "conflict": {
+    "deaths": 29378,
+    "share": 0.06447
+   },
+   "disaster": {
+    "deaths": 172,
+    "share": 0.0003774
+   }
+  },
+  "1978": {
+   "disaster": {
+    "deaths": 74,
+    "share": 0.0001704
+   }
+  },
+  "1979": {
+   "epidemic": {
+    "deaths": 28,
+    "share": 0.00006429
+   }
+  },
+  "1980": {
+   "disaster": {
+    "deaths": 402,
+    "share": 0.0009203
+   },
+   "epidemic": {
+    "deaths": 49,
+    "share": 0.0001122
+   }
+  },
+  "1981": {
+   "disaster": {
+    "deaths": 177,
+    "share": 0.0004042
+   },
+   "epidemic": {
+    "deaths": 8,
+    "share": 0.00001827
+   }
+  },
+  "1982": {
+   "disaster": {
+    "deaths": 70,
+    "share": 0.0001593
+   }
+  },
+  "1983": {
+   "disaster": {
+    "deaths": 734,
+    "share": 0.001655
+   }
+  },
+  "1984": {
+   "disaster": {
+    "deaths": 188,
+    "share": 0.0004222
+   }
+  },
+  "1985": {
+   "disaster": {
+    "deaths": 891,
+    "share": 0.001991
+   },
+   "epidemic": {
+    "deaths": 9,
+    "share": 0.00002011
+   }
+  },
+  "1986": {
+   "disaster": {
+    "deaths": 600,
+    "share": 0.001346
+   },
+   "epidemic": {
+    "deaths": 8,
+    "share": 0.00001795
+   }
+  },
+  "1987": {
+   "disaster": {
+    "deaths": 123,
+    "share": 0.0002792
+   },
+   "epidemic": {
+    "deaths": 5,
+    "share": 0.00001135
+   }
+  },
+  "1988": {
+   "disaster": {
+    "deaths": 207,
+    "share": 0.0004766
+   },
+   "epidemic": {
+    "deaths": 7,
+    "share": 0.00001612
+   }
+  },
+  "1989": {
+   "disaster": {
+    "deaths": 1181,
+    "share": 0.002688
+   }
+  },
+  "1990": {
+   "disaster": {
+    "deaths": 184,
+    "share": 0.0004147
+   },
+   "epidemic": {
+    "deaths": 4,
+    "share": 0.000009015
+   }
+  },
+  "1991": {
+   "disaster": {
+    "deaths": 820,
+    "share": 0.001837
+   },
+   "epidemic": {
+    "deaths": 1,
+    "share": 0.000002241
+   }
+  },
+  "1992": {
+   "disaster": {
+    "deaths": 345,
+    "share": 0.0007728
+   },
+   "epidemic": {
+    "deaths": 110,
+    "share": 0.0002464
+   }
+  },
+  "1993": {
+   "disaster": {
+    "deaths": 379,
+    "share": 0.0008509
+   },
+   "epidemic": {
+    "deaths": 9,
+    "share": 0.00002021
+   }
+  },
+  "1994": {
+   "disaster": {
+    "deaths": 361,
+    "share": 0.0008186
+   },
+   "epidemic": {
+    "deaths": 68,
+    "share": 0.0001542
+   }
+  },
+  "1995": {
+   "disaster": {
+    "deaths": 313,
+    "share": 0.0007215
+   },
+   "epidemic": {
+    "deaths": 45,
+    "share": 0.0001037
+   }
+  },
+  "1996": {
+   "disaster": {
+    "deaths": 1041,
+    "share": 0.002429
+   },
+   "epidemic": {
+    "deaths": 2,
+    "share": 0.000004667
+   }
+  },
+  "1997": {
+   "disaster": {
+    "deaths": 3779,
+    "share": 0.008898
+   }
+  },
+  "1998": {
+   "disaster": {
+    "deaths": 488,
+    "share": 0.001174
+   },
+   "epidemic": {
+    "deaths": 1,
+    "share": 0.000002407
+   }
+  },
+  "1999": {
+   "disaster": {
+    "deaths": 893,
+    "share": 0.002144
+   }
+  },
+  "2000": {
+   "disaster": {
+    "deaths": 649,
+    "share": 0.001534
+   }
+  },
+  "2001": {
+   "disaster": {
+    "deaths": 462,
+    "share": 0.001081
+   }
+  },
+  "2002": {
+   "disaster": {
+    "deaths": 207,
+    "share": 0.000477
+   }
+  },
+  "2003": {
+   "disaster": {
+    "deaths": 191,
+    "share": 0.0004314
+   },
+   "epidemic": {
+    "deaths": 12,
+    "share": 0.00002711
+   }
+  },
+  "2004": {
+   "disaster": {
+    "deaths": 239,
+    "share": 0.0005191
+   },
+   "epidemic": {
+    "deaths": 8,
+    "share": 0.00001738
+   }
+  },
+  "2005": {
+   "disaster": {
+    "deaths": 402,
+    "share": 0.0008621
+   },
+   "epidemic": {
+    "deaths": 3,
+    "share": 0.000006434
+   }
+  },
+  "2006": {
+   "disaster": {
+    "deaths": 598,
+    "share": 0.001261
+   },
+   "epidemic": {
+    "deaths": 13,
+    "share": 0.00002741
+   }
+  },
+  "2007": {
+   "disaster": {
+    "deaths": 421,
+    "share": 0.000868
+   },
+   "epidemic": {
+    "deaths": 27,
+    "share": 0.00005567
+   }
+  },
+  "2008": {
+   "disaster": {
+    "deaths": 431,
+    "share": 0.0008683
+   }
+  },
+  "2009": {
+   "disaster": {
+    "deaths": 415,
+    "share": 0.0008174
+   },
+   "epidemic": {
+    "deaths": 1,
+    "share": 0.00000197
+   }
+  },
+  "2010": {
+   "conflict": {
+    "deaths": 12,
+    "share": 0.00002322
+   },
+   "disaster": {
+    "deaths": 285,
+    "share": 0.0005514
+   }
+  },
+  "2011": {
+   "conflict": {
+    "deaths": 66,
+    "share": 0.0001255
+   },
+   "disaster": {
+    "deaths": 201,
+    "share": 0.0003821
+   }
+  },
+  "2012": {
+   "conflict": {
+    "deaths": 3,
+    "share": 0.000005578
+   },
+   "disaster": {
+    "deaths": 107,
+    "share": 0.000199
+   }
+  },
+  "2013": {
+   "conflict": {
+    "deaths": 4,
+    "share": 0.000007291
+   },
+   "disaster": {
+    "deaths": 249,
+    "share": 0.0004539
+   }
+  },
+  "2014": {
+   "conflict": {
+    "deaths": 29,
+    "share": 0.00005174
+   },
+   "disaster": {
+    "deaths": 54,
+    "share": 0.00009634
+   }
+  },
+  "2015": {
+   "conflict": {
+    "deaths": 3,
+    "share": 0.000005253
+   },
+   "disaster": {
+    "deaths": 70,
+    "share": 0.0001226
+   }
+  },
+  "2016": {
+   "conflict": {
+    "deaths": 2,
+    "share": 0.000003434
+   },
+   "disaster": {
+    "deaths": 175,
+    "share": 0.0003005
+   },
+   "epidemic": {
+    "deaths": 27,
+    "share": 0.00004636
+   }
+  },
+  "2017": {
+   "conflict": {
+    "deaths": 3,
+    "share": 0.000005053
+   },
+   "disaster": {
+    "deaths": 284,
+    "share": 0.0004784
+   }
+  },
+  "2018": {
+   "conflict": {
+    "deaths": 3,
+    "share": 0.000004978
+   },
+   "disaster": {
+    "deaths": 147,
+    "share": 0.0002439
+   }
+  },
+  "2019": {
+   "conflict": {
+    "deaths": 1,
+    "share": 0.000001633
+   },
+   "disaster": {
+    "deaths": 59,
+    "share": 0.00009637
+   }
+  },
+  "2020": {
+   "conflict": {
+    "deaths": 4,
+    "share": 0.000007016
+   },
+   "disaster": {
+    "deaths": 323,
+    "share": 0.0005666
+   }
+  },
+  "2021": {
+   "covid": {
+    "deaths": 22022,
+    "share": 0.03346
+   },
+   "disaster": {
+    "deaths": 35,
+    "share": 0.00005318
+   }
+  },
+  "2022": {
+   "disaster": {
+    "deaths": 121,
+    "share": 0.0001871
+   }
+  },
+  "2023": {
+   "conflict": {
+    "deaths": 10,
+    "share": 0.00001515
+   },
+   "disaster": {
+    "deaths": 86,
+    "share": 0.0001303
+   }
+  }
+ }
+}

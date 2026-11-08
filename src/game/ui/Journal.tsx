@@ -1,6 +1,7 @@
 import { journalSections } from "@/game/engine/summary";
 import type { JournalEntry, LifeRun } from "@/game/state/lifeRun";
 import { buildFactSheet } from "@/game/scenes/validate";
+import { LifeCredit } from "@/game/ui/LifeCredit";
 
 function numberOrDash(value: unknown): string {
   return typeof value === "number" ? String(Math.round(value)) : "—";
@@ -133,13 +134,7 @@ export function Journal({
             ))
         )}
 
-        <p className="life-credit">
-          Life simulated by the{" "}
-          <a href="https://1in8b.life/en/api/" target="_blank" rel="noreferrer">
-            1in8b Engine (1in8b.life)
-          </a>
-          . Simulated life, not a real person.
-        </p>
+        <LifeCredit engineVersion={run.engineVersion} />
       </div>
     </div>
   );

@@ -9,9 +9,9 @@ import {
   saveRun,
 } from "@/game/state/persistence";
 import { completeRun, createRun } from "@/game/state/lifeRun";
-import type { LiveResponse } from "@/game/engine/types";
+import type { LifeStepResult } from "@/game/engine/types";
 
-const start: LiveResponse = {
+const start: LifeStepResult = {
   state: { age: 0, name: "Lan", year: 1995, country: "VNM" },
   events: [[0, "You were born."]],
   decision: null,
@@ -47,5 +47,14 @@ describe("completed lives", () => {
     const lives = loadCompletedLives();
     expect(lives).toHaveLength(20);
     expect(localStorage.getItem(LIFE_LIVES_STORAGE)).not.toContain("k8b_");
+  });
+});
+
+describe("forgetLegacyKey", () => {
+  it("removes the 1in8b key an earlier version stored", async () => {
+    const { LEGACY_KEY_STORAGE, forgetLegacyKey } = await import("@/game/state/persistence");
+    localStorage.setItem(LEGACY_KEY_STORAGE, "k8b_old");
+    forgetLegacyKey();
+    expect(localStorage.getItem(LEGACY_KEY_STORAGE)).toBeNull();
   });
 });

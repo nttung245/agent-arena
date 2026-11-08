@@ -11,8 +11,8 @@ import {
   type LifeDeps,
 } from "@/game/engine/runLife";
 import { createRun } from "@/game/state/lifeRun";
-import { OneIn8bError, type LifeTransport } from "@/game/engine/oneIn8b";
-import type { LiveResponse, StepBody } from "@/game/engine/types";
+import { LifeEngineError, type LifeTransport } from "@/game/engine/types";
+import type { LifeStepResult, StepBody } from "@/game/engine/types";
 import type { SceneTemplate } from "@/game/scenes/types";
 
 const template = (id: SceneTemplate["id"]): SceneTemplate => ({
@@ -53,7 +53,7 @@ function deps(transport: LifeTransport): LifeDeps {
   };
 }
 
-const sequence: LiveResponse[] = [
+const sequence: LifeStepResult[] = [
   {
     state: { age: 0, name: "Lan" },
     events: [[0, "Born."]],
@@ -87,7 +87,7 @@ const sequence: LiveResponse[] = [
   },
 ];
 
-function fakeTransport(sequence: LiveResponse[]) {
+function fakeTransport(sequence: LifeStepResult[]) {
   let index = 0;
   const calls: StepBody[] = [];
   return {
@@ -123,7 +123,9 @@ describe("configToStart", () => {
       future: true,
       sex: "male",
     });
-    expect(["female", "male"]).toContain(configToStart({ sex: "random" }).sex);
+    // A random sex is left to the engine, which draws it at the year's sex ratio at birth.
+    expect(configToStart({ sex: "random" }).sex).toBeUndefined();
+    expect(configToStart({ region: "central", place: "village" })).toMatchObject({ region: "central", place: "village" });
   });
 });
 
@@ -250,6 +252,30 @@ describe("submitChoice and buyItems", () => {
     expect(next.run.ended).toBe(true);
   });
 
+  it("journals the choice by its label", async () => {
+    const run = createRun(
+      {},
+      {
+        state: { age: 15, name: "Lan" },
+        events: [],
+        decision: {
+          id: "school_upper@2010",
+          question: "Will you sit the exam?",
+          choices: [
+            { key: "as_usual", label: "Sit the exam as you are" },
+            { key: "study_hard", label: "Study hard for it" },
+          ],
+        },
+        token: "t1",
+      },
+    );
+    const transport = fakeTransport([
+      { state: { age: 15 }, events: [], decision: null, token: "t2", ended: true, death: { age: 15 } },
+    ]);
+    const next = await submitChoice(deps(transport), run, "study_hard");
+    expect(next.run.journal.some((entry) => entry.text === "You chose: Study hard for it")).toBe(true);
+  });
+
   it("sends purchases and the token", async () => {
     const run = createRun(
       {},
@@ -279,7 +305,7 @@ describe("submitChoice and buyItems", () => {
 });
 
 describe("recoverable engine errors", () => {
-  const startResponse: LiveResponse = {
+  const startResponse: LifeStepResult = {
     state: { age: 0, name: "Lan" },
     events: [[0, "Born."]],
     decision: null,
@@ -290,7 +316,7 @@ describe("recoverable engine errors", () => {
     const transport: LifeTransport = {
       start: async () => startResponse,
       step: async () => {
-        throw new OneIn8bError("bad key", "key", 401);
+        throw new LifeEngineError("bad key", "key", 401);
       },
     };
     const born = await startLife(deps(transport), {});
@@ -303,7 +329,7 @@ describe("recoverable engine errors", () => {
     const transport: LifeTransport = {
       start: async () => startResponse,
       step: async () => {
-        throw new OneIn8bError("quota", "month", 429);
+        throw new LifeEngineError("quota", "month", 429);
       },
     };
     const born = await startLife(deps(transport), {});

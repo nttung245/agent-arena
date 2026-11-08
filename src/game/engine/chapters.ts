@@ -1,4 +1,4 @@
-import type { LiveResponse, OneIn8bDecision } from "@/game/engine/types";
+import type { LifeStepResult, LifeDecision } from "@/game/engine/types";
 import type { LifeRun } from "@/game/state/lifeRun";
 
 export const MAX_SCENES = 16;
@@ -67,9 +67,10 @@ export function isReflectionAge(age: number): boolean {
 }
 
 export function isMajorDecision(
-  decision: OneIn8bDecision | null,
+  decision: LifeDecision | null,
 ): boolean {
   if (!decision) return false;
+  if (typeof decision.major === "boolean") return decision.major;
   const haystack =
     `${decision.about ?? ""} ${decision.question ?? ""}`.toLowerCase();
   return MAJOR_DECISION_NEEDLES.some((needle) => haystack.includes(needle));
@@ -86,14 +87,14 @@ export interface SceneTrigger {
   kind: SceneTriggerKind;
   id: string;
   age: number;
-  decision?: OneIn8bDecision;
+  decision?: LifeDecision;
   eventText?: string;
 }
 
 export function selectTrigger(input: {
   run: LifeRun;
   previousAge: number;
-  response: LiveResponse;
+  response: LifeStepResult;
   sceneCount: number;
   reflectedAges: ReadonlySet<number>;
 }): SceneTrigger | null {
@@ -137,6 +138,6 @@ export function selectTrigger(input: {
   return null;
 }
 
-export function defaultChoiceKey(decision: OneIn8bDecision): string {
+export function defaultChoiceKey(decision: LifeDecision): string {
   return decision.choices[0]?.key ?? "";
 }

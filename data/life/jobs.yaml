@@ -1,0 +1,30 @@
+# Jobs a simulated person can hold, by sector and the schooling they need. Our own list.
+# `from`: the first year the job exists in this list (e.g. ride-hailing, software).
+agriculture:
+  - { title: rice farmer, minStage: none }
+  - { title: farm worker, minStage: none }
+  - { title: fisher, minStage: none }
+  - { title: fish farmer, minStage: lowerSecondary }
+  - { title: agricultural engineer, minStage: tertiary }
+industry:
+  - { title: construction worker, minStage: none }
+  - { title: brick maker, minStage: none }
+  - { title: factory worker, minStage: primary }
+  - { title: garment worker, minStage: primary }
+  - { title: electrician, minStage: upperSecondary }
+  - { title: machinist, minStage: upperSecondary }
+  - { title: engineer, minStage: tertiary }
+services:
+  - { title: street vendor, minStage: none }
+  - { title: domestic worker, minStage: none }
+  - { title: motorbike taxi driver, minStage: none, from: 1990 }
+  - { title: market trader, minStage: primary }
+  - { title: shop assistant, minStage: lowerSecondary }
+  - { title: waiter, minStage: lowerSecondary }
+  - { title: office clerk, minStage: upperSecondary }
+  - { title: nurse, minStage: upperSecondary }
+  - { title: teacher, minStage: tertiary }
+  - { title: accountant, minStage: tertiary }
+  - { title: civil servant, minStage: tertiary }
+  - { title: doctor, minStage: tertiary }
+  - { title: software developer, minStage: tertiary, from: 2000 }

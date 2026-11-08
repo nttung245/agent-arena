@@ -9,9 +9,9 @@ import {
   selectTrigger,
 } from "@/game/engine/chapters";
 import type { LifeRun } from "@/game/state/lifeRun";
-import type { LiveResponse, OneIn8bDecision } from "@/game/engine/types";
+import type { LifeStepResult, LifeDecision } from "@/game/engine/types";
 
-const decision = (about: string): OneIn8bDecision => ({
+const decision = (about: string): LifeDecision => ({
   id: `dec_${about}`,
   question: "What do you do?",
   about,
@@ -42,7 +42,7 @@ const runAt = (age: number): LifeRun => ({
   usage: null,
 });
 
-const response = (patch: Partial<LiveResponse>): LiveResponse => ({
+const response = (patch: Partial<LifeStepResult>): LifeStepResult => ({
   state: { age: 0 },
   events: [],
   decision: null,

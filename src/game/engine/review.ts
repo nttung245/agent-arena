@@ -6,6 +6,8 @@ import {
 
 export interface LifeReview {
   name: string;
+  /** Which engine lived this life, for its credit line. */
+  engineVersion?: string;
   bornYear?: number;
   diedYear?: number;
   ageAtDeath?: number;
@@ -38,6 +40,7 @@ export function buildReview(
 
   return {
     name: life.name,
+    engineVersion: life.engineVersion,
     bornYear: life.bornYear,
     diedYear: life.diedYear,
     ageAtDeath: life.ageAtDeath,
