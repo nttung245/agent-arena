@@ -70,7 +70,18 @@ function rollYoungerSibling(state: SimState, rng: Rng): SimEvent | null {
   return { type: "siblingBorn", relativeId: sibling.id };
 }
 
-function rollNewPartner(state: SimState, rng: Rng): SimEvent | null {
+/** A partner who has come into the person's life, before the person says yes. */
+export interface PartnerDraft {
+  sex: Sex;
+  birthYear: number;
+  name: string;
+  familyName: string;
+  givenName: string;
+}
+
+/** Rolls whether someone comes into an unpartnered person's life this year. */
+export function proposePartner(state: SimState, rng: Rng): PartnerDraft | null {
+  if (state.ended || state.partnerId !== null) return null;
   const { person, year, age } = state;
   const hadPartner = state.relatives.some((r) => r.role === "partner");
   const chance = hadPartner
@@ -83,20 +94,18 @@ function rollNewPartner(state: SimState, rng: Rng): SimEvent | null {
   const partnerSex: Sex = person.sex === "female" ? "male" : "female";
   const partnerAge = Math.max(person.sex === "female" ? age + gap : age - gap, MIN_PARTNER_AGE);
   const birthYear = year - partnerAge;
-  const partner = newRelative(state, {
-    role: "partner",
-    sex: partnerSex,
-    birthYear,
-    alive: true,
-    since: year,
-    ...makeName(rng, pickFamilyName(rng, person.region), partnerSex, birthYear),
-  });
+  return { sex: partnerSex, birthYear, ...makeName(rng, pickFamilyName(rng, person.region), partnerSex, birthYear) };
+}
+
+/** The person says yes: the draft becomes their partner from this year. */
+export function addPartner(state: SimState, draft: PartnerDraft): SimEvent {
+  const partner = newRelative(state, { role: "partner", alive: true, since: state.year, ...draft });
   state.partnerId = partner.id;
   return { type: "partnered", relativeId: partner.id };
 }
 
 function rollChild(state: SimState, partner: Relative, rng: Rng): SimEvent | null {
-  if (bornThisYear(state, "child")) return null;
+  if (bornThisYear(state, "child") || state.flags.noMoreChildren) return null;
   const { person, year } = state;
   const womanAge = person.sex === "female" ? state.age : year - partner.birthYear;
   if (!roll(rng, maritalBirthChance(year, womanAge))) return null;
@@ -113,8 +122,11 @@ function rollChild(state: SimState, partner: Relative, rng: Rng): SimEvent | nul
   return { type: "childBorn", relativeId: child.id };
 }
 
-/** One year of family life: a younger sibling, then divorce, a child, or a new partner. */
-export function rollFamily(state: SimState, rng: Rng): SimEvent[] {
+/**
+ * One year of family life without a new partner: a younger sibling, then
+ * divorce or a child within a partnership.
+ */
+export function rollFamilyLife(state: SimState, rng: Rng): SimEvent[] {
   if (state.ended) return [];
   const events: SimEvent[] = [];
 
@@ -131,10 +143,17 @@ export function rollFamily(state: SimState, rng: Rng): SimEvent[] {
     }
     const child = rollChild(state, partner, rng);
     if (child) events.push(child);
-    return events;
   }
+  return events;
+}
 
-  const partnered = rollNewPartner(state, rng);
-  if (partnered) events.push(partnered);
+/** One year of family life, saying yes to any new partner. */
+export function rollFamily(state: SimState, rng: Rng): SimEvent[] {
+  if (state.ended) return [];
+  const hadPartner = state.partnerId !== null;
+  const events = rollFamilyLife(state, rng);
+  if (hadPartner || events.some((e) => e.type === "divorced")) return events;
+  const draft = proposePartner(state, rng);
+  if (draft) events.push(addPartner(state, draft));
   return events;
 }

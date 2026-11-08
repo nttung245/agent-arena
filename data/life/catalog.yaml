@@ -1,0 +1,45 @@
+# The yearly focus and the spending sheet. Our own design; the amounts are estimates.
+focus:
+  default: balanced
+  options:
+    balanced: { label: A little of everything, happiness: 1 }
+    study: { label: Study, knowledge: 4, studyYear: true }
+    work: { label: Work hard, careerBonus: 0.02 }
+    health: { label: Look after your health, health: 3 }
+    family: { label: Family and friends, bonds: 4, happiness: 1 }
+
+# Yearly changes that happen on any focus.
+drift:
+  schoolKnowledge: 5
+  workKnowledge: 1
+  savingsRate: 0.1
+  # A city hospital stay costs this many years of income unless insured.
+  treatmentCostYears: 1.5
+  careerBonusMax: 1.5
+
+sheet:
+  extra_classes:
+    name: Extra classes (học thêm)
+    does: Better odds at the next school exam
+    price: 150
+    when: studying
+    studyYear: true
+  health_insurance:
+    name: Health insurance card (BHYT)
+    does: Covers the city hospital if you fall ill
+    price: 60
+    when: notInsured
+    insured: true
+  motorbike:
+    name: A motorbike
+    does: Freedom to get around; a little happiness
+    price: 1500
+    when: adultWithoutMotorbike
+    motorbike: true
+    happiness: 5
+  gift_parents:
+    name: Money for your parents
+    does: Closer family bonds
+    price: 100
+    when: parentAlive
+    bonds: 3

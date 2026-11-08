@@ -1,0 +1,115 @@
+# Decisions the engine offers. Our own text. The first choice of each is the "natural" one: it
+# lets the data decide, so a life on auto-pilot stays calibrated. `share` marks how common a
+# choice is; the policy picks the highest. `fact` quotes only sourced table values ({...} filled
+# in by the engine); decisions with no sourced fact have none. `major` decisions get a scene.
+
+school_upper:
+  about: school
+  question: Lower secondary school is ending. Will you sit the entrance exam for upper secondary?
+  fact: In {year}, {lowerSecondaryPct}% of young people in Viet Nam finished lower secondary school (UNESCO).
+  major: true
+  template: school_classroom
+  choices:
+    - { key: as_usual, label: Sit the exam as you are, share: 0.8 }
+    - { key: study_hard, label: Study hard for it, note: Better odds, share: 0.15 }
+    - { key: leave, label: Leave school and help the family, share: 0.05 }
+
+university:
+  about: school
+  question: Upper secondary school is ending. Will you take the university entrance exam?
+  fact: In {year}, university enrolment in Viet Nam was {tertiaryPct}% (World Bank).
+  major: true
+  template: school_classroom
+  choices:
+    - { key: as_usual, label: Take the exam, share: 0.7 }
+    - { key: study_hard, label: Prepare hard with extra classes, note: Better odds, share: 0.2 }
+    - { key: work, label: Finish school and start work, share: 0.1 }
+
+first_job:
+  about: work
+  question: It's time to earn a living. What work will you look for?
+  fact: In {year}, {farmingPct}% of working people in Viet Nam worked in farming, forestry or fishing (World Bank, ILO estimates).
+  major: true
+  template: workplace_office
+  choices:
+    - { key: any, label: Take what comes, share: 0.7 }
+    - { key: agriculture, label: Work the land, share: 0.1 }
+    - { key: industry, label: Find factory or building work, share: 0.1 }
+    - { key: services, label: Find work in trade or services, share: 0.1 }
+
+marriage:
+  about: partner
+  question: "{partner} wants to marry you. Will you?"
+  fact: By age {age}, {marriedPct}% of {sexPlural} in Viet Nam had married (UN World Marriage Data).
+  major: true
+  template: wedding_home
+  choices:
+    - { key: marry, label: Marry, share: 0.9 }
+    - { key: wait, label: Not yet, share: 0.1 }
+
+family_size:
+  about: children
+  question: You have {children} children now. Will you stop there?
+  fact: In {year}, women in Viet Nam had {tfr} children on average (UN World Population Prospects).
+  major: false
+  template: home_family
+  choices:
+    - { key: fate, label: Leave it to fate, share: 0.7 }
+    - { key: stop, label: Stop here, share: 0.3 }
+
+treatment:
+  about: health
+  question: The doctor says it is {cause}. Treatment at the big hospital in the city costs a lot.
+  major: true
+  template: hospital
+  choices:
+    - { key: usual, label: Get the usual care close to home, share: 0.7 }
+    - { key: city, label: Go to the city hospital, note: "Costs {cost} PPP dollars unless you are insured", share: 0.3 }
+
+move_city:
+  about: move
+  question: Friends from the village are leaving for work in the city. Will you go?
+  fact: In {year}, {urbanPct}% of people in Viet Nam lived in towns and cities (World Bank).
+  major: true
+  template: street_neighborhood
+  choices:
+    - { key: go, label: Go to the city, share: 0.8 }
+    - { key: stay, label: Stay in the village, share: 0.2 }
+
+emigrate:
+  about: move
+  question: A chance has come to leave Viet Nam for {destination}. Will you go?
+  fact: In {stockYear}, about {stock} people born in Viet Nam lived abroad (UN International Migrant Stock).
+  major: true
+  template: street_neighborhood
+  choices:
+    - { key: go, label: "Leave for {destination}", share: 0.8 }
+    - { key: stay, label: Stay, share: 0.2 }
+
+care_parent:
+  about: parent
+  question: Your {parentRole} is growing old. Will {pronoun} come to live with you?
+  major: false
+  template: home_family
+  choices:
+    - { key: stay_home, label: "{Pronoun} stays in {possessive} own home", share: 0.5 }
+    - { key: live_together, label: "{Pronoun} comes to live with you", share: 0.5 }
+
+retire:
+  about: work
+  question: You have reached retirement age. Will you retire?
+  fact: In {year}, the retirement age for {sexPlural} in Viet Nam was {retirementAge} (Labour Code).
+  major: false
+  template: workplace_office
+  choices:
+    - { key: retire, label: Retire, share: 0.8 }
+    - { key: keep_working, label: Keep working a few more years, share: 0.2 }
+
+business:
+  about: money
+  question: A neighbour offers you a share in a small business.
+  major: false
+  template: workplace_shop
+  choices:
+    - { key: save, label: Keep your savings, share: 0.7 }
+    - { key: invest, label: Put money in, note: It might grow, or be lost, share: 0.3 }

@@ -22,6 +22,15 @@ export function scaleChance(chance: number, multiplier: number): number {
   return 1 - Math.pow(1 - chance, multiplier);
 }
 
+/** Multiplies the odds p / (1 − p) by `factor`: a nudge that keeps chances inside (0, 1). */
+export function scaleOdds(chance: number, factor: number): number {
+  if (!(chance > 0)) return 0;
+  if (chance >= 1) return 1;
+  if (!(factor > 0)) return 0;
+  const odds = (chance / (1 - chance)) * factor;
+  return odds / (1 + odds);
+}
+
 export interface WeightedOption<K extends string> {
   key: K;
   weight: number;

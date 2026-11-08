@@ -353,11 +353,13 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 **Files:** Create `src/game/sim/decisions.ts`, `text.ts`, `data/life/decisions.yaml`, `events.yaml`, `catalog.yaml` and tests.
 
-- [ ] Decision rows: `id`, `when` (age, year, state conditions), `question`, `about`, `fact` (a template that only quotes sourced table values), `choices` (`key`, `label`, `note`, `effects`, `share` = how often people pick it), `major`, `template`. The first set covers continuing school, the university entrance exam, the first job, moving to a city, marriage, another child, caring for a parent, treatment, emigrating, borrowing or saving, retiring, and family-level choices in war years such as evacuating children.
-- [ ] The policy default is the choice with the highest `share`. `defaultChoiceKey` in `chapters.ts` uses it (Task 14).
-- [ ] Focus options (study, work, health, family, rest) and spending items (our catalog, e.g. extra classes, health insurance, a motorbike) move the stats a little, by amounts in `catalog.yaml`.
-- [ ] `text.ts` fills the templates (`{name}`, `{year}`, `{place}`, `{relative}`).
-- [ ] Tests: every decision's `when` is checked against its eligible and ineligible cases; every `fact` template resolves to a sourced value; every choice key is unique within its decision.
+- [x] Decision rows: `id`, `when` (age, year, state conditions), `question`, `about`, `fact` (a template that only quotes sourced table values), `choices` (`key`, `label`, `note`, `effects`, `share` = how often people pick it), `major`, `template`. The first set covers continuing school, the university entrance exam, the first job, moving to a city, marriage, another child, caring for a parent, treatment, emigrating, borrowing or saving, retiring, and family-level choices in war years such as evacuating children.
+- [x] The policy default is the choice with the highest `share`. `defaultChoiceKey` in `chapters.ts` uses it (Task 14).
+- [x] Focus options (study, work, health, family, rest) and spending items (our catalog, e.g. extra classes, health insurance, a motorbike) move the stats a little, by amounts in `catalog.yaml`.
+- [x] `text.ts` fills the templates (`{name}`, `{year}`, `{place}`, `{relative}`).
+- [x] Tests: every decision's `when` is checked against its eligible and ineligible cases; every `fact` template resolves to a sourced value; every choice key is unique within its decision.
+
+*As built:* 11 decisions (school_upper, university, first_job, marriage, family_size, treatment, move_city, emigrate, care_parent, retire, business). Each decision's first choice is the natural one (let the data decide), so a life on defaults stays calibrated; the whole engine on defaults gives age at death 77.0 vs 76.5 (women born 1975) and 65.6 vs 65.8 (men). Facts quote only sourced values (UNESCO, World Bank, UN, Labour Code). War-era family decisions (evacuating children) are left for later. Focus changes stats; "study" and extra classes raise school odds; "work" raises income. Health does not change the death rate yet.
 
 ### Task 13: Engine API, token, local transport
 
@@ -368,10 +370,12 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 - `encodeToken(state)` and `decodeToken(token)`. The token is versioned base64 JSON, rejected with code `token` if the version or shape is wrong.
 - `createLocalTransport(): LifeTransport`, which wraps the engine in resolved promises.
 
-- [ ] `meta` is `{ engine: "arena-life@<version>", simulated: "Simulated lives, not real people." }`; there is no `usage`.
-- [ ] `until: "decision"` (the default) and `until: "year"` behave as their names say. An invalid `choose` key throws `LifeEngineError` with code `invalid_choice`.
-- [ ] `invariants.test.ts` runs 2,000 seeded lives to the end with the policy default and asserts that `checkInvariants` is empty after every step.
-- [ ] Determinism: two runs with the same seed and choices produce identical results at every step. `view` leaves the token unchanged. The largest token over the 2,000 lives is under 32 KB.
+- [x] `meta` is `{ engine: "arena-life@<version>", simulated: "Simulated lives, not real people." }`; there is no `usage`.
+- [x] `until: "decision"` (the default) and `until: "year"` behave as their names say. An invalid `choose` key throws `LifeEngineError` with code `invalid_choice`.
+- [x] `invariants.test.ts` runs 2,000 seeded lives to the end with the policy default and asserts that `checkInvariants` is empty after every step.
+- [x] Determinism: two runs with the same seed and choices produce identical results at every step. `view` leaves the token unchanged. The largest token over the 2,000 lives is under 32 KB.
+
+*As built:* a year is ten phases (history, relatives, illness, sudden death, school, work, family, moves, occasional decisions, year end); a phase can pause the year for a decision and the year carries on from the next phase. With no decision waiting a step stops at ages that are multiples of 5, so the game gets enough beats for scenes and reflections. Tokens are `al1.` + base64url JSON, well under 32 KB. `localTransport.ts` draws a random seed at the boundary when none is given.
 
 ### Task 14: Game integration
 

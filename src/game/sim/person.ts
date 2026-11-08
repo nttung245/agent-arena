@@ -105,7 +105,35 @@ export type SimEvent =
   | { type: "retired" }
   | { type: "history"; id: string }
   | { type: "moved"; place: Place }
-  | { type: "emigrated"; destination: string };
+  | { type: "emigrated"; destination: string }
+  | { type: "chose"; decision: string; choice: string }
+  | { type: "bought"; item: string };
+
+/** Things the person's own choices set, which later rolls read. */
+export interface Flags {
+  /** Years spent with "study" as the focus, or with extra classes, while in school. */
+  studyYears: number;
+  noMoreChildren: boolean;
+  insured: boolean;
+  motorbike: boolean;
+  /** Keep working until this age even past retirement age. */
+  workUntil?: number;
+  /** Raises earned through years of "work" focus (a multiplier on income). */
+  careerBonus: number;
+  /** Decisions that come once per life and have been made. */
+  decided: string[];
+  /** Last year a business offer came. */
+  lastOffer?: number;
+}
+
+/** A decision waiting for the player, and where in the year to carry on after it. */
+export interface PendingDecision {
+  id: string;
+  /** The yearly phase that raised it; the year continues after this phase. */
+  phase: number;
+  /** Anything the decision needs to resolve (a proposed partner, a destination, an illness). */
+  context: Record<string, string | number>;
+}
 
 export interface SimState {
   version: 1;
@@ -126,6 +154,14 @@ export interface SimState {
   illnesses: Illness[];
   /** History rows already applied (each fires at most once unless it repeats). */
   seen: string[];
+  flags: Flags;
+  /** Savings in constant 2021 PPP dollars (negative is debt). */
+  money: number;
+  /** This year's focus (see catalog.yaml). */
+  focus: string;
+  pending: PendingDecision | null;
+  /** The next phase of the current year to run (0 = the year hasn't started). */
+  phase: number;
   ended: boolean;
   death: SimDeath | null;
 }

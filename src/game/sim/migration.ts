@@ -82,17 +82,31 @@ export function emigrate(state: SimState, destination: string): SimEvent {
   return { type: "emigrated", destination };
 }
 
-/** One year of moves for someone still in Viet Nam. */
-export function rollMigration(state: SimState, rng: Rng): SimEvent[] {
-  if (state.ended || state.person.abroad) return [];
+export type MoveOpportunity = { kind: "emigrate"; destination: string } | { kind: "town" };
+
+/** Rolls whether a chance to move comes this year, before the person decides. */
+export function moveOpportunity(state: SimState, rng: Rng): MoveOpportunity | null {
+  if (state.ended || state.person.abroad) return null;
   const { age, year, person } = state;
   const { emigration, townMove } = MIGRATION;
   if (age >= emigration.minAge && age <= emigration.maxAge && roll(rng, emigrationChance(year, person.region))) {
-    return [emigrate(state, pickDestination(year, rng))];
+    return { kind: "emigrate", destination: pickDestination(year, rng) };
   }
   if (person.place === "village" && age >= townMove.minAge && age <= townMove.maxAge && roll(rng, townMoveChance(year))) {
-    person.place = "town";
-    return [{ type: "moved", place: "town" }];
+    return { kind: "town" };
   }
-  return [];
+  return null;
+}
+
+/** The person takes the move. */
+export function takeMove(state: SimState, move: MoveOpportunity): SimEvent {
+  if (move.kind === "emigrate") return emigrate(state, move.destination);
+  state.person.place = "town";
+  return { type: "moved", place: "town" };
+}
+
+/** One year of moves, taking any that comes. */
+export function rollMigration(state: SimState, rng: Rng): SimEvent[] {
+  const move = moveOpportunity(state, rng);
+  return move ? [takeMove(state, move)] : [];
 }

@@ -107,3 +107,24 @@ describe("calibration: deaths", () => {
     console.log(`Deaths, ${LIVES} lives per row:\n${rows.join("\n")}`);
   });
 });
+
+describe("calibration: whole engine on default choices", () => {
+  it("keeps age at death within a year of the UN table for women and men born in 1975", async () => {
+    const { startLife, stepLife } = await import("@/game/sim/engine");
+    for (const sex of ["female", "male"] as const) {
+      let total = 0;
+      const n = 1500;
+      for (let i = 0; i < n; i++) {
+        let r = startLife({ country: "VNM", seed: 900_000 + i + (sex === "male" ? 50_000 : 0), year: 1975, sex });
+        while (!r.ended) {
+          r = r.decision ? stepLife({ token: r.token!, choose: r.decision.choices[0].key }) : stepLife({ token: r.token! });
+        }
+        total += r.death!.age!;
+      }
+      const simulated = total / n;
+      const expected = expectedAgeAtDeath(sex, 1975);
+      console.log(`engine, ${sex}s born 1975: age at death ${simulated.toFixed(1)} vs table ${expected.toFixed(1)}`);
+      expect(Math.abs(simulated - expected)).toBeLessThan(1.2);
+    }
+  }, SLOW);
+});

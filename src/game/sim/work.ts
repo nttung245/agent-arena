@@ -28,6 +28,11 @@ export function sectorShares(year: number, sex: Sex): Record<Sector, number> {
   return Object.fromEntries(SECTORS.map((s, i) => [s, raw[i] / total])) as Record<Sector, number>;
 }
 
+/** National share of employed people in a sector, both sexes (0–1, World Bank). */
+export function nationalSectorShare(sector: Sector, year: number): number {
+  return interpolate(WDI[`SL.${SECTOR_CODE[sector]}.EMPL.ZS`], year) / 100;
+}
+
 export function retirementAge(sex: Sex, year: number): number {
   const rule = sex === "male" ? WORK.retirement.men : WORK.retirement.women;
   if (year <= 2020) return rule.until2020;
@@ -39,7 +44,7 @@ export function incomeFor(state: SimState): number {
   const { fifth } = state.person;
   const gdp = interpolate(WDI["NY.GDP.PCAP.PP.KD"], state.year);
   const share = interpolate(WDI[INCOME_SHARE_CODES[fifth - 1]], state.year) / 100;
-  return Math.round(gdp * share * 5 * WORK.incomeBySchool[state.education.completed]);
+  return Math.round(gdp * share * 5 * WORK.incomeBySchool[state.education.completed] * state.flags.careerBonus);
 }
 
 /**
@@ -123,8 +128,14 @@ export function pickJob(sector: Sector, stage: SchoolStage, year: number, rng: R
   );
 }
 
-function startJob(state: SimState, rng: Rng, type: "startedWork" | "changedJob", exclude?: Sector): SimEvent {
-  const sector = pickSector(state, rng, exclude);
+function startJob(
+  state: SimState,
+  rng: Rng,
+  type: "startedWork" | "changedJob",
+  exclude?: Sector,
+  preferred?: Sector,
+): SimEvent {
+  const sector = preferred ?? pickSector(state, rng, exclude);
   const job = pickJob(sector, state.education.completed, state.year, rng);
   state.work.sector = sector;
   state.work.job = job;
@@ -132,22 +143,35 @@ function startJob(state: SimState, rng: Rng, type: "startedWork" | "changedJob",
   return { type, sector, job };
 }
 
+/** True when the person starts work this year (a first-job decision can be offered). */
+export function startsWorkThisYear(state: SimState): boolean {
+  return state.work.status === "notYet" && state.age >= WORK.minAge && state.education.studying === null;
+}
+
+/** True when a wage worker reaches retirement age this year (a decision can be offered). */
+export function retiresThisYear(state: SimState): boolean {
+  const { work } = state;
+  if (work.status !== "working" || work.sector === "agriculture") return false;
+  if (state.flags.workUntil !== undefined && state.age < state.flags.workUntil) return false;
+  return state.age >= retirementAge(state.person.sex, state.year);
+}
+
 /** One year of work: a first job, a possible job change, income, retirement. */
-export function rollWork(state: SimState, rng: Rng): SimEvent[] {
+export function rollWork(state: SimState, rng: Rng, choice: { sector?: Sector } = {}): SimEvent[] {
   if (state.ended) return [];
   const { work } = state;
   if (work.status === "notYet") {
     if (state.age < WORK.minAge || state.education.studying !== null) return [];
     work.status = "working";
     work.since = state.year;
-    return [startJob(state, rng, "startedWork")];
+    return [startJob(state, rng, "startedWork", undefined, choice.sector)];
   }
   if (work.status !== "working") return [];
 
   const farmer = work.sector === "agriculture";
   const retire = farmer
     ? state.age >= WORK.retirement.farmerAge || state.stats.health < WORK.retirement.farmerHealthFloor
-    : state.age >= retirementAge(state.person.sex, state.year);
+    : retiresThisYear(state);
   if (retire) {
     work.status = "retired";
     work.income = Math.round(work.income * WORK.retiredIncome);

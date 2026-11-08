@@ -7,7 +7,7 @@
 import school from "@data/life/vnm/school.json";
 import { EFFECTS } from "@/game/sim/causes";
 import { SCHOOL_STAGES, type Fifth, type SchoolStage, type SimEvent, type SimState } from "@/game/sim/person";
-import { roll } from "@/game/sim/pick";
+import { roll, scaleOdds } from "@/game/sim/pick";
 import type { Rng } from "@/game/sim/rng";
 import { interpolate, type Sex } from "@/game/sim/tables";
 
@@ -56,6 +56,11 @@ export function nationalCompletion(stage: CountedStage, finishYear: number): num
   return interpolate(UIS[`CR.${UIS_LEVEL[stage]}`], finishYear + SCHOOL.surveyLag) / 100;
 }
 
+/** Tertiary gross enrolment in a year (0–1, World Bank). */
+export function tertiaryEnrolment(year: number): number {
+  return interpolate(TERTIARY_ENROLMENT, year) / 100;
+}
+
 /** Chance that someone who finished upper secondary in `year` goes on to university. */
 export function universityEntryChance(year: number): number {
   const enrolment = interpolate(TERTIARY_ENROLMENT, year) / 100;
@@ -87,11 +92,32 @@ export function leaveSchool(state: SimState): SimEvent {
   return { type: "schoolLeft", stage: state.education.completed };
 }
 
+/** Choices that change this year's school rolls. */
+export interface SchoolChoice {
+  /** Multiplies the odds of finishing the current stage. */
+  finishOdds?: number;
+  /** Multiplies the odds of getting into university. */
+  entryOdds?: number;
+  /** Don't go on to university even if a place comes. */
+  noUniversity?: boolean;
+}
+
+/** Odds bonus from years of studying hard: +15% a year, at most double. */
+export function studyBonus(state: SimState): number {
+  return Math.min(1 + 0.15 * state.flags.studyYears, 2);
+}
+
+/** True when the current stage ends this year (a school decision can be offered). */
+export function stageEndsThisYear(state: SimState): boolean {
+  const stage = state.education.studying;
+  return !!stage && stage !== "none" && state.age === SCHOOL.finishAge[stage];
+}
+
 /**
  * One year of school. A stage is decided at the age it ends: finish and move
  * on (university needs a separate entry roll), or leave school.
  */
-export function rollSchool(state: SimState, rng: Rng): SimEvent[] {
+export function rollSchool(state: SimState, rng: Rng, choice: SchoolChoice = {}): SimEvent[] {
   if (state.ended) return [];
   const { education } = state;
   if (education.completed === "none" && education.studying === null && state.age === SCHOOL.startAge) {
@@ -100,13 +126,15 @@ export function rollSchool(state: SimState, rng: Rng): SimEvent[] {
   }
   const stage = education.studying;
   if (!stage || stage === "none" || state.age !== SCHOOL.finishAge[stage]) return [];
-  if (!roll(rng, finishChance(state))) return [leaveSchool(state)];
+  const finish = scaleOdds(finishChance(state), (choice.finishOdds ?? 1) * studyBonus(state));
+  if (!roll(rng, finish)) return [leaveSchool(state)];
   education.completed = stage;
   education.studying = null;
   const events: SimEvent[] = [{ type: "schoolFinished", stage }];
   const next = nextStage(stage);
   if (next === "tertiary") {
-    if (roll(rng, universityEntryChance(state.year))) education.studying = "tertiary";
+    const entry = scaleOdds(universityEntryChance(state.year), (choice.entryOdds ?? 1) * studyBonus(state));
+    if (roll(rng, entry) && !choice.noUniversity) education.studying = "tertiary";
   } else if (next) {
     education.studying = next;
   }
