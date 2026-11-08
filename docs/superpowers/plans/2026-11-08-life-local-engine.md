@@ -381,13 +381,15 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 **Files:** Modify `lifeStore.ts`, `chapters.ts`, `director.ts`, `persistence.ts`, `LifeGame.tsx`, `StartScreen.tsx`, `LifeError.tsx`; create `src/game/ui/LifeCredit.tsx`; use it in `BirthCard.tsx`, `Journal.tsx`, `DeathScreen.tsx`, `Memorial.tsx` and `StartScreen.tsx`.
 
-- [ ] `buildDeps()` always uses `createLocalTransport()`; the missing-key path goes away. `setLifeDeps` stays for tests.
-- [ ] `isMajorDecision` uses `decision.major` when present; `defaultChoiceKey` uses `share`; `selectTemplate` uses `decision.template` when present. The keyword rules stay as a fallback.
-- [ ] `StartScreen`: remove the key field and the 1in8b links; add a region select; birth years 1950–2025; hide disability.
-- [ ] `LifeError` messages cover `token`, `invalid_choice` and `unknown`; the key, quota and rate messages go away.
-- [ ] Old runs: if a saved run's `engineVersion` does not start with `arena-life@`, the game explains that this life began on the 1in8b Engine. It offers to keep it as an unfinished memorial, credited to 1in8b, or to discard it.
-- [ ] `LifeCredit` shows the data credits for `arena-life` lives and the 1in8b credit for lives made by 1in8b.
-- [ ] Update `runLife.test.ts` and `lifeRun.test.ts` for the new deps. Add a store test that starts a life with no key.
+- [x] `buildDeps()` always uses `createLocalTransport()`; the missing-key path goes away. `setLifeDeps` stays for tests.
+- [x] `isMajorDecision` uses `decision.major` when present; `defaultChoiceKey` uses `share`; `selectTemplate` uses `decision.template` when present. The keyword rules stay as a fallback.
+- [x] `StartScreen`: remove the key field and the 1in8b links; add a region select; birth years 1950–2025; hide disability.
+- [x] `LifeError` messages cover `token`, `invalid_choice` and `unknown`; the key, quota and rate messages go away.
+- [x] Old runs: if a saved run's `engineVersion` does not start with `arena-life@`, the game explains that this life began on the 1in8b Engine. It offers to keep it as an unfinished memorial, credited to 1in8b, or to discard it.
+- [x] `LifeCredit` shows the data credits for `arena-life` lives and the 1in8b credit for lives made by 1in8b.
+- [x] Update `runLife.test.ts` and `lifeRun.test.ts` for the new deps. Add a store test that starts a life with no key.
+
+*As built:* `defaultChoiceKey` still takes the first choice, which is always the natural one in decisions.yaml. A random sex is left to the engine (drawn at the year's sex ratio). The start screen offers today, a chosen year (1950–2025) or any year, plus region, income fifth, place and the engine's faith list; disability and future births are hidden. A saved 1in8b run raises a `legacy` error with two buttons: keep it as an unfinished memorial (credited to 1in8b) or let it go. Production build: the life chunk is 455 KB (148 KB gzipped) with all data; the main bundle carries none of it.
 
 ### Task 15: Remove 1in8b and update the docs
 

@@ -73,26 +73,20 @@ function failedRun(config: LifeConfig): LifeRun {
 }
 
 export function configToStart(config: LifeConfig): StartOptions {
-  const sex =
-    config.sex === "female" || config.sex === "male"
-      ? config.sex
-      : Math.random() < 0.5
-        ? "female"
-        : "male";
-
   const options: StartOptions = {
     country: "VNM",
-    sex,
     policy: "auto",
     sensitive: 0,
     suicide: 0,
   };
+  // A random sex is drawn by the engine at the year's sex ratio at birth.
+  if (config.sex === "female" || config.sex === "male") options.sex = config.sex;
   if (typeof config.year === "number") options.year = config.year;
   else if (config.future) options.future = true;
   if (config.fifth) options.fifth = config.fifth;
   if (config.place) options.place = config.place;
+  if (config.region) options.region = config.region;
   if (config.faith) options.faith = config.faith;
-  if (config.disability) options.disability = config.disability;
   if (typeof config.seed === "number") options.seed = config.seed;
   return options;
 }

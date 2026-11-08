@@ -9,6 +9,7 @@ import type {
   LifeSheetItem,
   LifeState,
   LifeUsage,
+  LifeRegion,
 } from "@/game/engine/types";
 
 export type LifePhase =
@@ -21,12 +22,21 @@ export type LifePhase =
   | "review"
   | "memorial";
 
+/** Runs made by the local engine carry this prefix in engineVersion. */
+export const LOCAL_ENGINE_PREFIX = "arena-life@";
+
+/** True for runs made by the local engine (and for a run not started yet). */
+export function isLocalEngine(engineVersion: string | undefined): boolean {
+  return !engineVersion || engineVersion.startsWith(LOCAL_ENGINE_PREFIX);
+}
+
 export interface LifeConfig {
   year?: number;
   future?: boolean;
   sex?: "female" | "male" | "random";
   fifth?: string;
   place?: "town" | "village";
+  region?: LifeRegion;
   faith?: string;
   disability?: string;
   seed?: number;
@@ -80,6 +90,8 @@ export interface CompletedLife {
   sceneTitles: string[];
   completedAt: number;
   engineVersion: string;
+  /** Kept from a life that could not be lived to its end (a 1in8b run after the switch). */
+  unfinished?: boolean;
 }
 
 export function journalFromResponse(

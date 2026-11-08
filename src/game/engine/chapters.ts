@@ -70,6 +70,7 @@ export function isMajorDecision(
   decision: LifeDecision | null,
 ): boolean {
   if (!decision) return false;
+  if (typeof decision.major === "boolean") return decision.major;
   const haystack =
     `${decision.about ?? ""} ${decision.question ?? ""}`.toLowerCase();
   return MAJOR_DECISION_NEEDLES.some((needle) => haystack.includes(needle));

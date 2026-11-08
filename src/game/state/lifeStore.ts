@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { ALL_CHARACTERS } from "@/lib/assets/characters";
-import { createOneIn8bTransport, readLifeKey } from "@/game/engine/oneIn8b";
 import { LifeEngineError } from "@/game/engine/types";
 import { createDeterministicDirector } from "@/game/engine/director";
 import {
@@ -13,13 +12,16 @@ import {
   type LifeDeps,
   type LifeNext,
 } from "@/game/engine/runLife";
+import { createLocalTransport } from "@/game/sim/localTransport";
 import {
   addThought,
+  completeRun,
+  isLocalEngine,
   type LifeConfig,
   type LifePhase,
   type LifeRun,
 } from "@/game/state/lifeRun";
-import { clearRun, loadRun, saveRun } from "@/game/state/persistence";
+import { clearRun, loadRun, saveCompletedLife, saveRun } from "@/game/state/persistence";
 import { SCENE_TEMPLATES } from "@/game/scenes/registry";
 import type { ScenePlan } from "@/game/scenes/types";
 
@@ -36,6 +38,8 @@ export interface LifeStore {
   continueScene: () => Promise<void>;
   reflect: (age: number, text: string) => void;
   resume: () => Promise<void>;
+  /** Keeps a saved 1in8b life, which can't go on, as an unfinished memorial. */
+  keepLegacy: () => void;
   reset: () => void;
 }
 
@@ -46,21 +50,23 @@ export function setLifeDeps(deps: LifeDeps | null): void {
   depsOverride = deps;
 }
 
-function buildDeps(): LifeDeps | null {
+function buildDeps(): LifeDeps {
   if (depsOverride) return depsOverride;
-  const key = readLifeKey();
-  if (!key) return null;
   const characterIds = new Set(ALL_CHARACTERS.map((character) => character.id));
   return {
-    transport: createOneIn8bTransport(key),
+    transport: createLocalTransport(),
     director: createDeterministicDirector(characterIds),
     templates: SCENE_TEMPLATES,
     characterIds,
   };
 }
 
-function missingKey(): LifeEngineError {
-  return new LifeEngineError("Paste a 1in8b API key to begin.", "key", 401);
+function legacyLife(): LifeEngineError {
+  return new LifeEngineError(
+    "This life began on the 1in8b Engine, which this version of the game no longer uses.",
+    "legacy",
+    0,
+  );
 }
 
 export const useLifeStore = create<LifeStore>((set, get) => {
@@ -80,13 +86,12 @@ export const useLifeStore = create<LifeStore>((set, get) => {
   ) => {
     const run = get().run;
     if (!run) return;
-    const deps = buildDeps();
-    if (!deps) {
-      set({ error: missingKey(), busy: false });
+    if (!isLocalEngine(run.engineVersion)) {
+      set({ error: legacyLife(), busy: false });
       return;
     }
     set({ busy: true, error: null });
-    apply(await action(deps, run));
+    apply(await action(buildDeps(), run));
   };
 
   return {
@@ -97,13 +102,8 @@ export const useLifeStore = create<LifeStore>((set, get) => {
     busy: false,
 
     async start(config) {
-      const deps = buildDeps();
-      if (!deps) {
-        set({ error: missingKey(), busy: false });
-        return;
-      }
       set({ busy: true, error: null });
-      const next = await startLife(deps, config);
+      const next = await startLife(buildDeps(), config);
       if (next.error && !next.run.token) {
         set({ busy: false, error: next.error });
         return;
@@ -142,13 +142,18 @@ export const useLifeStore = create<LifeStore>((set, get) => {
         set({ run: saved, scene: null, phase: saved.phase });
         return;
       }
-      const deps = buildDeps();
-      if (!deps) {
-        set({ run: saved, error: missingKey(), busy: false });
+      if (!isLocalEngine(saved.engineVersion)) {
+        set({ run: saved, error: legacyLife(), busy: false });
         return;
       }
       set({ run: saved, busy: true, error: null });
-      apply(await resumeLife(deps, saved));
+      apply(await resumeLife(buildDeps(), saved));
+    },
+
+    keepLegacy() {
+      const run = get().run ?? loadRun();
+      if (run) saveCompletedLife({ ...completeRun(run, run.sceneTitles ?? []), unfinished: true });
+      get().reset();
     },
 
     reset() {

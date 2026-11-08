@@ -123,7 +123,9 @@ describe("configToStart", () => {
       future: true,
       sex: "male",
     });
-    expect(["female", "male"]).toContain(configToStart({ sex: "random" }).sex);
+    // A random sex is left to the engine, which draws it at the year's sex ratio at birth.
+    expect(configToStart({ sex: "random" }).sex).toBeUndefined();
+    expect(configToStart({ region: "central", place: "village" })).toMatchObject({ region: "central", place: "village" });
   });
 });
 
