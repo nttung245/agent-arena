@@ -88,7 +88,7 @@ export function BirthCard({
           <div className="life-stat">
             <div className="life-stat__label">Family income</div>
             <div className="life-stat__value">
-              {fifth ? `Fifth ${fifth}` : "—"}
+              {fifth ? (/^\d$/.test(fifth) ? `Fifth ${fifth}` : fifth) : "—"}
             </div>
           </div>
           <div className="life-stat">

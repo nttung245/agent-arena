@@ -52,6 +52,10 @@ interface Catalog {
     savingsRate: number;
     treatmentCostYears: number;
     careerBonusMax: number;
+    happinessRest: number;
+    happinessReturn: number;
+    agingFrom: number;
+    agingLoss: number;
   };
   sheet: Record<
     string,
@@ -206,6 +210,9 @@ const PHASES: Phase[] = [
 function endYear(state: SimState): void {
   const { drift, focus } = CATALOG;
   const option = focus.options[state.focus] ?? focus.options[focus.default];
+  const { happiness } = state.stats;
+  state.stats.happiness = clampStat(happiness + (drift.happinessRest - happiness) * drift.happinessReturn);
+  if (state.age >= drift.agingFrom) addStats(state, { health: -drift.agingLoss });
   addStats(state, option);
   if (state.education.studying !== null) {
     addStats(state, { knowledge: drift.schoolKnowledge });
@@ -328,26 +335,24 @@ function eligible(state: SimState, when: Catalog["sheet"][string]["when"]): bool
   }
 }
 
+/** Youngest age that spends its own money. */
+const SPENDING_AGE = 15;
+
+/**
+ * What the person can buy now. The game opens the spending panel whenever this
+ * isn't empty, so it lists only items the person is old enough for, eligible
+ * for, and can afford.
+ */
 function sheetView(state: SimState): LifeSheetItem[] {
-  if (state.ended) return [];
+  if (state.ended || state.age < SPENDING_AGE) return [];
   return Object.entries(CATALOG.sheet)
-    .filter(([, item]) => eligible(state, item.when))
-    .map(([id, item]) => {
-      const can = state.money >= item.price;
-      return {
-        id,
-        name: item.name,
-        does: item.does,
-        price_ppp: item.price,
-        can,
-        ...(can ? {} : { why: "Not enough savings" }),
-      };
-    });
+    .filter(([, item]) => eligible(state, item.when) && state.money >= item.price)
+    .map(([id, item]) => ({ id, name: item.name, does: item.does, price_ppp: item.price, can: true }));
 }
 
 function buy(state: SimState, id: string): SimEvent | null {
   const item = CATALOG.sheet[id];
-  if (!item || !eligible(state, item.when) || state.money < item.price) return null;
+  if (!item || state.age < SPENDING_AGE || !eligible(state, item.when) || state.money < item.price) return null;
   state.money -= item.price;
   if (item.studyYear) state.flags.studyYears++;
   if (item.insured) state.flags.insured = true;

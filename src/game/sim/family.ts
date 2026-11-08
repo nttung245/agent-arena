@@ -65,7 +65,7 @@ function rollYoungerSibling(state: SimState, rng: Rng): SimEvent | null {
     sex,
     birthYear: state.year,
     alive: true,
-    ...makeName(rng, father.familyName, sex, state.year),
+    ...makeName(rng, father.familyName, sex, state.year, [mother.givenName, father.givenName]),
   });
   return { type: "siblingBorn", relativeId: sibling.id };
 }
@@ -117,7 +117,7 @@ function rollChild(state: SimState, partner: Relative, rng: Rng): SimEvent | nul
     birthYear: year,
     alive: true,
     otherParentId: partner.id,
-    ...makeName(rng, fatherFamily, sex, year),
+    ...makeName(rng, fatherFamily, sex, year, [person.givenName, partner.givenName]),
   });
   return { type: "childBorn", relativeId: child.id };
 }

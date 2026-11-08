@@ -16,6 +16,13 @@ drift:
   # A city hospital stay costs this many years of income unless insured.
   treatmentCostYears: 1.5
   careerBonusMax: 1.5
+  # Each year happiness moves this share of the way back to its resting level, so a focus
+  # lifts it for a while instead of pushing everyone to 100.
+  happinessRest: 60
+  happinessReturn: 0.1
+  # Health lost each year from this age on (illness costs more; see effects.yaml).
+  agingFrom: 50
+  agingLoss: 1
 
 sheet:
   extra_classes:

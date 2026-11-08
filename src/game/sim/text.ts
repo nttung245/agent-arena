@@ -29,7 +29,7 @@ function template(key: string): string {
 }
 
 const REGION_LABEL = { north: "North", central: "Central region", south: "South" } as const;
-const FIFTH_LABEL = ["", "the poorest fifth", "the second fifth", "the middle fifth", "the fourth fifth", "the richest fifth"];
+const FIFTH_LABEL = ["", "Poorest fifth", "Second fifth", "Middle fifth", "Fourth fifth", "Richest fifth"];
 const FAITH_LABEL: Record<string, string> = {
   none: "no registered religion",
   buddhist: "Buddhist",

@@ -133,3 +133,13 @@ describe("checkInvariants", () => {
     expect(errors).toMatch(/not exactly one father/);
   });
 });
+
+describe("naming", () => {
+  it("never gives a child a parent's given name", () => {
+    for (const s of many(2000)) {
+      const parents = s.relatives.filter((r) => r.role === "mother" || r.role === "father").map((r) => r.givenName);
+      expect(parents).not.toContain(s.person.givenName);
+      for (const sibling of s.relatives.filter((r) => r.role === "sibling")) expect(parents).not.toContain(sibling.givenName);
+    }
+  });
+});

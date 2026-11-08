@@ -117,23 +117,27 @@ describe("stepLife", { timeout: 60_000 }, () => {
     expect(year.state.age === 1 || year.decision !== null || year.ended).toBe(true);
   });
 
-  it("sets the focus and shows a spending sheet the person can afford or not", () => {
+  it("sets the focus, and shows children no spending sheet", () => {
     const start = startLife({ country: "VNM", seed: 5, year: 2000 });
     const r = stepLife({ token: start.token!, focus: "study" });
     expect(r.focus?.now).toBe("study");
     expect(r.focus?.options?.map((o) => o.key)).toContain("health");
-    for (const item of r.sheet ?? []) {
-      expect(item.price_ppp).toBeGreaterThan(0);
-      if (!item.can) expect(item.why).toBe("Not enough savings");
-    }
+    expect(r.sheet).toEqual([]);
     const bought = stepLife({ token: r.token!, buy: ["health_insurance", "nonsense"] });
-    expect(bought.events.some(([, t]) => t.startsWith("You spent money"))).toBe(false); // no savings yet
+    expect(bought.events.some(([, t]) => t.startsWith("You spent money"))).toBe(false);
   });
 
-  it("buys from the sheet when there are savings", () => {
+  it("lists only what an adult can afford, and buys it", () => {
     const start = startLife({ country: "VNM", seed: 6, year: 2000 });
     const state = decodeToken(start.token!);
+    state.age = 20;
+    state.year = 2020;
+    state.money = 50;
+    expect(stepLife({ token: encodeToken(state), view: true }).sheet).toEqual([]);
     state.money = 500;
+    const sheet = stepLife({ token: encodeToken(state), view: true }).sheet!;
+    expect(sheet.map((item) => item.id)).toContain("health_insurance");
+    expect(sheet.every((item) => item.can && item.price_ppp! <= 500)).toBe(true);
     const r = stepLife({ token: encodeToken(state), buy: ["health_insurance"], until: "year" });
     expect(r.events[0][1]).toBe("You spent money on Health insurance card (BHYT).");
     expect(decodeToken(r.token!).flags.insured).toBe(true);
@@ -173,5 +177,21 @@ describe("createLocalTransport", () => {
   it("draws a random seed when none is given", async () => {
     const a = await createLocalTransport().start({ country: "VNM", year: 2000 });
     expect(Number.isInteger(decodeToken(a.token!).seed)).toBe(true);
+  });
+});
+
+describe("stats over a life", () => {
+  it("keeps happiness off the ceiling and wears health down with age on the default focus", () => {
+    let happy = 0;
+    let n = 0;
+    for (let i = 0; i < 30; i++) {
+      const last = playLife(7000 + i, 1990).at(-1)!;
+      if (last.state.age < 60) continue;
+      n++;
+      if ((last.state.happiness as number) >= 95) happy++;
+      expect(last.state.health as number).toBeLessThan(90);
+    }
+    expect(n).toBeGreaterThan(10);
+    expect(happy).toBe(0);
   });
 });

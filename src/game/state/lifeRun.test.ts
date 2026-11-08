@@ -135,3 +135,13 @@ describe("completeRun", () => {
     expect(life.sceneTitles).toEqual(["Birth", "First day of school"]);
   });
 });
+
+describe("applyStepResult and repeated decisions", () => {
+  it("journals a waiting decision once, even when a resume returns it again", () => {
+    const decision = { id: "treatment@1956", question: "The doctor says it is tuberculosis.", choices: [{ key: "usual", label: "Usual care" }] };
+    const run = createRun({}, { state: { age: 6, year: 1956 }, events: [], decision: null, token: "t0" });
+    const once = applyStepResult(run, { state: { age: 6, year: 1956 }, events: [], decision, token: "t1" });
+    const twice = applyStepResult(once, { state: { age: 6, year: 1956 }, events: [], decision, token: "t1" });
+    expect(twice.journal.filter((entry) => entry.text === decision.question)).toHaveLength(1);
+  });
+});

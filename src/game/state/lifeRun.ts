@@ -163,7 +163,9 @@ export function createRun(config: LifeConfig, res: LifeStepResult): LifeRun {
 
 export function applyStepResult(run: LifeRun, res: LifeStepResult): LifeRun {
   const events = journalFromResponse(res, "event", res.state.year);
-  const decisionEntries: JournalEntry[] = res.decision
+  // A resume looks at the life again and gets the same waiting decision back; journal it once.
+  const newDecision = res.decision && res.decision.id !== run.decision?.id;
+  const decisionEntries: JournalEntry[] = res.decision && newDecision
     ? [
         {
           id: uid("j"),

@@ -75,10 +75,21 @@ export function pickFamilyName(rng: Rng, region: LifeRegion): string {
   return region !== "north" && entry.south ? entry.south : entry.name;
 }
 
-export function makeName(rng: Rng, familyName: string, sex: Sex, birthYear: number): PersonName {
+/**
+ * A full name for someone born in `birthYear`. `avoid` lists given names the
+ * person must not have: Vietnamese families don't give a child a parent's name.
+ */
+export function makeName(
+  rng: Rng,
+  familyName: string,
+  sex: Sex,
+  birthYear: number,
+  avoid: readonly string[] = [],
+): PersonName {
   const era = eraOf(birthYear);
   const middle = pickFrom(rng, NAMES.middleNames[sex][era]);
-  const givenName = pickFrom(rng, NAMES.givenNames[sex][era]);
+  const choices = NAMES.givenNames[sex][era].filter((name) => !avoid.includes(name));
+  const givenName = pickFrom(rng, choices.length > 0 ? choices : NAMES.givenNames[sex][era]);
   return { name: `${familyName} ${middle} ${givenName}`, familyName, givenName };
 }
 
@@ -166,7 +177,7 @@ export function drawBirth(options: BirthOptions, rng: Rng): SimState {
       sex: siblingSex,
       birthYear: siblingYear,
       alive: true,
-      ...makeName(rng, familyName, siblingSex, siblingYear),
+      ...makeName(rng, familyName, siblingSex, siblingYear, [mother.givenName, father.givenName]),
     };
     survivesUntil(rng, sibling, year);
     siblings.push(sibling);
@@ -174,7 +185,7 @@ export function drawBirth(options: BirthOptions, rng: Rng): SimState {
 
   const { healthMin, healthMax, happiness, knowledge, bonds } = BIRTH.stats;
   const person: Person = {
-    ...makeName(rng, familyName, sex, year),
+    ...makeName(rng, familyName, sex, year, [mother.givenName, father.givenName]),
     sex,
     birthYear: year,
     region,

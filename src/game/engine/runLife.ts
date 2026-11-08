@@ -360,6 +360,7 @@ export async function submitChoice(
       choose: key,
     });
     const applied = applyStepResult(run, response);
+    const label = run.decision?.choices.find((choice) => choice.key === key)?.label ?? key;
     const withChoice: LifeRun = {
       ...applied,
       journal: [
@@ -368,7 +369,7 @@ export async function submitChoice(
           id: uid("j"),
           age: run.state.age,
           year: run.state.year,
-          text: `You chose: ${key}`,
+          text: `You chose: ${label}`,
           kind: "decision",
           choiceKey: key,
         },

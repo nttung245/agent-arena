@@ -152,7 +152,7 @@ export function StartScreen({
 
         <div className="life-notice">
           This is a simulation, not a real person. Ages 15+. Death, illness and hardship appear at their real
-          rates, but no scene is graphic. Everything runs in your browser; nothing is sent anywhere.
+          rates, but no scene is graphic. The life runs in your browser; nothing about it is sent anywhere.
         </div>
 
         {error && (

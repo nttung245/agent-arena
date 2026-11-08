@@ -252,6 +252,30 @@ describe("submitChoice and buyItems", () => {
     expect(next.run.ended).toBe(true);
   });
 
+  it("journals the choice by its label", async () => {
+    const run = createRun(
+      {},
+      {
+        state: { age: 15, name: "Lan" },
+        events: [],
+        decision: {
+          id: "school_upper@2010",
+          question: "Will you sit the exam?",
+          choices: [
+            { key: "as_usual", label: "Sit the exam as you are" },
+            { key: "study_hard", label: "Study hard for it" },
+          ],
+        },
+        token: "t1",
+      },
+    );
+    const transport = fakeTransport([
+      { state: { age: 15 }, events: [], decision: null, token: "t2", ended: true, death: { age: 15 } },
+    ]);
+    const next = await submitChoice(deps(transport), run, "study_hard");
+    expect(next.run.journal.some((entry) => entry.text === "You chose: Study hard for it")).toBe(true);
+  });
+
   it("sends purchases and the token", async () => {
     const run = createRun(
       {},

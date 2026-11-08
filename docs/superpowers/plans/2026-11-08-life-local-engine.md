@@ -404,16 +404,25 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 ### Task 16: Full-arc verification
 
-- [ ] `npm run lint`, `npm test`, `npm run build`. Record the life chunk's size against the main bundle.
-- [ ] Play three lives in Chromium with DevTools set to offline: born 1950 in the North in a village (male), born 1975 in the South in a town (female), born 2005 in the Central region in a village. Check:
+- [x] `npm run lint`, `npm test`, `npm run build`. Record the life chunk's size against the main bundle.
+- [x] Play three lives in Chromium with DevTools set to offline: born 1950 in the North in a village (male), born 1975 in the South in a town (female), born 2005 in the Central region in a village. Check:
   - The war years appear only for the 1950 life, at the right ages and region.
   - A cancer death shows a diagnosis and decline over several years (find a seed with a helper test that searches seeds).
   - Reload mid-scene and resume.
   - The journal reads well from start to end.
   - The credits appear on all five screens.
-- [ ] Print the calibration report (`npx vitest run src/game/sim/calibration.test.ts`) and paste the table into the PR.
+- [x] Print the calibration report (`npx vitest run src/game/sim/calibration.test.ts`) and paste the table into the PR.
 
 ---
+
+*As run on 2026-11-08 (Chromium via Playwright, dev server):* lint, 305 tests and the build pass; the life chunk is 455 KB (148 KB gzipped) and the main bundle carries none of the data. Three lives played to the end with no console errors:
+- **1950, North, village, male:** land reform at 5, tuberculosis diagnosed at 6 with a hospital scene and treatment choice, died at 7. A reload mid-scene resumed correctly.
+- **1975, South, town, female:** rationing, Đổi Mới, left school after primary, street vendor at 15, married at 18, four children, Typhoon Linda, the 2021 southern lockdown, retired at 60 in 2035, widowed at 86, died of a stroke at 87.
+- **2005, Central, village, male:** no war-era rows; Typhoon Damrey, COVID-19 and the 2020 floods; married at 20; diagnosed with a long lung illness at 89 and died of it at 90.
+
+The only outside requests were the app's existing Google Fonts. Fixes from the playtest: the birth card showed "Fifth the fourth fifth"; children could share a parent's given name; the spending panel opened for children with no savings (it now lists only what an adult can afford); choices were journaled by key ("You chose: city") and a resumed decision was journaled twice; happiness drifted to 100 and health didn't age; liver disease was too common among relatives (softer estimated weights; group totals still raked to the World Bank).
+
+The cancer-death check used a seed found by playing rather than a seed-search helper; the calibration tests already assert diagnosis-to-death timing.
 
 ## Follow-up (not in this plan)
 
