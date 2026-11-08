@@ -1,6 +1,6 @@
 # Life in Vietnam — 3D life-simulation design
 
-- **Status:** approved; core arc implemented (phases 0–2). Follow-up: era kits, LLM scene director, Vietnamese props, audio, cohort, more countries.
+- **Status:** approved; core arc implemented (phases 0–2). The 1in8b Engine was replaced on 2026-11-08 by a local engine built from public data: see `docs/superpowers/plans/2026-11-08-life-local-engine.md`, which supersedes §5.1, §5.2 and §6.4 below. Follow-up: era kits, LLM scene director, Vietnamese props, audio, cohort, more countries.
 - **Date:** 2026-11-03
 - **Repo:** `agent-arena`
 - **Working title:** *Một Đời* (One Life)

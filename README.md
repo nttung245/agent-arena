@@ -34,14 +34,14 @@
 
 ## Life in Vietnam (experimental)
 
-A first-person 3D life simulation built on the **1in8b Engine**. You are born in Vietnam and live one complete life, from birth to death. The engine draws the life — family, health, school, work, love, migration, death — from real demographic statistics; the 3D layer stages the turning points as places you can walk through. The journal keeps the full record between scenes.
+A first-person 3D life simulation. You are born in Vietnam, any year from 1950 to 2025, and live one complete life, from birth to death. The 3D layer stages the turning points as places you can walk through, and the journal keeps the full record between scenes.
 
-- Open `?life` or choose **Live a life** in the HUD.
-- Bring your own free `k8b_` key from [1in8b.life/en/api](https://1in8b.life/en/api/). It stays in this browser and is sent only to `1in8b.life`.
-- The mode is 15+. Every life is simulated, not a real person. Hard events appear at their real rates but are never shown graphically.
-- Credit: [1in8b Engine (1in8b.life)](https://1in8b.life/en/api/). The engine’s sources include the UN, WHO and the World Bank.
+- Open `?life` or choose **Live a life** in the HUD. No key, no account and no network: the life engine runs in your browser.
+- **How a life is drawn.** One year at a time, every roll uses public statistics for Vietnam in that year, for someone of that age, sex, region and family: death and its causes, school, work, marriage, children, moves and emigration. History (the wars, reunification, Đổi Mới, typhoons, COVID-19) reaches you by region and age. Simulated lives, added up, reproduce the national tables; the tests in `src/game/sim/calibration.test.ts` check that.
+- **Data:** UN World Population Prospects 2024, World Marriage Data 2019 and International Migrant Stock 2024 (CC BY 3.0 IGO); World Bank World Development Indicators (CC BY 4.0); UNESCO Institute for Statistics (CC BY-SA 4.0). Sources, transforms and licences: [`data/life/vnm/SOURCES.md`](data/life/vnm/SOURCES.md). Rebuild the tables with `npm run life:data`.
+- The mode is 15+. Every life is simulated, not a real person, record or forecast. Hard events appear at their real rates but are never shown graphically.
 
-The core arc (birth to death, one modern-era scene kit, deterministic scene direction) is implemented. The design and the follow-up work — more eras, the LLM scene director, Vietnamese props, audio — live in [`docs/superpowers/specs/2026-11-03-life-in-vietnam-design.md`](docs/superpowers/specs/2026-11-03-life-in-vietnam-design.md).
+The design lives in [`docs/superpowers/specs/2026-11-03-life-in-vietnam-design.md`](docs/superpowers/specs/2026-11-03-life-in-vietnam-design.md); the local engine's plan, with what was built and what is left, in [`docs/superpowers/plans/2026-11-08-life-local-engine.md`](docs/superpowers/plans/2026-11-08-life-local-engine.md). Lives started on the 1in8b Engine before the switch can be kept as unfinished memorials and keep its credit.
 
 ---
 

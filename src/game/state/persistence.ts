@@ -2,6 +2,14 @@ import type { CompletedLife, LifeRun } from "@/game/state/lifeRun";
 
 export const LIFE_RUN_STORAGE = "agent-arena-life";
 export const LIFE_LIVES_STORAGE = "agent-arena-life-lives";
+/** Where earlier versions kept the player's 1in8b API key. */
+export const LEGACY_KEY_STORAGE = "agent-arena-life-key";
+
+/** The game no longer needs a key; remove any key an earlier version stored. */
+export function forgetLegacyKey(): void {
+  if (typeof localStorage === "undefined") return;
+  localStorage.removeItem(LEGACY_KEY_STORAGE);
+}
 const MAX_COMPLETED_LIVES = 20;
 
 function isRecord(value: unknown): value is Record<string, unknown> {

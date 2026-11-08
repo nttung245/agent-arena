@@ -49,3 +49,12 @@ describe("completed lives", () => {
     expect(localStorage.getItem(LIFE_LIVES_STORAGE)).not.toContain("k8b_");
   });
 });
+
+describe("forgetLegacyKey", () => {
+  it("removes the 1in8b key an earlier version stored", async () => {
+    const { LEGACY_KEY_STORAGE, forgetLegacyKey } = await import("@/game/state/persistence");
+    localStorage.setItem(LEGACY_KEY_STORAGE, "k8b_old");
+    forgetLegacyKey();
+    expect(localStorage.getItem(LEGACY_KEY_STORAGE)).toBeNull();
+  });
+});

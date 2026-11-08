@@ -5,7 +5,7 @@ import { summarizeYears } from "@/game/engine/summary";
 import { getSceneTemplate } from "@/game/scenes/registry";
 import { LifeScene } from "@/game/scenes/LifeScene";
 import { useLifeStore } from "@/game/state/lifeStore";
-import { loadRun } from "@/game/state/persistence";
+import { forgetLegacyKey, loadRun } from "@/game/state/persistence";
 import type { JournalEntry, LifeConfig } from "@/game/state/lifeRun";
 import { BirthCard } from "@/game/ui/BirthCard";
 import { DeathScreen } from "@/game/ui/DeathScreen";
@@ -89,6 +89,7 @@ export function LifeGame({ onExit }: { onExit: () => void }) {
   const lastSceneAge = useRef<number | null>(null);
 
   useEffect(() => {
+    forgetLegacyKey();
     if (loadRun()) setResumeAvailable(true);
   }, []);
 

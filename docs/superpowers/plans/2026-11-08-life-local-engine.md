@@ -395,10 +395,12 @@ Delete: `src/game/engine/oneIn8b.ts`, `src/game/engine/oneIn8b.test.ts`.
 
 **Files:** Delete `src/game/engine/oneIn8b.ts` and its test. Modify `README.md`, `CLAUDE.md` and the spec's status line.
 
-- [ ] On first load, `localStorage.removeItem("agent-arena-life-key")`, so no old key lingers.
-- [ ] README: the "Life in Vietnam" section explains the local engine, the data sources and their credits, and that no key is needed.
-- [ ] `CLAUDE.md`: replace the Engine and State bullets of the Life section with the sim layout, the data build and the calibration tests.
-- [ ] `grep -ri "1in8b" src/ README.md` returns only the legacy credit in `LifeCredit.tsx` and the old-run notice.
+- [x] On first load, `localStorage.removeItem("agent-arena-life-key")`, so no old key lingers.
+- [x] README: the "Life in Vietnam" section explains the local engine, the data sources and their credits, and that no key is needed.
+- [x] `CLAUDE.md`: replace the Engine and State bullets of the Life section with the sim layout, the data build and the calibration tests.
+- [x] `grep -ri "1in8b" src/ README.md` returns only the legacy credit in `LifeCredit.tsx` and the old-run notice.
+
+*As built:* `forgetLegacyKey()` runs when Life mode opens. The HUD's 1in8b link (not in the original list of five screens) now reads "Simulated from UN, World Bank and UNESCO data". The remaining mentions of 1in8b in `src/` are the legacy credit, the legacy-run message and comments.
 
 ### Task 16: Full-arc verification
 

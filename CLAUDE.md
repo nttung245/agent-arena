@@ -121,33 +121,34 @@ npx vitest run src/lib/storage.test.ts -t "clampChattiness"
 
 - **What it is:** a first-person life simulation, lazy-loaded with `React.lazy`. While it is open, `App.tsx` renders only `<LifeGame>`, so the arena Canvas unmounts.
 - **Docs:** the design spec and the implementation plan live in `docs/superpowers/`. Read the plan's "Global Constraints" and "Review Focus" sections before you change this mode.
-- **Engine:** each life comes from the external 1in8b API (`POST https://1in8b.life/api/v1/live`). The browser calls it with the player's own `k8b_` key.
-  - `engine/types.ts` holds the engine-neutral contract: `LifeTransport` (`start`/`step`), `LifeStepResult`, and `LifeEngineError` with a `code`, such as `key`, `rate` or `month`. `engine/oneIn8b.ts` is the 1in8b implementation of that transport.
-  - Every response returns a sealed `token`. It is the only way to resume a life, so recoverable errors (bad key, quota) must keep the run and its token.
-- **State:** `state/lifeStore.ts` is its own Zustand store, independent of `arenaStore`. It uses three localStorage keys:
-  - `agent-arena-life` holds the current run.
-  - `agent-arena-life-lives` holds completed lives.
-  - `agent-arena-life-key` holds the API key. `readLifeKey()` reads it at call time. Never put the key into the run JSON, the store, logs or error text.
+- **Engine:** a local microsimulation in `src/game/sim/`, pure TypeScript with no React, DOM or network. `engine.ts` (`startLife`, `stepLife`) returns the same `LifeStepResult` shape the game always used, and `localTransport.ts` implements `LifeTransport` (`engine/types.ts`) over it.
+  - A year runs in phases (history, relatives' deaths, illness, sudden death, school, work, family, moves, occasional decisions, year end). A phase can pause the year for a decision; the year carries on from the next phase after the choice. With no decision waiting, a step stops at ages that are multiples of 5.
+  - Each decision's **first choice is the natural one**: it lets the data decide. Lives on defaults stay calibrated, so keep a new decision's first choice natural.
+  - All randomness goes through the seeded `Rng` whose state lives in the token (`al1.` + base64url JSON of `SimState`). Never use `Math.random` in `src/game/sim/`.
+  - Multipliers (income fifth, town/village, schooling) are rescaled to average 1 so they move people around the national rates without moving them. Crisis deaths (war, storms, COVID-19) are already inside the UN death rates: they are causes, never an extra hazard.
+- **Data:** `npm run life:data` (`scripts/life-data/`) downloads UN, World Bank and UNESCO data (about 1.2 GB, cached in `.cache/life-data/`) and writes compact Viet Nam tables to `data/life/vnm/*.json`; `SOURCES.md` there records each source, transform and licence. Our own estimates and text live in `data/life/*.yaml` (effects, history, decisions, events, names, jobs, catalog); every estimate is marked.
+- **Calibration tests:** `src/game/sim/calibration.test.ts` and the calibration blocks in `family`, `school`, `work` and `migration` tests check that thousands of simulated lives reproduce the tables. Print the comparisons with `npx vitest run src/game/sim/calibration.test.ts --reporter=verbose --silent=false`. `src/game/sim/**` is inside the 80% coverage gate.
+- **State:** `state/lifeStore.ts` is its own Zustand store, independent of `arenaStore`. It uses two localStorage keys: `agent-arena-life` (the current run) and `agent-arena-life-lives` (completed lives). A saved run whose `engineVersion` doesn't start with `arena-life@` came from the old 1in8b Engine; it can't continue and can be kept as an unfinished memorial.
 - **Flow:**
   - `engine/runLife.ts` (`startLife`, `advanceLife`, `submitChoice`, `resumeLife`) steps the engine.
   - `engine/chapters.ts` picks which beats get a staged scene (`selectTrigger`, `isMajorDecision`, reflection ages, `MAX_SCENES = 16`). Minor decisions are auto-answered with `defaultChoiceKey`.
   - `state/lifeRun.ts` folds each response into the `LifeRun` and its journal.
 - **Scenes:** a `SceneDirector` turns a trigger into a `ScenePlan`.
-  - The only director so far is `createDeterministicDirector` in `engine/director.ts`, which matches keywords in the decision text to pick a template. An LLM director is planned follow-up work.
+  - The only director so far is `createDeterministicDirector` in `engine/director.ts`. It uses the decision's own `template` hint (the local engine always sends one) and falls back to matching keywords in the decision text. An LLM director is planned follow-up work.
   - `scenes/validate.ts` rejects any plan that leaves an engine choice key unbound, uses an unknown socket or character, or casts a person who is not in the engine's facts or who has died (`buildFactSheet`).
   - Each template in `scenes/templates/` wraps an aamf `ArenaMapDefinition`, so scenes reuse the arena's floors, placeables and character GLBs. A template id with no authored template falls back to a stub in `scenes/registry.ts`.
 - **Text is English only:** life-mode strings are hardcoded in `src/game/ui/`. The only i18n key is `life.entry`, the HUD button.
-- **API terms that constrain the code:**
-  - Start every life with `country: "VNM"`, `sensitive: 0` and `suicide: 0`.
-  - Show the credit "1in8b Engine (1in8b.life)" and a simulated-life notice on the start screen, birth card, journal, death screen and memorial.
-  - Never show death graphically.
+- **Content rules:**
+  - `LifeCredit` shows the data credits and a simulated-life notice on the start screen, birth card, journal, death screen and memorial; lives made by 1in8b keep its credit.
+  - Self-harm is never a named cause. Never show death graphically.
+  - History rows (`data/life/history.yaml`) are short, factual, neutral and sourced; rows marked `review: true` need a person's read before release.
 
 ## Testing
 
 - Vitest runs in the `node` environment, with no DOM. `src/test/setup.ts` shims `window`, provides an in-memory `localStorage`, and makes `requestAnimationFrame` synchronous.
 - Vitest collects only `src/**/*.test.ts`, so a `.test.tsx` file is silently ignored.
-- The 80% coverage gate covers only `src/lib/**`, excluding `src/lib/three/`, generated files, `useStickToBottom.ts` and `types.ts`. Components have no tests, so logic worth testing belongs in `src/lib`.
-- `src/game/**/*.test.ts` files run too, but they sit outside the coverage gate. Life-mode logic is still expected to have tests. `setLifeDeps()` in `lifeStore.ts` swaps in a fake transport and director.
+- The 80% coverage gate covers `src/lib/**` and `src/game/sim/**`, excluding `src/lib/three/`, generated files, `useStickToBottom.ts` and `types.ts`. Components have no tests, so logic worth testing belongs in `src/lib` (or `src/game/sim` for the life engine).
+- The rest of `src/game/**/*.test.ts` runs outside the gate. `setLifeDeps()` in `lifeStore.ts` swaps in a fake transport and director.
 - Mocking patterns:
   - Provider tests stub `fetch` with `vi.stubGlobal`.
   - Modules that read the store (`arenaChat`, `chatter`, `arenaContext`) mock `@/lib/ai/providers` with `vi.mock` and seed the real store with `useArenaStore.setState(...)`.
